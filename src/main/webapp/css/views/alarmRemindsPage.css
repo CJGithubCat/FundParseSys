@@ -1,0 +1,51 @@
+.the-box{
+    overflow: hidden;
+}
+
+.left_block{
+    width:30px;display:inline-block;
+}
+
+.carTR{
+    background: #efefef;
+}
+
+#alarmTipsType_car .glyphicon-folder-open{
+    color: #ff9200;
+    margin-right: 5px;
+}
+
+#alarmTipsType_car .fa-car{
+    color: #4791d2;
+    margin-right: 5px;
+}
+
+#alarmTipsType_car .glyphicon-ban-circle{
+    color: red;
+}
+
+#alarmTipsType_car .glyphicon-ok{
+  color: #01b55a;
+}
+
+#alarmTipsType_center,#alarmTipsType_center th{
+  text-align: center;
+}
+
+.alter_alarm,.delete_alarm{
+    margin-right: 5px;
+}
+
+.table_box{
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.setGray{
+  background-color: #cfcfcf;
+  color: #efefef;
+}
+
+.alarmItem{
+    margin-right: 20px;
+}

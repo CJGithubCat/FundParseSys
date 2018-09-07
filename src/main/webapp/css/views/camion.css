@@ -1,0 +1,178 @@
+.l-icon{
+	display: inline-block;
+	vertical-align: middle;
+	cursor: pointer;
+}
+.l-icon-motherunit-yes{
+	background: url(../../images/carGIS/isMotherUnit.gif) no-repeat 0 -17px;
+    width: 17px;
+    height: 17px;
+    margin-left:4px;
+}
+.l-icon-motherunit-no{
+	background: url(../../images/carGIS/isMotherUnit.gif) no-repeat 0 0;
+    width: 17px;
+    height: 17px;
+    margin-left:4px;
+}
+.l-icon-L1 {
+    background: url(../../images/carGIS/L1.gif) no-repeat center;
+    width: 18px;
+    height: 18px;
+ }
+ .l-icon-L2 {
+    background: url(../../images/carGIS/L2.gif) no-repeat center;
+     width: 18px;
+    height: 18px;
+ }
+ .l-icon-R1 {
+    background: url(../../images/carGIS/R1.gif) no-repeat center;
+     width: 18px;
+    height: 18px;
+ }
+ .l-icon-R2 {
+    background: url(../../images/carGIS/R2.gif) no-repeat center;
+     width: 18px;
+    height: 18px;
+    cursor:pointer;
+ }
+ .l-icon-ycxzj {
+    background: url(../../images/carGIS/ycxzj.gif) no-repeat center;
+     width: 18px;
+    height: 18px;
+    cursor:pointer;
+ }
+ .l-icon-wcxzj {
+    background: url(../../images/carGIS/wcxzj.gif) no-repeat center;
+     width: 18px;
+    height: 18px;
+    cursor:pointer;
+ }
+
+ .l-icon-tb {
+    background: url(../../images/carGIS/tb.png) no-repeat center;
+    width: 39px;
+    height: 20px;
+ }
+  .l-icon-tt {
+    background: url(../../images/carGIS/tt.png) no-repeat center;
+    width: 39px;
+    height: 20px;
+ }
+  .l-icon-tr {
+    background: url(../../images/carGIS/tr.png) no-repeat center;
+    width: 20px;
+    height: 39px;
+ }
+  .l-icon-tl {
+    background: url(../../images/carGIS/tl.png) no-repeat center;
+    width: 20px;
+    height: 39px;
+ }
+ .l-icon-tr {
+    background: url(../../images/carGIS/tr.png) no-repeat center;
+    width: 20px;
+    height: 39px;
+ }
+.l-icon-lr {
+    background: url(../../images/carGIS/lr.png) no-repeat center;
+    width: 20px;
+    height: 39px;
+ }
+ .l-icon-rl {
+    background: url(../../images/carGIS/rl.png) no-repeat center;
+    width: 20px;
+    height: 39px;
+ }
+  .l-icon-v {
+    background: url(../../images/carGIS/v.png) no-repeat center;
+    width: 20px;
+    height: 20px;
+    cursor:pointer;
+ }
+ .l-icon-bf {
+    background: url(../../images/carGIS/bf.png) no-repeat center;
+    width: 20px;
+    height: 20px;
+    cursor:pointer;
+ }
+ .l-icon-close {
+    background: url(../../images/carGIS/close.png) no-repeat center;
+    width: 20px;
+    height: 20px;
+    cursor:pointer;
+ }
+
+ .l-icon-red_show {
+    background: url(../../images/carGIS/red_show.gif) no-repeat 0 -1px;
+    width: 18px;
+    height: 18px;
+    cursor:pointer;
+ }
+  .l-icon-red_show2 {
+    background: url(../../images/carGIS/red_show.png) no-repeat 0 -1px;
+    width: 18px;
+    height: 18px;
+    cursor:pointer;
+ }
+  .l-icon-blue_show2 {
+    background: url(../../images/carGIS/blue_show.png) no-repeat 0 -1px;
+    width: 18px;
+    height: 18px;
+    cursor:pointer;
+ }
+ .l-icon-yellow_show {
+    background: url(../../images/carGIS/yellow_show.gif) no-repeat 0 -1px;
+    width: 18px;
+    height: 18px;
+    cursor:pointer;
+ }
+ .l-icon-blue-border {
+    background: url(../../images/carGIS/blue-border.gif) no-repeat 0 -1px;
+    width: 18px;
+    height: 18px;
+    cursor:pointer;
+ }
+ .l-icon-rent-yes {
+    background: url(../../images/carGIS/l-icon-rent-yes.png) no-repeat center;
+    width: 18px;
+    height: 18px;
+ }
+ .l-icon-rent-no {
+    background: url(../../images/carGIS/l-icon-rent-no.png) no-repeat center;
+    width: 18px;
+    height: 18px;
+ }
+ .l-icon-rent-repair {
+    background: url(../../images/carGIS/l-icon-rent-repair.png) no-repeat center;
+    width: 18px;
+    height: 18px;
+ }
+ .l-icon-rent-operate {
+    background: url(../../images/carGIS/l-icon-rent-operate.png) no-repeat center;
+    width: 18px;
+    height: 18px;
+ }
+ .l-icon-rent-stop {
+    background: url(../../images/carGIS/l-icon-rent-stop.png) no-repeat center;
+    width: 18px;
+    height: 18px;
+ }
+ .l-icon-wu{
+    background: url(../../images/carGIS/wu.png) no-repeat center;
+     width: 18px;
+    height: 18px;
+    cursor:pointer;
+ }
+ .l-icon-you{
+    background: url(../../images/carGIS/you.png) no-repeat center;
+     width: 18px;
+    height: 18px;
+    cursor:pointer;
+ }
+ .l-icon-obd{
+    background: url(../../images/carGIS/OBD.png) no-repeat center;
+     width: 18px;
+    height: 18px;
+    cursor:pointer;
+ }

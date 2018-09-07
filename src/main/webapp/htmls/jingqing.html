@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <!-- 启用360浏览器的极速模式(webkit) -->
+    <meta name="renderer" content="webkit">
+    <!-- 避免IE使用兼容模式 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>中国石化销售有限公司河南郑州石油分公司劳资系统</title>
+    <link rel="stylesheet" href="../vendor/bootstrap/dist/css/bootstrap.css"/>
+    <link rel="stylesheet" href="../vendor/ligerUI/skins/Aqua/css/ligerui-all.css"/>
+    <link rel="stylesheet" href="../css/public/ligerui-custom.css"/>
+    <link rel="stylesheet" href="../css/public/search-list-grid-tree.css"/>
+    <script src="../vendor/jquery/dist/jquery.js"></script>
+	<script src="../js/util/unittype.js"></script>
+    <script src="../vendor/ligerUI/js/ligerui.all.js"></script>
+    <script src="../js/plugins/DataToView.js"></script>
+    <script src="../js/plugins/ligerui.other.js"></script>
+    
+    <!-- 添加 foundation-datepicker 支持-->
+    <link rel="stylesheet" href="../vendor/foundation-datepicker/css/foundation-datepicker.min.css"/>
+    <link rel="stylesheet" href="../vendor/font-awesome/css/font-awesome.min.css"/>
+    <script src="../vendor/foundation-datepicker/js/foundation-datepicker.min.js"></script>
+    <script src="../vendor/foundation-datepicker/js/locales/foundation-datepicker.zh-CN.js"></script>
+    <style>
+        .refresh{
+            background: url(../images/refreshBg.png) no-repeat 0 3px;
+            width: 50px;
+            height: 20px;
+            display: inline-block;
+            padding-left: 20px;
+            text-decoration: none;
+            outline: none;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        a:hover{
+            text-decoration: none;
+        }
+        .l-dialog-content-noimage{
+            padding: 0;
+            overflow: hidden;
+        }
+    </style>
+    <script>
+	    $(function(){
+	        var treeToggleButton = $('.tree-toggle-button');
+	        var body = $('body');
+	        treeToggleButton.on('click',function(e){
+	           if(treeToggleButton.hasClass('show')){
+	               treeToggleButton.removeClass('show');
+	               body.removeClass('hide-tree');
+	           }else{
+	               treeToggleButton.addClass('show');
+	               body.addClass('hide-tree');
+	           }
+	            setTimeout(function(){
+	                $(window).trigger('resize');
+	            },500);
+	        });
+	    });
+	    
+	    $(function (){
+            var onOff=true;
+	        window.tree=$("#tree").ligerTree({
+	        url:D2V.wtwsjtjURL.getTreeNode,
+	        nodeWidth:200,
+	        checkbox: false,
+	        slide: false,
+	        btnClickToToggleOnly: false,
+	        isExpand: false,
+	        idFieldName : 'treedataindex',
+	        onSelect : function(node) {
+	            var data = node.data;
+	            changeURL(node.data.params.attributesPath);
+	        },
+	        isLeaf: function(data) {
+	            return !(data.delay !== undefined || data.children !== undefined);
+	        },
+	        onExpand : function(e) {
+	            this._parentNode = e.target;
+	        },
+	        onError:function(XMLHttpRequest, textStatus, errorThrown){
+	            console.log(arguments);
+	        },
+	        onSuccess : function(newdata) { 
+	            var parentNode = this._parentNode;
+	            var menuData = [];
+	            var parent = $(parentNode);
+	            var parentData = this.getDataByID(parent.attr('treedataindex'));
+                if(parentData === null){
+                    // 父节点为空时（即该节点为根节点时）
+                    if(onOff){
+                        $(newdata.datas).each(function() {
+                            menuData.push({
+                                text:this.text,
+                                delay:{url:'../company/queryTreeNodeList'+'?&nodeId='+this.id},
+                                params : this
+                            });
+                        })
+                        if (menuData.length <= 0)return;
+                        this.append(this._parentNode, menuData);
+                        if(parentData) delete parentData.delay;
+                        onOff=false;
+                        function a(){
+                            $('.l-body').trigger('click');
+                        }
+                        a();
+                    }else{
+                        $(newdata.datas.list).each(function() {
+                            var leaf={text:this.text,delay:{url:'../company/queryTreeNodeList'+'?&nodeId='+this.id},params : this};
+                            if(this.isLeaf){
+                                delete leaf.delay;
+                            }
+                            menuData.push(leaf);
+                        })
+                        if (menuData.length <= 0)return;
+                        this.append(this._parentNode, menuData);
+                        if(parentData) delete parentData.delay;
+                    }
+                }else{
+                    //该节点有父节点，不为根节点时
+                    $(newdata.datas.list).each(function() {
+                        var leaf={text:this.text,delay:{url:'../company/queryTreeNodeList'+'?&nodeId='+this.id},params : this};
+                        if(this.isLeaf){
+                            delete leaf.delay;
+                        }
+                        menuData.push(leaf);
+                    })
+                    if (menuData.length <= 0)return;
+                    this.append(this._parentNode, menuData);
+                    if(parentData) delete parentData.delay;
+                }
+	         }
+	    });
+	});
+
+	 function changeURL(data){
+	     var formParam={};
+	     formParam.page = 1;
+	     var rp_value = $("select[name='rp']").val();
+	     formParam.pagesize = rp_value;
+
+	     formParam.attributesPath=data;
+	     mainGrid.setParm('attributesPath',data);
+	     $('#searchForm').find('[name="attributesPath"]').val(data);
+	 }
+	 
+	 $(function(){
+			var nowDate=new Date();
+			var todayYear=nowDate.getFullYear();
+			var todayMonth=(nowDate.getMonth()+1)>9 ? (nowDate.getMonth()+1) :'0'+(nowDate.getMonth()+1);
+			var todayRiqi=(nowDate.getDate())>9?nowDate.getDate():'0'+nowDate.getDate();
+			var nowHour = (nowDate.getHours())>9?nowDate.getHours():'0'+nowDate.getHours(); //获取当前小时数(0-23)
+			var nowMin = (nowDate.getMinutes())>9?nowDate.getMinutes():'0'+nowDate.getMinutes(); //获取当前分钟数(0-59)
+			var nowSec = (nowDate.getSeconds())>9?nowDate.getSeconds():'0'+nowDate.getSeconds(); //获取当前秒数(0-59)
+			var nowTemp = new Date();
+			var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate()+1, 0, 0, 0, 0);
+			var checkin =  $('#beginDate').fdatepicker({
+	            language:'zh-CN',
+	            format: 'yyyy-mm-dd hh:ii:ss',
+				onRender: function (date) {
+					return date.valueOf() > now.valueOf() ? 'disabled' : '';
+				}
+	        }).on('changeDate', function (ev) {
+				if (ev.date.valueOf() > checkout.date.valueOf()) {
+					var newDate = new Date(ev.date)
+					newDate.setDate(newDate.getDate() + 1);
+					checkout.update(newDate);
+				}
+				checkin.hide();
+				$('#endDate')[0].focus();
+			}).data('datepicker');
+			var checkout =    $('#endDate').fdatepicker({
+	            language:'zh-CN',
+	            format: 'yyyy-mm-dd hh:ii:ss',
+				onRender: function (date) {
+					return date.valueOf() > now.valueOf() ? 'disabled' : '';
+				}
+			}).on('changeDate', function (ev) {
+				checkout.hide();
+			}).data('datepicker');
+			$('#beginDate').val(todayYear+'-'+todayMonth+'-'+(todayRiqi)+' 00:00:00');
+			$('#endDate').val(todayYear+'-'+todayMonth+'-'+(todayRiqi)+' '+nowHour+':'+nowMin+':'+nowSec);
+	  });
+    </script>
+    <script>
+        
+        $(function () {
+            window.gridParms = {
+            	url:D2V.AlarmInfoURL.queryAlarmPage,
+                width: '100%',
+                parms: [],
+                height: '100%',
+                rownumbers :false,
+                selectable :true,
+                checkbox :true,
+                delayLoad :true,
+                onDblClickRow :function(data,rowid,rowdata) {
+                	showMsgInMap(data);
+                },
+			    onLoaded:function(){
+			    	$('#search_btn').removeAttr('disabled');
+                	$("#main-grid .l-grid-loading").css("display","none");
+                }
+            };
+          
+            //添加操作选项4
+            var optcol=[{show:'操作',field:'chujing',width:60,align:'center',render:'renderOpt'}];
+            window.mainGrid = initMainGrid('main-grid', gridParms,optcol.concat(D2V.AlarmInfo)); 
+            
+         
+            
+            function showMsgInMap(datas){   
+               var ggPoint = new BMap.Point(datas.lon2,datas.lat2);
+               var pointArr = [];
+               pointArr.push(ggPoint);
+               new BMap.Convertor().translate(pointArr, 1, 5, function(data){
+            	   if(data.status === 0) {
+            	       new BMap.Geocoder().getLocation(new BMap.Point(data.points[0].lng,data.points[0].lat), function(rs){
+            	   		//2016-08-12 刘杰 调用参考位置采用别的方式
+           	      		var lonlat=data.points[0].lat+','+data.points[0].lng;
+           	      		var lonlaturl="http://api.map.baidu.com/geocoder/v2/?ak=oRTEhIarHzXK52qPGuFKQGAPqKIrnmdn&callback=renderReverse&location="+lonlat+"&output=json&pois=1";
+           	 	    	$.ajax({
+           	 				type:'get',
+           	 				url:lonlaturl,
+           	 				success:function(data){
+           	 					address = data.result.formatted_address+',<br/>'+data.result.sematic_description;
+          		  	   		    if(address == ''){
+          		  	   			   address = '参考位置为空';
+          		  	   		    } 	   	
+          		  	   	 		addLableToMap(datas,address);
+           	 				},
+           	 				error:function(error){
+           	 					console.log('警情页面双击展开地图查询参考位置出错!');
+           	 				},
+           	 				dataType:'jsonp'
+           	 			});
+            	      })
+            	   }else{
+            	       address='参考位置为空'; 
+            	       addLableToMap(datas,address);
+            	   }
+            	});
+             }
+            
+             function addLableToMap(data,address){
+                 var gpstime = data.gpstime2;
+                 var car_num = data.plateNo;
+                 var alarmType = data.alarmTypeName;
+                 var startgpstime = data.beginstamp;
+                 var endgpstime = data.endstamp;
+                 var refer = data.refer2;
+                 if(refer == ''){
+        	   		 refer = '参考位置为空';
+        	     }
+                 var maxspeed = data.speed;
+                 var lon = data.lon2;
+                 var lat = data.lat2;
+                 var label = "车牌号码："+car_num + "<br>" 
+                           + "警情类型："+alarmType + "<br>"
+                           + "定位时间："+gpstime+ "<br>"
+                           + "速度：" +maxspeed+"千米/小时<br>"
+                           +"参考位置："+refer;
+     			if(!(typeof(startgpstime) == "undefined")){
+     				label += "开始时间："+startgpstime + "<br>";
+     			}
+     			if(!(typeof(endgpstime) == "undefined")){
+     				label += "结束时间："+endgpstime + "<br>";
+     			}
+                 var title = address;
+                 openDialog('wraning-deatil-dialog',{
+                     title:'最新警情',
+                     width:500,
+                     height:304,
+                     modal:false,
+                     isResize:false,
+                     showMax:false,
+                     showToggle:false
+                 },function(dialog){
+                 });
+                 $('#mapDiv').css({
+                     width:490,
+                     height:270
+                 });
+                 showPositionWidthData(lon, lat, label, title);
+            }
+            
+            //显示警情
+            function showPositionWidthData(lon, lat, label, title){
+                var small_map = new SEGMap("mapDiv", "baidu");
+                small_map.centerAndZoom(lon, lat, 15);
+                console.log(lon,lat);
+                var label_style = {
+                        fontSize: "12px",
+                        backgroundColor: "white",
+                        border: "1px solid red",
+                        padding: "1px"
+                    };
+                var lastMarker =  new small_map.newSimpleMarker({
+                        lon: lon,
+                        lat: lat,
+                        title: title,
+                        icon: {
+                            url: "resources/images/map/marker.png",
+                            left: 0,
+                            top: 0,
+                            width: 12,
+                            height: 20,
+                            anchorx: -6,
+                            anchory: -20
+                        },
+                        label: {
+                            text: label,
+                            style: label_style
+                        }
+                });
+                small_map.addMarker(lastMarker);
+                small_map.setCenter(lon, lat);
+            }
+            //获取当天日期
+            function getNowDay() {
+                var now = new Date();
+                var year = now.getFullYear();
+                var month = now.getMonth() + 1;
+                var day = now.getDate();
+                var hour = now.getHours();
+                var minute = now.getMinutes();
+                if (month < 10) month = "0" + month;
+                if (day < 10) day = "0" + day;
+                if (hour < 10) hour = "0" + hour;
+                if (minute < 10) minute = "0" + minute;
+                var nowday = year + "-" + month + "-" + day;
+                return nowday;
+            }
+        });
+        
+        function renderOpt(rowdata,index,value){
+			var str = '<a href="javascript:;"'+' onclick="handlealarm('+index +')">处警</a>';
+         	return str;
+	    }
+        function handlealarm(index){
+        	var alarmcl = mainGrid.getRow(index);
+        	$.ligerDialog.confirm('确定处理警情吗?', function(yes){
+                if(yes === false) return;
+	        	$.ajax({
+		 				type:'post',
+		 				url:'../alarm/data/handlealarm',
+		 				data:{
+		 					alarmId: alarmcl.alarmId,
+		 	            },
+		 				success:function(data){
+		 					if(data.success){
+		 	                    $.ligerDialog.success('处理警情成功!');
+		 	                    mainGrid.reload();
+		 	                }else{
+		 	                    $.ligerDialog.error('处理警情失败!');
+		 	                }
+		 				},
+		 				error:function(error){
+		 					console.log('处理警情出错!');
+		 				},dataType:'json'
+		 			});
+        	})
+        }
+        function getRefPosition(rowIndex){//百度api获取参考位置
+           var datas = $("#main-grid").ligerGetGridManager().getRow(rowIndex); 
+           if($.trim(datas.lon1)==''||$.trim(datas.lat1)==''){
+              var id = '#position'+ rowIndex;
+    	      $(id).html("参考位置为空");
+    	      return;
+           }
+     	   var ggPoint = new BMap.Point(datas.lon1,datas.lat1);
+     	   var pointArr = [];
+     	   pointArr.push(ggPoint);
+     	   new BMap.Convertor().translate(pointArr, 1, 5, function(data){
+     		  var id = '#position'+ rowIndex;
+     	      if(data.status === 0) {
+     	      	new BMap.Geocoder().getLocation(new BMap.Point(data.points[0].lng,data.points[0].lat), function(rs){     	      	    
+     	      	    //2016-08-12 刘杰 调用参考位置采用别的方式
+     	      		var lonlat=data.points[0].lat+','+data.points[0].lng;
+     	      		var lonlaturl="http://api.map.baidu.com/geocoder/v2/?ak=oRTEhIarHzXK52qPGuFKQGAPqKIrnmdn&callback=renderReverse&location="+lonlat+"&output=json&pois=1";
+     	 	    	$.ajax({
+     	 				type:'get',
+     	 				url:lonlaturl,
+     	 				success:function(data){
+     	 					address = data.result.formatted_address+','+data.result.sematic_description;
+    		  	   		    if(address == ''){
+    		  	   			   address = '参考位置为空';
+    		  	   		    } 	   		    
+    		  	      	    $(id).html(address);
+     	 				},
+     	 				error:function(error){
+     	 					console.log('警情报表查询参考位置出错!');
+     	 				},
+     	 				dataType:'jsonp'
+     	 			});
+     	      	})
+     	      }else{
+     	    	 $(id).html('参考位置为空'); 
+     	      }
+     	    });
+        } 
+        
+        function showCondition(){
+			if($('#unittype_id').val()=="TRG80"){
+				$('.1').css('display','');
+				$('.2').css('display','none');
+				$("#unittype_id1").val('');
+			}else{
+				$('.2').css('display','');
+				$('.1').css('display','none');
+				$("#unittype_id2").val('');
+			}
+			
+		}
+        function exportdata(){
+        $(".exportFile").attr("disabled", true);
+        var formParam = getFormDataAll('searchForm');
+        if(formParam.unittype_id=="TRG80"){
+            formParam.unittype_id1 = $("#unittype_id1").val();
+        }else{
+          	formParam.unittype_id2 = $("#unittype_id2").val();
+         }
+        var url = D2V.TWGCountExportURL.jingqingExcel;
+        var paramStr = '';
+       	if(formParam['attributesPath'] != null && formParam['attributesPath'].length > 0){
+       		paramStr = paramStr + "attributesPath=" + formParam['attributesPath'];
+       	}
+       	if(formParam['plateNo'] != null || formParam['plateNo'].length > 0){
+	       	formParam['plateNo']=encodeURIComponent(encodeURIComponent(formParam['plateNo']));
+	       	paramStr = paramStr + "&plateNo=" + formParam['plateNo'];
+	    }
+     	if(formParam['callLetter'] != null || formParam['callLetter'].length > 0){
+       		paramStr = paramStr + "&callLetter=" + formParam['callLetter'];
+       	}
+       	if(formParam['alarmType'] != null && formParam['alarmType'].length > 0){
+       		paramStr = paramStr + "&alarmType=" + formParam['alarmType'];
+       	}
+       	if(formParam['beginDate'] != null && formParam['beginDate'].length > 0){
+       		paramStr = paramStr + "&beginDate=" + formParam['beginDate'];
+       	}
+       	if(formParam['endDate'] != null && formParam['endDate'].length > 0){
+       		paramStr = paramStr + "&endDate=" + formParam['endDate'];
+       	}
+       	if(formParam['isDeel'] != null && formParam['isDeel'].length > 0){
+       		paramStr = paramStr + "&isDeel=" + formParam['isDeel'];
+       	}
+       	if(formParam['unittype_id'] != null && formParam['unittype_id'].length > 0){
+       		paramStr = paramStr + "&unittype_id=" + formParam['unittype_id'];
+       	}
+       	if(formParam['unittype_id1'] != null && formParam['unittype_id1'].length > 0){
+       		paramStr = paramStr + "&unittype_id1=" + formParam['unittype_id1'];
+       	}
+       	if(formParam['unittype_id2'] != null && formParam['unittype_id2'].length > 0){
+       		paramStr = paramStr + "&unittype_id2=" + formParam['unittype_id2'];
+       	}
+       	url = url;
+       	var count = 60;
+    	var countdown = setInterval(function(){
+    		$(".exportFile").attr("disabled", true);
+    		$(".exportFile").text(count + " 秒");
+    		if (count == 0) {
+    			$(".exportFile").text("导出").removeAttr("disabled");
+    			clearInterval(countdown);
+    		}
+    		count--;
+    	}, 1000);
+       	$.ajax({
+            type:"POST",
+     	     dataType:"json",
+     	     data:paramStr,
+     	     url:url,
+     	     success:function(data){
+     	    	if(data.success == true){
+     	    		$.ligerDialog.success(data.message);
+     	    	}else{
+     	    		$(".exportFile").text("导出").removeAttr("disabled");
+        			clearInterval(countdown);
+     	    		$.ligerDialog.warn('创建任务失败！');
+     			    return; 
+     	    	}
+     		 },
+     		 error:function(xhr,status,err){
+     			$(".exportFile").text("导出").removeAttr("disabled");
+    			clearInterval(countdown);
+     			$.ligerDialog.warn('服务器出错！');
+     		 }		
+     	 });  
+        }
+      //导出
+      function exportFile(){
+    	    var st=$.trim($("#beginDate").val());
+    	  	var et=$.trim($("#endDate").val());
+    	  	var thirtyday=90*24*3600*1000;
+    	    var sevendate = 90*24*3600*1000;
+    	    var callLetter = $.trim($("#callLetter").val());
+    	    var numberPlate = $.trim($("#plateNo").val());
+    	  	var date1 = new Date(st);
+			var date2 = new Date(et);	
+			var now = new Date();
+			var diff =date2.getTime()-date1.getTime();
+			var toToday = now.getTime()-date1.getTime();
+			if(diff<=0){
+				$.ligerDialog.warn('结束时间必须大于开始时间!'); 
+	  		     return; 
+			}
+    	  	if(st==""||st==null||et==""||et==null){
+	    		 $.ligerDialog.warn('请输入查询日期!'); 
+	  		     return; 
+	    	}
+    	  	if(callLetter!="" || numberPlate!=""){
+	      	  	if(thirtyday<diff){
+	 				$.ligerDialog.warn("时间跨度不能大于三个月!");
+	 				return ;
+	 			}
+	      	  exportdata1(numberPlate,callLetter,D2V.lsgjURL.checkNumberPlate); 
+			}else{
+				if(thirtyday < toToday){
+					$.ligerDialog.warn("时间必须在最近90天之内!");
+	 				return ;
+				}
+	      	  	if(sevendate<diff){
+	 				$.ligerDialog.warn("时间跨度不能大于90天!");
+	 				return ;
+	 			}
+	      	  exportdata();
+			} 
+   }
+      function exportdata1(numberPlate,callLetter,url){
+    	  var attributesPath=$("#attributesPath").val();
+      	$.ajax({
+              type:"POST",
+              dataType:"json",
+              data:{numberPlate:numberPlate,callLetter:callLetter,attributesPath:attributesPath},
+              url:url,
+              success:function(data){
+               if(data.success == true){
+            	   exportdata();
+               }else{
+                 $.ligerDialog.warn('该用户下无此车载或者车牌，请查证！');
+                 return; 
+               }
+            },
+            error:function(xhr,status,err){
+             
+            }    
+          });
+      }
+      //处理警情
+       function chuqing(){
+    	   var selectDatas = mainGrid.getSelectedRows();
+    	   if(selectDatas.length < 1){ 
+    		   $.ligerDialog.warn('请选择至少一条数据处警!');
+    	   }else{
+    		   var alarmIds = "";
+    		   for(var i = 0; i < selectDatas.length; i++){
+    			   alarmIds+=selectDatas[i].alarmId+",";
+    		   }
+    		   $.ajax({
+	 				type:'post',
+	 				url:'../alarm/data/handlealarms',
+	 				contentType : "application/json; charset=utf-8",
+	 				data:JSON.stringify({
+	 					alarmId: alarmIds,
+	 	            }),
+	 				success:function(data){
+	 					if(data.success){
+	 	                    $.ligerDialog.success('处理警情成功!');
+	 	                    mainGrid.reload();
+	 	                }else{
+	 	                    $.ligerDialog.error('处理警情失败!');
+	 	                }
+	 				},
+	 				error:function(error){
+	 					console.log('处理警情出错!');
+	 				},
+	 				dataType:'json'
+	 			});
+    	   }
+             
+        }
+       function savedata(){
+    	   var searchData={};
+           var formParam = getFormDataAll('searchForm');
+           for(var k in formParam){
+              var newdata;
+              newdata=$.trim(formParam[k]);
+              if(newdata!=''){
+                  searchData[k]=newdata;
+                  mainGrid.setParm(k,newdata);
+              }else{
+                  mainGrid.removeParm(k);
+                  delete formParam[k];
+              }
+          }
+           if(formParam.unittype_id=="TRG80"){
+           	formParam.unittype_id1 = $("#unittype_id1").val();
+           	
+           }else{
+           	formParam.unittype_id2 = $("#unittype_id2").val();
+           }
+           formParam.page = 1;
+           var rp_value = $("select[name='rp']").val();
+           formParam.pagesize = rp_value;
+           
+           $("#main-grid").ligerGetGridManager().loadServerData(formParam);
+           mainGrid.changePage('first');
+           $('#search_btn').attr('disabled','true');
+       }
+      //搜索
+        function saveSearch(){
+        	var st=$.trim($("#beginDate").val());
+      	  	var et=$.trim($("#endDate").val());
+      	  	var thirtyday=90*24*3600*1000;
+      	    var sevendate = 90*24*3600*1000;
+      	    var numberPlate = $.trim($("#plateNo").val());
+      	    var callLetter = $.trim($("#callLetter").val());
+      	  	var date1 = new Date(st);
+			var date2 = new Date(et);
+			var now = new Date();
+			var diff =date2.getTime()-date1.getTime();
+			var toToday = now.getTime()-date1.getTime();
+			if(diff<=0){
+				$.ligerDialog.warn('结束时间必须大于开始时间!'); 
+	  		     return; 
+			}
+      	  	if(st==""||st==null||et==""||et==null){
+	    		 $.ligerDialog.warn('请输入查询日期!'); 
+	  		     return; 
+	    	}
+      	    if(callLetter!="" || numberPlate !=""){
+	      	  	if(thirtyday<diff){
+	 				$.ligerDialog.warn("时间跨度不能超过90天!");
+	 				return ;
+	 			}
+	      	  searchFn(numberPlate,callLetter,D2V.lsgjURL.checkNumberPlate);
+			}else{
+				if(thirtyday < toToday){
+					$.ligerDialog.warn("查询时间必须在最近三个月以内!");
+	 				return ;
+				}
+	      	  	if(sevendate<diff){
+	 				$.ligerDialog.warn("时间跨度不能超过90天!");
+	 				return ;
+	 			}
+	      	  savedata();
+			}
+        }
+        function searchFn(numberPlate,callLetter,url){
+        	var attributesPath=$("#attributesPath").val();
+	      	  $.ajax({
+	                type:"POST",
+	                dataType:"json",
+	                data:{numberPlate:numberPlate,callLetter:callLetter,attributesPath:attributesPath},
+	                url:url,
+	                success:function(data){
+		  	            if(data.success == true){
+		  	            	 savedata();
+	                 }else{
+	                   $.ligerDialog.warn("该用户下无此车载或车牌，请查证！");
+	                   return; 
+	                 }
+	              },
+	              error:function(xhr,status,err){
+	              }    
+	            });
+      }
+    </script>
+</head>
+<body>
+
+    <a class="tree-toggle-button"></a>
+    <div class="tree-layout">
+        <div id="tree" class="l-tree-custom">
+        </div>
+    </div>
+    <div class="data-list">
+        <form class="form-inline data-list-search" id="searchForm">
+        	<input type="hidden" name="attributesPath" id="attributesPath"/>
+            <div class="form-group has-feedback" style="margin-top:3px">
+                <label>警情类型:</label>
+                <select class="form-control" id="alarmType" name="alarmType" style="width:175px;padding-right:0px;">  
+                    <option value='' selected='selected'>--选择警情类型--</option>
+                </select> 
+            </div>
+            <div class="form-group" style="margin-top:3px">
+                <label for="exampleInputName2">车载号码:</label>
+                <input type="text" class="form-control" id="callLetter" name="callLetter" style="width:145px">
+            </div>
+             <div class="form-group" style="margin-top:3px">
+                <label for="exampleInputName2">车牌号码:</label>
+                <input type="text" class="form-control" id="plateNo" name="plateNo" style="width:125px">
+            </div>
+            <div class="form-group has-feedback" style="margin-top:3px">
+                <label>时间</label>
+                <input type="text" class="form-control sjss" id="beginDate" name="beginDate" value="2016-08-05 00:00:00" style="width:195px">
+                <span class="glyphicon glyphicon-calendar form-control-feedback" aria-hidden="true"></span>
+            </div>
+            <div class="form-group has-feedback" style="margin-top:3px">
+                <label>-</label>
+                <input type="text" class="form-control sjss" id="endDate" name="endDate" style="width:195px">
+                <span class="glyphicon glyphicon-calendar form-control-feedback" aria-hidden="true"></span>
+            </div>
+              <div class="form-group" style="margin-top:3px">
+                <label>处理状态:</label>
+                <select class="form-control" id="isDeel" name="isDeel">  
+                    <option value="2" selected='selected'>全部</option>
+                    <option value="0">未处理</option>
+                    <option value="1">已处理</option>
+                </select> 
+              </div>
+            <div class="form-group" style="margin-top:3px">
+                <button type="button" class="btn btn-search"  onclick="saveSearch();return false;"><i class="icon icon-search"></i>查询</button>
+            </div>
+            <div class="form-group" style="margin-top:3px">
+                <button type="button" class="btn btn-search exportFile" onclick="exportFile();return false;"  style="background-color:#3d8cd1;"><i class="icon icon-search"></i>导出</button>
+            </div> 
+            <div class="form-group" style="margin-top:3px">
+                <button type="button" class="btn btn-search"  onclick="chuqing();return false;"  style="background-color:#3d8cd1;"><i class="icon icon-search"></i>处警</button>
+            </div>
+        </form>
+        <div id="main-grid" class="l-grid-custom panel-bar-split"></div>
+
+        <div id="wraning-deatil-dialog" class="dn" style="display:none">
+            <div id="mapDiv" style="width:100%;height:100%;"></div>
+        </div>
+    </div>
+    <script src="http://api.map.baidu.com/api?v=2.0&ak=oRTEhIarHzXK52qPGuFKQGAPqKIrnmdn"></script>
+    <!-- 以下两个为聚合用到的js -->
+    <script src="http://api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js"></script>
+    <script src="http://api.map.baidu.com/library/MarkerClusterer/1.2/src/MarkerClusterer_min.js"></script>
+    <script src="../js/map/webmaps-min.js"></script>
+    <script src="../js/map/TrafficControl_min.js"></script>
+    <script type="text/javascript">
+        function getAjaxDataForSelect(url,name){
+            $.ajax({
+                url:url,
+                success:function(data){
+                    $(data.datas.list).each(function(){
+                        var option = '<option value="'+this.statusId+'">'+this.statusName+'</option>';
+                        $('select[name="'+name+'"]').append(option);
+                    });
+                },
+                dataType:'json'
+            });
+        }
+        //填充线路类型下拉框
+        getAjaxDataForSelect(D2V.AlarmInfoURL.findAllTAlStatus,'alarmType');
+    </script>
+    <script>
+		unittype_id($("#unittype_id1"),"有线");
+		unittype_id($("#unittype_id2"),"无线");
+		console.log(window.screen.width)
+		console.log(window.screen.height)
+	</script>
+</body>
+</html>

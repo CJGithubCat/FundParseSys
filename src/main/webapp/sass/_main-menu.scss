@@ -1,0 +1,124 @@
+.main-menu{
+  float: left;
+  height: 100%;
+  width: map_get($SiteMenu, width);
+  border-right: 1px solid map_get($SiteColors,splitBorderColor);
+  background: map_get($SiteColors, menuDefaultBackground);
+  overflow: auto;
+  border-right: 1px solid #3071ab;
+
+  @for $i from 1 through 7{
+    .icon-menu#{$i}{
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 20px;
+      width: 30px;
+      height: 30px;
+      background: url("../../images/icons/icons_menu#{$i}.png") no-repeat;
+    }
+  }
+
+  a{
+    font-size: 14px;
+    display: block;
+    padding-left: 20px;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .icon{
+    margin-right: 10px;
+    margin-top: -4px;
+  }
+  .main-item{
+    @include transition(padding 0.25s linear);
+    &.active,&.selected{
+      border-left: 2px solid map_get($SiteMenu,selectedBorderColor);
+      box-shadow:inset 2px 0 1px 0px rgba(0,0,0,0.2),inset 0 0 4px 2px rgba(0,0,0,0.1);
+      border-top: none;
+      border-bottom: 1px solid #59a0dc;
+      background: map_get($SiteColors, menuActiveBackground);
+      .sub-menu{
+        height: auto;
+      }
+    }
+    &.active{
+      padding-bottom: 10px;
+    }
+    &:hover:not(.active){
+      background: #59a0dc;
+    }
+  }
+  .main-link{
+    line-height: 60px;
+  }
+}
+.sub-menu {
+  position: relative;
+  top: -10px;
+  height: 0;
+  overflow: hidden;
+  @include transition(all 0.25s linear);
+  margin-left: 14px;
+  font-size: 12px;
+  &  .sub-menu{
+    margin-top: 10px;
+  }
+  &:before{
+    content: '';
+    position: absolute;
+    left: 20px;
+    top:20px;
+    bottom:13px;
+    width: 0;
+    border-left: 1px solid #7fc2fc;
+  }
+  li:nth-child(1) > a:before{
+    border-left: none;
+  }
+  li:hover{
+    text-shadow:0 10px 10px #2b77ba;
+  }
+  li.selected a{
+    color:#ebf0f6;
+    & span{
+      background-color:#1eb0da;
+      border-radius:6px;
+      padding:0 6px;
+    }
+  }
+  li.selected > a:after{
+    border: 1px solid #fff;
+    width: 9px;
+    height: 9px;
+    background: none;
+    top:15px;
+    background: #fff;
+    box-shadow: inset 0 0 0 2px map-get($SiteColors, menuActiveBackground);
+
+  }
+  li a{
+    font-size: 12px;
+    padding: 12px 0 4px 50px;
+    color: #abcced;
+    position: relative;
+    &:before{
+      content: '';
+      position: absolute;
+      height: 100%;
+      width: 20px;
+      border-bottom: 1px solid #7fc2fc;
+      top:-13px;
+      left: 20px;
+    }
+    &:after{
+      content: '';
+      position: absolute;
+      width: 9px;
+      height: 9px;
+      background: #7fc2fc;
+      border-radius: 50%;
+      left: 38px;
+      top: 16px;
+    }
+  }
+}

@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zsh.labouCapital.dao.SalaryMapper">
+	<sql id="commQueryParams">
+		<where>
+			<trim prefixOverrides="and|or">
+				<if test="id !=null and id > 0">
+					tsd.id = #{id}
+				</if>
+				<if test="noticeId !=null and noticeId > 0">
+					tsd.notice_id = #{noticeId}
+				</if>
+				<if test="noticeNo !=null and noticeNo != ''">
+					tsd.notice_no = #{noticeNo}
+				</if>
+				<if test="status !=null and status >0 ">
+					tsd.status = #{status}
+				</if>
+			</trim>
+		</where>
+	</sql>
+	
+	<sql id="queryParams">
+		<where>
+			<trim prefixOverrides="and|or">
+				<if test="tzdh!=null and tzdh != ''">
+					and tsd.notice_no LIKE (CONVERT(VARCHAR(100),#{tzdh})+'%')
+				</if>				
+				<if test="companyPath!=null and companyPath!=''">
+					and tcp.company_path LIKE (CONVERT(VARCHAR(100),#{companyPath})+'%')
+				</if>
+				<if test="salaryType!=null and salaryType != ''">
+					and tsd.salary_type = #{salaryType}
+				</if>
+				<if test="noticeId !=null and noticeId > 0 ">
+					and tsd.notice_id = #{noticeId}
+				</if>
+			</trim>
+		</where>
+	</sql>
+
+	
+	<select id="querySalaryPage" parameterType="map" resultType="com.zsh.labouCapital.entity.Salary">
+		select * from(
+			SELECT 
+			tsd.*,
+			tdenr.salary_status as salaryStatus
+		FROM
+		  t_salary_detail tsd
+		  inner join t_department_exam_notice_result tdenr on tsd.notice_id = tdenr.id		  
+		  INNER JOIN t_company_path tcp ON tsd.company_id = tcp.company_id
+		  INNER JOIN t_company tc ON tcp.company_id =tc.company_id 
+		  <include refid="queryParams"/>		 
+		  and tsd.salary_type=1 	
+		union
+			SELECT 
+			tsd.*,
+			tdenr.salary_status as salaryStatus
+		FROM
+		  t_salary_detail tsd
+		  inner join t_station_exam_notice_result tdenr on tsd.notice_id = tdenr.id		  
+		  INNER JOIN t_company_path tcp ON tsd.company_id = tcp.company_id
+		  INNER JOIN t_company tc ON tc.company_id = tcp.company_id  
+		  <include refid="queryParams"/>		  
+		  and tsd.salary_type=0
+		)t2
+		order by t2.id asc
+	</select>
+	
+	<select id="querySalaryPageCount" parameterType="map" resultType="long">
+		SELECT 
+		  COUNT(1) 
+		FROM
+		  t_salary_detail tsd 		
+		  INNER JOIN t_company_path tcp ON tsd.company_id = tcp.company_id  
+		<include refid="queryParams"/>
+	</select>
+	
+	<!-- 新增工资记录 -->
+	<insert id="addSalaryDetial" parameterType="com.zsh.labouCapital.entity.Salary" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+		insert into t_salary_detail	(
+				company_id,
+				notice_id,
+				notice_no,
+				xh,
+				dw,
+				xm,
+				sfzh,
+				gw,
+				jbxc,
+				llxc,
+				jykxc,
+				fypxc,
+				jbf,
+				gdbc,
+				qtgz,
+				zxjj,
+				zxkf,
+				qtjf,
+				qtjtbzd,
+				yfhj,
+				gjj,
+				ylj,
+				syj,
+				ybj,
+				nj,
+				grsds,
+				sfgz,
+				zh,
+				qm,
+				xkhrq,
+				jz,
+				wsf,
+				ff,
+				df,
+				nqf,
+				dkje,
+				yfxyhbksxhj,
+				gjjdwmyjf,
+				yldwmyjf,
+				sydwmyjf,
+				gsdwmyjf,
+				ybdwmyjf,
+				sybxdwmyjf,
+				dbbxdwmyjf,
+				njqyjfmyhrgrzhje,
+				njqyjf,
+				glf,
+				wtgsmc,
+				sbcbd,
+				salary_type,
+				status)
+		values(
+			#{companyId},
+			#{noticeId},
+			#{noticeNo},
+			#{xh},
+			#{dw},
+			#{xm},
+			#{sfzh},
+			#{gw},
+			#{jbxc},
+			#{llxc},
+			#{jykxc},
+			#{fypxc},
+			#{jbf},
+			#{gdbc},
+			#{qtgz},
+			#{zxjj},
+			#{zxkf},
+			#{qtjf},
+			#{qtjtbzd},
+			#{yfhj},
+			#{gjj},
+			#{ylj},
+			#{syj},
+			#{ybj},
+			#{nj},
+			#{grsds},
+			#{sfgz},
+			#{zh},
+			#{qm},
+			#{xkhrq},
+			#{jz},
+			#{wsf},
+			#{ff},
+			#{df},
+			#{nqf},
+			#{dkje},
+			#{yfxyhbksxhj},
+			#{gjjdwmyjf},
+			#{yldwmyjf},
+			#{sydwmyjf},
+			#{gsdwmyjf},
+			#{ybdwmyjf},
+			#{sybxdwmyjf},
+			#{dbbxdwmyjf},
+			#{njqyjfmyhrgrzhje},
+			#{njqyjf},
+			#{glf},
+			#{wtgsmc},
+			#{sbcbd},
+			#{salaryType},
+			#{status}
+		)
+	</insert>
+	
+	<select id="findList" parameterType="com.zsh.labouCapital.entity.Salary" resultType="com.zsh.labouCapital.entity.Salary">
+		select * from t_salary_detail tsd
+		<include refid="commQueryParams"/>
+	</select>
+	
+	<delete id="removeById" parameterType="String">
+		delete from t_salary_detail
+		where notice_id = #{noticeId}
+	</delete>
+	
+	<update id="batchEditSalary" parameterType="com.zsh.labouCapital.entity.Salary">
+			update t_salary_detail
+			<set>
+				<if test="dw !=null  and dw != ''">
+					dw=#{dw} ,
+				</if>
+				<if test="xm != null  and xm != ''">
+					xm=#{xm} ,
+				</if>      
+				<if test="sfzh !=null  and sfzh != ''">
+					sfzh=#{sfzh} ,
+				</if>         
+				<if test="gw != null  and gw != ''">
+					gw=#{gw} ,
+				</if>       
+				<if test="jbxc != null  and jbxc > 0">
+					jbxc=#{jbxc} ,
+				</if>         
+				<if test="llxc != null  and llxc > 0">
+					llxc=#{llxc} ,
+				</if>              
+				<if test="jykxc != null  and jykxc > 0">
+					jykxc=#{jykxc} ,
+				</if>       
+				<if test="fypxc != null  and fypxc > 0">
+					fypxc=#{fypxc} ,
+				</if>      
+				<if test="jbf != null  and jbf > 0">
+					jbf=#{jbf} ,
+				</if>      
+				<if test="gdbc != null  and gdbc > 0">
+					gdbc=#{gdbc} ,
+				</if>    
+				<if test="qtgz != null  and qtgz > 0">
+					qtgz=#{qtgz} ,
+				</if>
+				<if test="zxjj != null  and zxjf > 0">
+					zxjj=#{zxjj} ,
+				</if>        
+				<if test="zxkf != null  and zxkf > 0">
+					zxkf=#{zxkf} ,
+				</if>    
+				<if test="qtjf != null  and qtjf > 0">
+					qtjf=#{qtjf} ,
+				</if>
+				<if test="yfhj != null  and yfhj > 0">
+					yfhj=#{yfhj} ,
+				</if>
+				<if test="gjj != null  and gjj > 0">
+					gjj=#{gjj} ,
+				</if> 
+				<if test="ylj != null  and ylj > 0">
+					ylj=#{ylj} ,
+				</if> 
+				<if test="syj != null  and syj > 0">
+					syj=#{syj} ,
+				</if>        
+				<if test="ybj != null  and ybj > 0">
+					ybj=#{ybj} ,
+				</if>
+				<if test="nj != null  and nj > 0">
+					nj=#{nj} ,
+				</if>        
+				
+				<if test="grsds != null  and grsds > 0">
+					grsds=#{grsds} ,
+				</if>         
+				
+				<if test="sfgz != null  and sfgz > 0">
+					sfgz=#{sfgz} ,
+				</if>      
+				
+				<if test="zh != null  and zh != ''">
+					zh=#{zh} ,
+				</if>       
+				
+				<if test="qm != null  and qm != ''">
+					qm=#{qm} ,
+				</if>         
+				
+				<if test="xkhrq != null  and xkhrq != ''">
+					xkhrq=#{xkhrq} ,
+				</if>         
+				
+				<if test="jz != null  and jz != ''">
+					jz=#{jz} ,
+				</if>
+				
+				<if test="wsf != null  and wsf != ''">
+					wsf=#{wsf} ,
+				</if>
+				
+				<if test="ff != null  and ff != ''">
+					ff=#{ff} ,
+				</if>
+				
+				<if test="df != null  and df != ''">
+					df=#{df} ,
+				</if>
+				
+				<if test="nqf != null  and nqf != ''">
+					nqf=#{nqf} ,
+				</if>
+				
+				<if test="dkje != null  and dkje != ''">
+					dkje=#{dkje} ,
+				</if>
+				<if test="sfzh2 !=null  and sfzh2 != ''">
+					sfzh2=#{sfzh2} ,
+				</if>  
+				
+				<if test="yfxyhbksxhj != null  and yfxyhbksxhj != ''">
+					yfxyhbksxhj=#{yfxyhbksxhj} ,
+				</if>
+				
+				<if test="gjjdwmyjf != null  and gjjdwmyjf != ''">
+					gjjdwmyjf=#{gjjdwmyjf} ,
+				</if>
+				
+				<if test="yldwmyjf != null  and yldwmyjf != ''">
+					yldwmyjf=#{yldwmyjf} ,
+				</if>
+				
+				<if test="sydwmyjf != null  and sydwmyjf != ''">
+					sydwmyjf=#{sydwmyjf} ,
+				</if>
+				
+				<if test="gsdwmyjf != null  and gsdwmyjf != ''">
+					gsdwmyjf=#{gsdwmyjf} ,
+				</if>
+				
+				<if test="ybdwmyjf != null  and ybdwmyjf != ''">
+					ybdwmyjf=#{ybdwmyjf} ,
+				</if>
+				
+				<if test="sybxdwmyjf != null  and sybxdwmyjf != ''">
+					sybxdwmyjf=#{sybxdwmyjf} ,
+				</if>
+				
+				<if test="dbbxdwmyjf != null  and dbbxdwmyjf != ''">
+					dbbxdwmyjf=#{dbbxdwmyjf} ,
+				</if>
+				
+				<if test="njqyjfmyhrgrzhje != null  and njqyjfmyhrgrzhje != ''">
+					njqyjfmyhrgrzhje=#{njqyjfmyhrgrzhje} ,
+				</if>
+				
+				<if test="njqyjf != null  and njqyjf != ''">
+					njqyjf=#{njqyjf} ,
+				</if>
+				
+				<if test="glf != null  and glf != ''">
+					glf=#{glf} ,
+				</if>
+				
+				<if test="wtgsmc != null  and wtgsmc != ''">
+					wtgsmc=#{wtgsmc} ,
+				</if>
+				
+				<if test="sbcbd != null  and sbcbd != ''">
+					sbcbd=#{sbcbd} ,
+				</if>
+				
+				<if test="salaryType != null  and salaryType != ''">
+					salary_type=#{salaryType} ,
+				</if>
+				
+				<if test="status != null  and status != ''">
+					status=#{status} ,
+				</if>
+				
+				<if test="yearMonthDate != null  and yearMonthDate != ''">
+					year_month_date=#{yearMonthDate}
+				</if>
+			</set>
+			where id=#{id}
+	</update>
+	
+	<!-- 导出工资明细 -->
+	<select id="exportSalary" parameterType="map" resultType="com.zsh.labouCapital.entity.Salary">
+		SELECT 
+			tsd.*,
+			tdenr.salary_status as salaryStatus
+		FROM
+		  t_salary_detail tsd
+		  inner join t_department_exam_notice_result tdenr on tsd.notice_id = tdenr.id		  
+		  INNER JOIN t_company_path tcp ON tsd.company_id = tcp.company_id 
+		  where tcp.company_path LIKE (CONVERT(VARCHAR(100),#{companyPath})+'%')
+		  <if test="tzdh!=null and tzdh != ''">
+		      and tsd.notice_no like '%#{tzdh}%'
+		  </if>
+		  <if test="dw !=null and dw != ''">
+			  and tsd.dw like '%#{dw}%'
+		  </if>
+		  and tsd.salary_type=1 	
+		union
+			SELECT 
+			tsd.*,
+			tdenr.salary_status as salaryStatus
+		FROM
+		  t_salary_detail tsd
+		  inner join t_station_exam_notice_result tdenr on tsd.notice_id = tdenr.id		  
+		  INNER JOIN t_company_path tcp ON tsd.company_id = tcp.company_id  
+		  where tcp.company_path LIKE (CONVERT(VARCHAR(100),#{companyPath})+'%')
+		  <if test="tzdh!=null and tzdh != ''">
+		      and tsd.notice_no like '%#{tzdh}%'
+		  </if>
+		  <if test="dw !=null and dw != ''">
+			  and tsd.dw like '%#{dw}%'
+		  </if>
+		 and tsd.salary_type=0
+	</select>
+	
+	<!-- 查询机构信息 -->
+	<select id="queryCompanyInfo" parameterType="map" resultType="int">
+		SELECT tc.company_id 
+		FROM t_company tc
+		INNER JOIN t_company_path tcp ON tc.company_id = tcp.company_id
+		WHERE tcp.company_path LIKE (CONVERT(VARCHAR(100),#{companyPath})+'%')
+		<if test="dw != null and dw != ''">
+			AND tc.company_name LIKE (CONVERT(VARCHAR(100),#{dw})+'%')
+			AND (tc.company_type = 1 OR tc.company_type = 2 OR tc.company_type = 3 OR tc.company_type = 4)
+		</if>
+		<if test="jyzName != null and jyzName != ''">
+			AND tc.company_name  LIKE (CONVERT(VARCHAR(100),#{jyzName})+'%')
+			AND tc.company_type = 5
+		</if>
+		
+	</select>
+
+	<!-- 查询是否有父子关系机构 -->
+	<select id="queryFsRelationCompany" parameterType="map" resultType="map">
+		SELECT tc.company_id 
+		FROM t_company tc
+		INNER JOIN t_company_path tcp ON tc.company_id = tcp.company_id
+		WHERE tcp.company_path LIKE (CONVERT(VARCHAR(100),#{companyPath})+'%')
+		<if test="dw != null and jyzName != ''">
+			AND tc.company_name = #{jyzName}
+			AND tc.parent_company_id = (select tt.company_id from t_company tt where tt.company_name = #{dw})
+		</if>
+		AND  tc.company_type = 5
+	</select>
+	
+	<!-- 查询部门工资信息 -->
+	<select id="queryDepartmentSalaryInfo" parameterType="map" resultType="com.zsh.labouCapital.entity.Salary">
+		SELECT 
+			tsd.*,
+			tdenr.salary_status as salaryStatus
+		FROM
+		  t_salary_detail tsd
+		  inner join t_department_exam_notice_result tdenr on tsd.notice_id = tdenr.id		  
+		  INNER JOIN t_company_path tcp ON tsd.company_id = tcp.company_id
+		  INNER JOIN t_company tc ON tcp.company_id =tc.company_id 
+		  <include refid="queryParams"/>
+		  <if test="companyId != null and companyId !=''">
+		  	and tc.company_id = #{companyId}
+		  </if>
+		  and tsd.salary_type=1 
+	</select>
+	<select id="queryDepartmentSalaryCount" parameterType="map" resultType="long">
+		select count(*)
+		from(
+			SELECT 
+			tsd.*,
+			tdenr.salary_status as salaryStatus
+		FROM
+		  t_salary_detail tsd
+		  inner join t_department_exam_notice_result tdenr on tsd.notice_id = tdenr.id		  
+		  INNER JOIN t_company_path tcp ON tsd.company_id = tcp.company_id
+		  INNER JOIN t_company tc ON tcp.company_id =tc.company_id 
+		  <include refid="queryParams"/>
+		  <if test="companyId != null and companyId !=''">
+		  	and tc.company_id = #{companyId}
+		  </if>
+		  and tsd.salary_type=1
+		)t1		 
+	</select>
+	
+	<select id="querySatationSalaryInfo" parameterType="map" resultType="com.zsh.labouCapital.entity.Salary">
+		SELECT 
+			tsd.*,
+			tdenr.salary_status as salaryStatus
+		FROM
+		  t_salary_detail tsd
+		  inner join t_station_exam_notice_result tdenr on tsd.notice_id = tdenr.id		  
+		  INNER JOIN t_company_path tcp ON tsd.company_id = tcp.company_id
+		  INNER JOIN t_company tc ON tcp.company_id =tc.company_id  
+		  <include refid="queryParams"/>
+		  <if test="companyId != null and companyId !=''">
+		  	and tc.company_id = #{companyId}
+		  </if>
+		  and tsd.salary_type=0
+	</select>
+	<select id="querySatationSalaryCount" parameterType="map" resultType="long">
+		select count(*)
+		from (
+			SELECT 
+				tsd.*,
+				tdenr.salary_status as salaryStatus
+			FROM
+			  t_salary_detail tsd
+			  inner join t_station_exam_notice_result tdenr on tsd.notice_id = tdenr.id		  
+			  INNER JOIN t_company_path tcp ON tsd.company_id = tcp.company_id
+			  INNER JOIN t_company tc ON tcp.company_id =tc.company_id 
+			  <include refid="queryParams"/>
+			  <if test="companyId != null and companyId !=''">
+			  	and tc.company_id = #{companyId}
+			  </if>
+			  and tsd.salary_type=0
+		)t1
+	</select>
+	
+</mapper>

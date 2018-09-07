@@ -1,0 +1,95 @@
+@import "vars";
+@import "css3";
+@import "data-list-search";
+*{
+  padding: 0;
+  margin: 0;
+}
+body{
+  font-family: "Microsoft YaHei","Helvetica Neue",Helvetica,sans-serif;
+}
+html,body{
+  height: 100%;
+  width: 100%;
+  position: relative;
+  background: #ebedf3;
+}
+.hide-tree{
+  .tree-layout{
+    width: 0;
+    overflow-x:hidden;
+  }
+  .data-list{
+    padding-left: 20px;
+  }
+}
+.tree-toggle-button{
+  position: absolute;
+  height: 22px;
+  width: 22px;
+  background:#e9573e url(../../images/icons/tree_toggle_hide.png) no-repeat center center;
+  border-radius: 50%;
+  box-shadow: 2px 3px 6px 0 rgba(0,0,0,0.4);
+  left: 240px;
+  top: 36px;
+  cursor: pointer;
+  z-index: 2;
+  @include transition(all 0.2s ease-in-out);
+  &.show{
+    background:#e9573e url(../../images/icons/tree_toggle_show.png) no-repeat center center;
+    left: 0;
+  }
+}
+.tree-layout{
+  position: absolute;
+  top:0;
+  left: 0;
+  bottom:0;
+  overflow-x:auto;
+  overflow-y:auto;
+  width: 250px;
+  background: #3d8cd1;
+  border-left:3px solid #4a92d0;
+  border-right:2px solid #3376b2;
+  z-index: 1;
+  @include transition(all 0.2s ease-in-out);
+
+  .form-group{
+    margin: 30px 20px;
+    .glyphicon{
+      color: #1bb5db;
+      left:0;
+    }
+  }
+  .form-group.search input{
+    padding-left: 32px;
+    border-radius: 20px;
+    background: #347bb9;
+    border: none;
+    color: #fff;
+    &:focus{
+      box-shadow: 0 0 4px 3px rgba(255,255,255,0.5);
+    }
+  }
+  .l-tree{
+    margin-left: 10px;
+    margin-top:34px;
+  }
+}
+.data-list{
+  position: relative;
+  padding: 20px 20px 20px 270px;
+  height: 100%;
+  overflow: hidden;
+  @include transition(all 0.2s ease-in-out);
+  &:before{
+    content: '';
+  }
+}
+.operate{
+  margin-right: 20px;
+  color: #2fb0ee;
+  &.delete{
+    color: #f24336;
+  }
+}

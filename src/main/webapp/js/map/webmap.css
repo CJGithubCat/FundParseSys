@@ -1,0 +1,36 @@
+.webmap_vehicle_hover_info_baidu {
+	position: absolute;
+	border: 1px solid #000;
+	background: white;
+	font-family: Arial,sans-serif;
+	font-size: 12px;
+	padding: 5px;
+	display: none;
+	width: 204px;
+	border-radius: 4px;
+}
+
+.webmap_vehicle_hover_info_google {
+	z-index: 3;
+	border: 1px solid #000;
+	background: white;
+	font-family: Arial,sans-serif;
+	font-size: 12px;
+	padding: 5px;
+	width: 185px;
+	margin-left: 13px;
+	margin-top: -13px;
+	border-radius: 4px;
+}
+
+.webmap_vehicle_hover_info_mapbar {
+	border: 1px solid #000;
+	background: white;
+	font-family: Arial,sans-serif;
+	font-size: 12px;
+	padding: 5px;
+	width: 185px;
+	left: 13px;
+	top: -13px;
+	border-radius: 4px;
+}

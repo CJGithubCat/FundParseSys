@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <!-- 启用360浏览器的极速模式(webkit) -->
+    <meta name="renderer" content="webkit">
+    <!-- 避免IE使用兼容模式 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>公告管理</title>
+    <link rel="stylesheet" href="../vendor/bootstrap/dist/css/bootstrap.css"/>
+    <link rel="stylesheet" href="../vendor/ligerUI/skins/Aqua/css/ligerui-all.css"/>
+    <link rel="stylesheet" href="../css/public/ligerui-custom.css"/>
+    <link rel="stylesheet" href="../css/public/search-list-grid-tree.css"/>
+    <script src="../vendor/jquery/dist/jquery.js"></script>
+
+    <script src="../vendor/ligerUI/js/ligerui.all.js"></script>
+    <script src="../js/plugins/DataToView.js"></script>
+    <script src="../js/plugins/ligerui.other.js"></script>
+    <script src="../js/util/dateutil.js"></script>
+    
+    <script src="../js/ckeditor/ckeditor.js"></script>
+
+    <!-- 添加 foundation-datepicker 支持-->
+    <link rel="stylesheet" href="../vendor/foundation-datepicker/css/foundation-datepicker.min.css"/>
+    <link rel="stylesheet" href="../vendor/font-awesome/css/font-awesome.min.css"/>
+    <script src="../vendor/foundation-datepicker/js/foundation-datepicker.min.js"></script>
+    <script src="../vendor/foundation-datepicker/js/locales/foundation-datepicker.zh-CN.js"></script>
+    <script src="../js/page/upgradedNoticeManage.js"></script>
+    <style>
+        button{
+            outline: none;
+        }
+        a:hover{
+            text-decoration: none;
+        }
+        .add,.update{
+            display: none;
+            font-size: 14px;
+            font-family: '微软雅黑';
+        }
+        /*add样式修改*/
+        .l-dialog-tl{
+            height:42px;
+        }
+        .l-dialog-tc{
+            padding-left: 34px;
+            /*border-top: 2px solid #fff;*/
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            background: none;
+            background-color: #efefef;
+        }
+        .l-dialog td div,#add-form label,#update-form label{
+            font-size: 14px;
+            font-family: '微软雅黑';
+            font-weight: normal;
+            color:#343f56;
+        }
+        .l-dialog-max,.l-dialog-collapse{
+            display: none;
+        }
+        .l-dialog-close{
+            background: url(../images/close.png) no-repeat;
+            width: 22px;
+            height: 22px;
+            position: absolute;
+            top: -6px;
+            right: 3px;
+        }
+        .l-dialog-close:hover{
+            background: url(../images/closeHover.png) no-repeat;
+        }
+        #add-dialog .form-group .form-control,#update-dialog .form-group .form-control{
+            width:400px;
+            display: inline-block;
+        }
+        #add-dialog,#update-dialog{
+            margin-top: 14px;
+        }
+        #add-dialog .form-group,#update-dialog .form-group{
+            margin-bottom: 18px;
+        }
+        .save{
+            position: absolute;
+            bottom: 0px;
+            left: 0;
+            height: 62px;
+            background-color: #efefef;
+            width: 100%;
+            text-align: center;
+        }
+        .save button{
+            margin-top: 15px;
+            width: 70px;
+            height: 30px;
+            border-color: #40c5e1;
+            background-color: #40c5e1;
+            line-height: 1;
+            outline: none;
+        }
+        #addSubmit,#updateSubmit{
+            margin-right: 38px;
+        }
+        .l-dialog-cc,.l-dialog-body{
+            border-bottom-left-radius:8px;
+            border-bottom-right-radius:8px;
+        }
+        .l-dialog-cc{
+            border-top: none;
+        }
+        .l-dialog-win,.l-dialog{
+            border: none;
+        }
+        .l-window-mask{
+            background: none;
+            background: url(../images/Bgmask.png);
+            opacity: 1;
+        }
+        .data-list-search .btn{
+            outline: none;
+        }   
+        #add-form::-webkit-scrollbar{width:8px;height: 4px;position: absolute;right: 4px;}
+        #add-form::-webkit-scrollbar-track{background-color:#e6e6e6;-webkit-border-radius: 4px;border-radius: 4px;}
+        #add-form::-webkit-scrollbar-thumb{background-color:#b3b3b3;-webkit-border-radius: 4px;border-radius: 4px;}
+        #add-form::-webkit-scrollbar-thumb:hover {background-color:#b3b3b3;}
+        #add-form::-webkit-scrollbar-thumb:active {background-color:#b3b3b3;}
+        #add_notice_content,#update_notice_content{
+        	height:60px;
+        }
+        .gz{
+            width: 110px !important;
+        }
+        .gzsj{
+            width: 80px !important;
+        }
+        .sfkxg{
+            width: 108px !important;
+        }
+        #add-form label,#update-form label{
+            width: 75px;
+            text-align: right;
+        }
+        #add-form .form-control,#update-form .form-control{
+            padding: 4px 12px;
+        }
+        #add-form .has-feedback label ~ .form-control-feedback,#update-form .has-feedback label ~ .form-control-feedback{
+            top: 0;
+        }
+        #add-form .form-control-feedback,#update-form .form-control-feedback{
+            right: 50px;
+        }
+        #noticeformid{
+            padding-right: 0;
+        }
+        #noticeformid .cxDiv{
+            margin-right: 0;
+        }
+        #detail-dialog h3{
+			font-weight: bold;
+			width: 450px;
+			color:red;
+			text-align: center;
+			margin: 10px auto;
+		}
+		#gg_create_time{
+			margin: 5px auto;
+			text-align: center;
+		}
+		#gg_notice_content{
+			text-align: left;
+			width: 95%;
+			margin: 10px auto;
+			margin-bottom: 30px;
+		}
+		#cke_add_notice_content,#cke_update_notice_content{
+			width: 87%;
+		    margin: 0 auto;
+		    margin-left: 16px;
+		}
+		.l-dialog-content-noimage{
+			height:480px !important;
+		}
+    </style>    
+    <script>    
+      //时间控件     
+      $(function(){
+    	  var nowTemp = new Date();
+			var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate()+1, 0, 0, 0, 0);
+			var checkin =  $('#startTimeId').fdatepicker({
+	            language:'zh-CN',
+	            format: 'yyyy-mm-dd',
+				onRender: function (date) {
+					return date.valueOf() > now.valueOf() ? 'disabled' : '';
+				}
+	        }).on('changeDate', function (ev) {
+				if (ev.date.valueOf() > checkout.date.valueOf()) {
+					var newDate = new Date(ev.date)
+					newDate.setDate(newDate.getDate() + 1);
+					checkout.update(newDate);
+				}
+				checkin.hide();
+				$('#endTimeId')[0].focus();
+			}).data('datepicker');
+			var checkout =    $('#endTimeId').fdatepicker({
+	            language:'zh-CN',
+	            format: 'yyyy-mm-dd',
+				onRender: function (date) {
+					return date.valueOf() > now.valueOf() ? 'disabled' : '';
+				}
+			}).on('changeDate', function (ev) {
+				checkout.hide();
+			}).data('datepicker');
+			var checkin2 =  $('#create_timeId').fdatepicker({
+	            language:'zh-CN',
+	            format: 'yyyy-mm-dd',
+				onRender: function (date) {
+					return date.valueOf() > now.valueOf() ? 'disabled' : '';
+				}
+	        }).on('changeDate', function (ev) {
+				if (ev.date.valueOf() > checkout.date.valueOf()) {
+					var newDate = new Date(ev.date)
+					newDate.setDate(newDate.getDate() + 1);
+					checkout.update(newDate);
+				}
+				checkin2.hide();
+				$('#update_create_time')[0].focus();
+			}).data('datepicker');
+			var checkout2 =    $('#update_create_time').fdatepicker({
+	            language:'zh-CN',
+	            format: 'yyyy-mm-dd',
+				onRender: function (date) {
+					return date.valueOf() > now.valueOf() ? 'disabled' : '';
+				}
+			}).on('changeDate', function (ev) {
+				checkout2.hide();
+			}).data('datepicker');
+      });       
+   </script>
+   
+</head>
+<body  class="hide-tree">
+    <div class="data-list">
+        <form class="form-inline data-list-search" id="noticeformid" name="noticeform">
+            <div class="form-group">
+                <label for="exampleInputName2">公告标题:</label>
+                <input type="text" class="form-control gzm" maxlength="256"  name="notice_title" id = "notice_titleID">
+            </div>            
+            <div class="form-group has-feedback">
+                <label>发布日期:</label>
+                <input type="text" class="form-control sj" id="startTimeId" name="startDate">
+                <span class="glyphicon glyphicon-calendar form-control-feedback" aria-hidden="true"></span>
+            </div>        
+            <span style="margin-left:-5px ;margin-right:5px">-</span>    
+            <div class="form-group has-feedback">
+                <input type="text" class="form-control sj" id="endTimeId" name="toEndDate">
+                <span class="glyphicon glyphicon-calendar form-control-feedback" aria-hidden="true"></span>
+            </div>    
+            <div class="form-group cxDiv">
+                <button type="button" class="btn btn-search cx" onclick="findNotice()"><i class="icon icon-search"></i>查询</button>
+            </div>            
+        </form>
+        <div id="main-grid" class="l-grid-custom panel-bar-split"></div>
+    </div>
+    
+    <!-- 新增公告-->
+    <div id="add-dialog" class="add">
+    	<form id="add-form">
+            <input type="hidden" name="notice_id">
+             <div class="form-group">
+                <label for="exampleInputName2">公告标题:</label>
+                <input type="text" class="form-control gzm" maxlength="256" name="notice_title">
+            </div>
+             <div class="form-group has-feedback">
+                <label>创建时间:</label>
+                <input type="text" class="form-control" id="create_timeId" name="create_time">
+                <span class="glyphicon glyphicon-calendar form-control-feedback" aria-hidden="true"></span>
+            </div>          
+             <div class="form-group">
+                <label for="exampleInputName2">公告内容:</label>
+                <textarea  class="form-control" maxlength="2048" id ="add_notice_content"  name="notice_content"></textarea>
+            </div> 
+            <div class="save">
+                <button type="button" class="btn btn-primary " id="addSubmit">保存</button>
+                <button type="button" class="btn btn-primary" onclick="closeDialog('add-dialog')">关闭</button>
+            </div>
+         </form>
+        
+    </div>
+   <!-- 修改公告-->  
+    <div id="update-dialog" class="update">
+        <form id="update-form">
+            <input type="hidden" name="notice_id">
+             <div class="form-group">
+                <label for="exampleInputName2">公告标题:</label>
+                <input type="text" class="form-control gzm" maxlength="256"  name="notice_title">
+            </div> 
+             <div class="form-group has-feedback">
+                <label>创建时间:</label>
+                <input type="text" class="form-control" id="update_create_time" name="create_time">
+                <span class="glyphicon glyphicon-calendar form-control-feedback" aria-hidden="true"></span>
+            </div>         
+             <div class="form-group">
+                <label for="exampleInputName2">公告内容:</label>
+                <textarea class="form-control" maxlength="2048" id ="update_notice_content"  name="notice_content"></textarea>
+            </div> 
+           
+            <div class="save">
+                <button type="button" class="btn btn-primary " id="updateSubmit">保存</button>
+                <button type="button" class="btn btn-primary" onclick="closeDialog('update-dialog')">关闭</button>
+            </div>
+         </form>
+    </div>
+    <!-- 删除公告-->  
+    <div id="delete-dialog" class="delete">
+        
+    </div>
+    <!--  公告详情 -->
+	    <div id="detail-dialog" class="dn" style="display:none">
+	    	<div id="contentAll">
+		    	<h3></h3>
+		    	<div id="gg_create_time"></div>
+		    	<div id="gg_notice_content"></div>
+		    </div>
+	    </div>
+    
+    
+</body>
+</html>

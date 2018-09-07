@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<!-- 启用360浏览器的极速模式(webkit) -->
+<meta name="renderer" content="webkit">
+<!-- 避免IE使用兼容模式 -->
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>用户管理</title>
+<link rel="stylesheet" href="../vendor/bootstrap/dist/css/bootstrap.css" />
+<link rel="stylesheet"
+	href="../vendor/ligerUI/skins/Aqua/css/ligerui-all.css" />
+<link rel="stylesheet" href="../css/public/ligerui-custom.css" />
+<link rel="stylesheet" href="../css/public/search-list-grid-tree.css" />
+<script src="../vendor/jquery/dist/jquery.js"></script>
+
+<script src="../vendor/ligerUI/js/ligerui.all.js"></script>
+<script src="../js/plugins/DataToView.js"></script>
+<script src="../js/plugins/ligerui.other.js"></script>
+<script src="../js/util/md5.js"></script>
+
+<!-- 添加 foundation-datepicker 支持-->
+<link rel="stylesheet"
+	href="../vendor/foundation-datepicker/css/foundation-datepicker.min.css" />
+<link rel="stylesheet"
+	href="../vendor/font-awesome/css/font-awesome.min.css" />
+<script
+	src="../vendor/foundation-datepicker/js/foundation-datepicker.min.js"></script>
+<script
+	src="../vendor/foundation-datepicker/js/locales/foundation-datepicker.zh-CN.js"></script>
+
+<style>
+/* .refresh{
+            background: url(../images/refreshBg.png) no-repeat 0 3px;
+            width: 50px;
+            height: 20px;
+            display: inline-block;
+            padding-left: 20px;
+            text-decoration: none;
+            outline: none;
+            font-size: 14px;
+            cursor: pointer;
+        }*/
+button {
+	outline: none;
+}
+.btn-primary:hover,.btn-primary:active{
+		    color: #fff;
+		    background-color: #28a0b9;
+		    border-color:#28a0b9;
+		}
+.l-grid-custom .l-grid-row.l-selected, .l-grid-custom .l-grid-row.l-selected a,.l-grid-custom .l-grid-row.l-selected div{
+			background:#1eb0da;
+			color:#fff;
+		}
+a:hover {
+	text-decoration: none;
+}
+
+.add, .update {
+	display: none;
+	font-size: 14px;
+	font-family: '微软雅黑';
+}
+/*add样式修改*/
+.l-dialog-tl {
+	height: 42px;
+}
+
+.l-dialog-tc {
+	padding-left: 15px;
+	/*border-top: 2px solid #fff;*/
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
+	background: none;
+	background-color: #efefef;
+}
+
+.l-dialog td div, #add-form label, #update-form label, #update-role-form label {
+	font-size: 14px;
+	font-family: '微软雅黑';
+	font-weight: normal;
+	color: #343f56;
+}
+
+.l-dialog-max, .l-dialog-collapse {
+	display: none;
+}
+.l-dialog-title{font-size:16px !important;}
+.l-dialog-close {
+	background: url(../images/closeHover.png) no-repeat;
+	width: 22px;
+	height: 22px;
+	position: absolute;
+	top: -2px;
+	right: 9px;
+}
+/*.l-dialog-close:hover{
+            background: url(../images/closeHover.png) no-repeat;
+        }*/
+#add-dialog .form-group .form-control, #update-dialog .form-group .form-control, #update-role-dialog .form-group .form-control
+	{
+	width: 200px;
+	height: 30px;
+	display: inline-block;
+}
+
+#add-form label, #update-form label, #update-role-form label {
+	width: 78px;
+	    text-align:right;
+    text-indent: 10px;
+}
+
+#add-dialog, #update-dialog, #update-role-dialog {
+	margin-top: 0px;
+}
+
+.form-control {
+	padding: 4px 12px;
+}
+
+#add-dialog .form-group, #update-dialog .form-group, #update-role-dialog .form-group {
+	margin-bottom: 12px;
+}
+
+.save {
+	position: absolute;
+	bottom: 0px;
+	left: 0;
+	height:45px;
+	width: 100%;
+	text-align: center;
+}
+
+.save button {
+	margin-top: 8px;
+	width: 70px;
+	height: 30px;
+	border-color: #40c5e1;
+	background-color: #40c5e1;
+	line-height: 1;
+	outline: none;
+}
+
+
+.l-dialog-cc, .l-dialog-body {
+	border-bottom-left-radius: 8px;
+	border-bottom-right-radius: 8px;
+}
+
+.l-dialog-cc {
+	border-top: none;
+}
+
+.l-dialog-win, .l-dialog {
+	border: none;
+}
+
+.l-window-mask {
+	background: none;
+	background: url(../images/Bgmask.png);
+	opacity: 1;
+}
+
+.data-list-search .btn {
+	outline: none;
+}
+
+span.btfuhao {
+	color: red;
+}
+
+.redBorder {
+	border: 1px solid red;
+}
+
+#add-form::-webkit-scrollbar {
+	width: 8px;
+	height: 4px;
+	position: absolute;
+	right: 4px;
+}
+
+#add-form::-webkit-scrollbar-track {
+	background-color: #e6e6e6;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+}
+
+#add-form::-webkit-scrollbar-thumb {
+	background-color: #b3b3b3;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+}
+
+#add-form::-webkit-scrollbar-thumb:hover {
+	background-color: #b3b3b3;
+}
+
+#add-form::-webkit-scrollbar-thumb:active {
+	background-color: #b3b3b3;
+}
+</style>
+<!-- 机构树生成 -->
+<script>
+	$(function() {
+		var treeToggleButton = $('.tree-toggle-button');
+		var body = $('body');
+		treeToggleButton.on('click', function(e) {
+			if (treeToggleButton.hasClass('show')) {
+				treeToggleButton.removeClass('show');
+				body.removeClass('hide-tree');
+			} else {
+				treeToggleButton.addClass('show');
+				body.addClass('hide-tree');
+			}
+			setTimeout(function() {
+				$(window).trigger('resize');
+			}, 500);
+		});
+	});
+	$(function() {
+		var onOff = true;
+		window.tree = $("#tree")
+				.ligerTree(
+						{
+							url : '../company/queryTreeRootNode',
+							nodeWidth : 200,
+							checkbox : false,
+							slide : false,
+							btnClickToToggleOnly : false,
+							isExpand : false,
+							idFieldName : 'treedataindex',
+							onSelect : function(node) {
+								var data = node.data;
+// 								console.log(node.data);
+								//changeURL(node.data.params.companyPath);
+								$("input[name='companyPath']").prop('value',node.data.params.companyPath);
+								$("input[name='companyId']").prop('value',node.data.params.id);
+								findUser();
+							},
+							isLeaf : function(data) {
+								return !(data.delay !== undefined || data.children !== undefined);
+							},
+							onExpand : function(e) {
+								this._parentNode = e.target;
+							},
+							onError : function(XMLHttpRequest, textStatus,errorThrown) {
+								console.log(arguments);
+							},
+							onSuccess : function(newdata) {
+								var parentNode = this._parentNode;
+								var menuData = [];
+								var parent = $(parentNode);
+								// console.log(newdata)
+								$("input[name='companyPath']").prop('value',newdata.datas.companyPath);
+								$("input[name='companyId']").prop('value',newdata.datas.id);
+								var parentData = this.getDataByID(parent.attr('treedataindex'));
+								if (parentData === null) {
+									// 父节点为空时（即该节点为根节点时）
+									if (onOff) {
+										$(newdata.datas)
+												.each(
+														function() {
+															menuData.push({
+																		text : this.text,
+																		delay : {
+																			url : '../company/queryTreeNodeList'+ '?&nodeId='+ this.id
+																		},
+																		params : this
+																	});
+														})
+										// if(newdata.datas){
+										//     changeURL(newdata.datas.companyPath);
+										// }
+										if (menuData.length <= 0)
+											return;
+										this.append(this._parentNode, menuData);
+										if (parentData)
+											delete parentData.delay;
+										onOff = false;
+										function a() {
+											$('.l-body').trigger('click');
+										}
+										a();
+									} else {
+										$(newdata.datas.list)
+												.each(
+														function() {
+															var leaf = {
+																text : this.text,
+																delay : {
+																	url : '../company/queryTreeNodeList'+ '?&nodeId='+ this.id
+																},
+																params : this
+															};
+															if (this.isLeaf) {
+																delete leaf.delay;
+															}
+															menuData.push(leaf);
+														})
+										if (menuData.length <= 0)
+											return;
+										this.append(this._parentNode, menuData);
+										if (parentData)
+											delete parentData.delay;
+									}
+								} else {
+									//该节点有父节点，不为根节点时
+									$(newdata.datas.list)
+											.each(
+													function() {
+														var leaf = {
+															text : this.text,
+															delay : {
+																url : '../company/queryTreeNodeList'+ '?&nodeId='+ this.id
+															},
+															params : this
+														};
+														if (this.isLeaf) {
+															delete leaf.delay;
+														}
+														menuData.push(leaf);
+													})
+									if (menuData.length <= 0)
+										return;
+									this.append(this._parentNode, menuData);
+									if (parentData)
+										delete parentData.delay;
+								}
+							}
+						});
+	});
+</script>
+<script>
+	$(function() {
+		$('#time').fdatepicker({
+			language : 'zh-CN',
+			format : 'yyyy-mm-dd'
+		});
+	});
+
+	var rowIndex = null;
+	$(function() {
+		var menu = $.ligerMenu({
+			width : 200,
+			items : [ {
+				text : '删除',
+				click : rightClickDelete,
+				icon : 'delete'
+			}, {
+				line : true
+			}, {
+				text : '修改',
+				click : rightClickUpdate,
+				icon : 'xiugai',
+				disable : false
+			}, {
+				line : true
+			}, {
+				text : '添加',
+				icon : 'add',
+				disable : true
+			}
+			]
+		});
+		//设置表格参数
+		window.gridParms = {
+			url : D2V.UserManageURL.queryUser,
+			onLoaded : function(grid) {
+				setTimeout(function() {
+					$('.l-grid-loading').hide();
+					$(".l-grid-row-cell-inner").each(function() {
+						var that = $(this);
+						that.attr('title', that.text());
+					})
+				}, 200);
+			},
+			onSuccess : function(data) {
+				if (data.success == true) {
+					var userList = data.datas.list;
+					for (var k = 0; k < userList.length; k++) {
+						var userStatus = userList[k]['status'];
+						switch (userStatus) {
+						case 0:
+							userList[k]['status'] = "正常";
+							break;
+						case 1:
+							userList[k]['status'] = "暂停";
+							break;
+						case 2:
+							userList[k]['status'] = "删除";
+							break;
+						default:
+							userList[k]['status'] = "正常";
+						}
+					}
+					data.list = data.datas.list;
+					data.count = data.datas.count;
+				} else {
+					$.ligerDialog.warn(data.message);
+				}
+			},
+			//工具栏            
+			toolbar : {
+				items : [ {
+					text : '添加',
+					click : addUser,
+					icon : 'add'
+				}, {
+					text : '删除',
+					click : deleteUser,
+					icon : 'delete',
+					id : 'deletebutton'
+				}, {
+					text : '修改',
+					click : updateUser,
+					icon : 'xiugai',
+					id : 'updateUserbutton'
+				}, {
+					text : '更改角色',
+					click : updateRole,
+					icon : 'xiugai',
+					id : 'updateRolebutton'
+				} ]
+			},
+			delayLoad : true,
+			onError : function(XMLHttpRequest, textStatus, errorThrown) {
+				console.log(status, err);
+			},
+			width : '100%',
+			parms : [],
+			height : '100%',
+			pageSizeOptions : [ 5, 10, 15, 20 ],
+			checkbox : false,
+			rownumbers : true,
+			onDblClickRow : function(data, rowindex, rowobj) {
+				updateUser(rowindex, true);
+			},
+			//sortName: 'loginName',
+			onRClickToSelect : false,
+			onContextmenu : function(parm, e) {//param是个对象包含三个参数 {data,rowindex,row}
+				menu.show({
+					top : e.pageY,
+					left : e.pageX
+				});
+				rowIndex = parm.rowindex;
+				return false;
+			},
+			whenRClickToSelect : true
+		};
+		//添加操作选项
+		/*var optcol = [
+		    {show: '操作', field: 'zzz0', width: 180, align: 'center', render: 'renderOpt'}
+		 ]; 
+		 */
+		//window.mainGrid = initMainGrid('main-grid', gridParms, optcol.concat(D2V.cldkdq)); 
+		//初始化表格(根据url加载表格数据)
+		window.mainGrid = initMainGrid('main-grid', gridParms,
+				D2V.UserManageGrid);
+
+		//添加用户
+		$('#addSubmit')
+				.on(
+						'click',
+						function(e) {
+							var loginNameObj = $("#add-dialog input[name='loginName']");
+							var loginPasswordObj = $("#add-dialog input[name='loginPassword']");
+							var userNameObj = $("#add-dialog input[name='userName']");
+							var userName = $.trim(userNameObj.val());
+							var loginName = $.trim(loginNameObj.val());
+							var loginPassword = $.trim(loginPasswordObj.val());
+							if(loginName.length>32){
+								$.ligerDialog.warn("登录名过长,请重新输入");
+								return;
+							}
+							var onOff = true;
+							$('.bitian:visible')
+									.each(
+											function(i, elem) {
+												if (onOff) {
+													var t = $(elem);
+													t.removeClass('redBorder');
+													if (t.val() == '') {
+														var tx = t.prev().text().split(':')[0];
+														$.ligerDialog
+																.warn('<span style="color:red;">'
+																		+ tx
+																		+ '</span>'
+																		+ '    为必填项,请您填写!');
+														t.addClass('redBorder');
+														onOff = false;
+													}
+												}
+											});
+							if (!onOff) {
+								return;
+							}
+							$('#add-form').trigger("submit");
+						});
+		$('#add-form').submit(function(e) {
+			//$('#addSubmit').attr('disabled', 'disabled');
+			e.preventDefault();
+			//过滤选择的非法的角色 
+			var opIndex = $('option:selected', '#addRoleId').index();
+			if (parseInt(opIndex) === 0) {
+				$.ligerDialog.warn("请为用户选择角色!");
+				return;
+			}
+			var userObj = getFormAjaxData('add-form');
+			var encrypt = $.md5(userObj['loginPassword']);
+			userObj['loginPassword'] = encrypt;
+			$.ajax({
+				url : D2V.UserManageURL.addUser,
+				type : "POST",
+				data : JSON.stringify(userObj),
+				contentType : "application/json; charset=utf-8",
+				dataType : 'json',
+				success : function(rsp) {
+					if (rsp.success == true) {
+						$.ligerDialog.success(rsp.message);
+						closeDialog('add-dialog');
+						mainGrid.reload();
+					} else {
+						if (rsp.errorCode === 1) {//登录名已经存在
+							$.ligerDialog.warn(rsp.message + ",登录名已经存在!");
+						}else if (rsp.errorCode === 2) {//机构已经被删除
+							$.ligerDialog.warn(rsp.message + ",所属机构已经被删除!");
+						} else {
+							$.ligerDialog.warn(rsp.message);
+						}
+					}
+				},
+				error : function(xhr, status, err) {
+					console.log(status, err)
+					$.ligerDialog.warn('添加用户失败,网络故障!');
+					return;
+				}
+			})
+		});
+		
+		//修改用户所属角色
+		$('#updateRoleSubmit').on('click',function(e) {
+			e.preventDefault();
+			var userObj = getFormAjaxData('update-role-form');
+			if(userObj.userId_role == undefined || userObj.userId_role ==""){
+				$.ligerDialog.warn("请选择要更改的用户角色!");
+			}
+			userObj['userId'] = userObj.userId_role;
+			delete userObj.userId_role;
+			delete userObj.roleName;
+			$.ajax({
+				url : D2V.UserManageURL.updateUser,
+				type : "POST",
+				data : JSON.stringify(userObj),
+				contentType : "application/json; charset=utf-8",
+				dataType : 'json',
+				success : function(rsp) {
+					if (rsp.success == true) {
+						$.ligerDialog.success(rsp.message);
+						closeDialog('update-role-dialog');
+						mainGrid.reload();
+					} else {
+						if (rsp.errorCode === 1) {//更改登录名了,但更改的登录名已经存在
+							$.ligerDialog.warn(rsp.message + ",登录名已经存在!");
+						}else if (rsp.errorCode === 2) {//机构已经被删除
+							$.ligerDialog.warn(rsp.message + ",所属机构已经被删除!");
+						}  else {
+							$.ligerDialog.warn(rsp.message);
+						}
+					}
+				},
+				error : function(xhr, status, err) {
+					console.log(status, err)
+					$.ligerDialog.warn('修改用户失败,网络故障!');
+					return;
+				}
+			})				
+		});
+		
+		//修改用户
+		$('#updateSubmit')
+				.on(
+						'click',
+						function(e) {
+							/*var loginNameObj=$("#update-dialog input[name='loginName']");
+							var loginName=$.trim(loginNameObj.val());
+							var userNameObj=$("#update-dialog input[name='userName']"); 
+							var userName=$.trim(userNameObj.val());
+							if(loginName==null||loginName==''){
+							 loginNameObj.val(loginName);
+							 loginNameObj.focus();
+							return; 
+							}
+							if(userName==null||userName==''){
+								userNameObj.val(userName);
+								userNameObj.focus();
+							 return; 
+							}*/
+							var onOff = true;
+							$('.bitian:visible')
+									.each(
+											function(i, elem) {
+												if (onOff) {
+													var t = $(elem);
+													t.removeClass('redBorder');
+													if (t.val() == '') {
+														var tx = t.prev()
+																.text().split(
+																		':')[0];
+														$.ligerDialog
+																.warn('<span style="color:red;">'
+																		+ tx
+																		+ '</span>'
+																		+ '    为必填项,请您填写!');
+														t.addClass('redBorder');
+														onOff = false;
+													}
+												}
+											});
+							if (!onOff) {
+								return;
+							}
+							$('#update-form').trigger("submit");
+						});
+		$('#update-form')
+				.submit(
+						function(e) {
+							e.preventDefault();
+							var userObj = getFormAjaxData('update-form');
+							var loginPasswordObj = $("#update-dialog input[name='loginPassword']");
+							var loginPassword = $.trim(loginPasswordObj.val());
+							var userNameObj = $("#update-form input[name='loginName']");
+							var userName = $.trim(userNameObj.val());
+							if(userName.length>32){
+								$.ligerDialog.warn("登录名过长,请重新输入");
+								return;
+							}
+							if (loginPassword != null && loginPassword != '') {
+								var encrypt = $.md5(userObj['loginPassword']);
+								userObj['loginPassword'] = encrypt;
+							} else {
+								userObj['loginPassword'] = null;
+							}
+							/* //过滤选择的非法的角色        	 
+							var opIndex = $('option:selected', '#userRole')
+									.index();
+							if (parseInt(opIndex) === 0) {
+								$.ligerDialog.warn("请为用户选择角色!");
+								return;
+							} */
+							$.ajax({
+								url : D2V.UserManageURL.updateUser,
+								type : "POST",
+								data : JSON.stringify(userObj),
+								contentType : "application/json; charset=utf-8",
+								dataType : 'json',
+								success : function(rsp) {
+									if (rsp.success == true) {
+										$.ligerDialog.success(rsp.message);
+										closeDialog('update-dialog');
+										mainGrid.reload();
+									} else {
+										if (rsp.errorCode === 1) {//更改登录名了,但更改的登录名已经存在
+											$.ligerDialog.warn(rsp.message + ",登录名已经存在!");
+										}else if (rsp.errorCode === 2) {//机构已经被删除
+											$.ligerDialog.warn(rsp.message + ",所属机构已经被删除!");
+										} else {
+											$.ligerDialog.warn(rsp.message);
+										}
+									}
+								},
+								error : function(xhr, status, err) {
+									console.log(status, err)
+									$.ligerDialog.warn('修改用户失败,网络故障!');
+									return;
+								}
+							})
+						});
+
+		function rightClickDelete() {
+			deleteUser(rowIndex, true);
+		}
+
+		//删除用户
+		function deleteUser(rowIndex, getRowFromIndex) {
+			var selectRow = null;
+			if (getRowFromIndex === true) {
+				selectRow = mainGrid.getRow(rowIndex);
+			} else {
+				selectRow = mainGrid.getSelectedRow();
+			}
+			if (selectRow == null) {
+				$.ligerDialog.warn('请选中要删除的用户!');
+				return;
+			}
+			if (selectRow.status == "删除") {
+				$.ligerDialog.warn('账户已经删除!');
+				return;
+			}
+			var userObj = "{'userId':'" + selectRow.userId + "','userName':'"+selectRow.userName+"'}";
+			$.ligerDialog.confirm('确定要删除所选记录!', function(event) {
+				if (event == false) {
+					return;
+				} else {
+					$.ajax({
+						url : D2V.UserManageURL.deleteUser,
+						type : "POST",
+						contentType : "application/json; charset=utf-8",
+						dataType : 'json',
+						data : userObj,
+						success : function(data) {
+							if (data.success === true) {
+								$.ligerDialog.success('删除成功!');
+								mainGrid.reload();
+							} else {
+								$.ligerDialog.warn(data.message);
+							}
+						},
+						error : function(xhr, status, err) {
+							$.ligerDialog.warn('保存失败,网络故障!');
+							return;
+						}
+					})
+				}
+			});
+		}
+	});
+	//导出
+	function exportFile() {
+		var formParam = getFormDataAll('usermanageformid');
+		var url = D2V.UserManageURL.exportusermanage;
+		var paramStr = '?';
+		if (formParam['companyPath'] != null&& formParam['companyPath'].length > 0) {
+			paramStr = paramStr + "&companyPath="+ formParam['companyPath'];
+		}
+		formParam['loginName'] = encodeURIComponent(encodeURIComponent(formParam['loginName']));
+		paramStr = paramStr + "&loginName=" + formParam['loginName'];
+		paramStr = paramStr + "&status=" + formParam['status'];
+		console.log(paramStr);
+		url = url + paramStr;
+		window.open(url, '_self');
+	}
+	//根据登录名查询用户信息
+	function findUser() {
+		var formParam = getFormDataAll('usermanageformid');
+		for ( var k in formParam) {
+			var newdata;
+			newdata = $.trim(formParam[k]);
+			if (newdata != '') {
+				mainGrid.setParm(k, newdata);
+			} else {
+				mainGrid.removeParm(k);
+				delete formParam[k];
+			}
+		}
+		formParam.page = 1;
+		var rp_value = $("select[name='rp']").val();
+	     formParam.pagesize = rp_value;
+		mainGrid.changePage('first');
+		$("#main-grid").ligerGetGridManager().loadServerData(formParam);
+	}
+	//新增用户
+	function addUser() {
+		clearForm('add-form', {
+			companyId : true
+		});
+		openDialog('add-dialog', {
+			title : '新增用户',
+			width : 320,
+			height : 350
+		}, function dialog() {
+		});
+	}
+	
+	function updateRole(rowIndex, getRowFromIndex) {
+		var selectRow = null;
+		if (getRowFromIndex == true) {
+			selectRow = mainGrid.getRow(rowIndex);
+		} else {
+			selectRow = mainGrid.getSelectedRow();
+		}
+		if (selectRow == null) {
+			$.ligerDialog.warn('请选中要修改的用户!');
+			return;
+		}
+		clearForm('update-role-form');
+		$("#update-role-dialog input[name='roleName']").prop('value',selectRow.roleName);
+		$("#update-role-dialog input[name='userId_role']").prop('value', selectRow.userId);
+		$("#update-role-dialog input[name='companyId']").prop('value', selectRow.companyId);
+		openDialog('update-role-dialog', {
+			title : '更改用户所属角色',
+			width : 320,
+			height : 180
+		}, function dialog() {
+		});
+	}
+	
+	function rightClickUpdate() {
+		updateUser(rowIndex, true)
+	}
+	//修改用户信息
+	function updateUser(rowIndex, getRowFromIndex) {
+		var selectRow = null;
+		if (getRowFromIndex == true) {
+			selectRow = mainGrid.getRow(rowIndex);
+		} else {
+			selectRow = mainGrid.getSelectedRow();
+		}
+		if (selectRow == null) {
+			$.ligerDialog.warn('请选中要修改的用户!');
+			return;
+		}
+		clearForm('update-form');
+		console.log(selectRow);////////////////
+		$("#update-dialog input[name='loginName']").prop('value',
+				selectRow.loginName);
+		$("#update-dialog input[name='companyId']").prop('value',
+				selectRow.companyId);
+		$("#update-dialog input[name='password']").prop('value', '');
+		$(
+				"#update-dialog select[name='status'] option:contains('"
+						+ selectRow.status + "')").prop("selected", true);
+		/* $(
+				"#update-dialog select[name='roleid'] option:contains('"
+						+ selectRow.roleName + "')").prop("selected", true); */
+		//$("#update-dialog select[name='status'] option[text="+selectRow.status+"]").prop("selected",true);
+		/* 
+		var statusObj=$("#update-dialog select[name='status']").get(0);
+		for (var i = 0; i < statusObj.options.length; i++) { 
+		   if (statusObj.options[i].text == selectRow.status) { 
+			  statusObj.options[i].selected = true; 
+			  break;
+		   }
+		} 
+		 */
+		$("#update-dialog input[name='userName']").prop('value',selectRow.userName);
+		$("#update-dialog input[name='userId']").prop('value', selectRow.userId);
+		openDialog('update-dialog', {
+			title : '修改用户信息',
+			width : 320,
+			height : 450
+		}, function dialog() {
+		});
+	}
+	$(function() {
+		$.ajax({
+			type : "POST",
+			url : '../role/queryChangeRolesByUid',
+			dataType : 'json',
+			data : {
+				userid : -1
+			},
+			error : function(xhr, status, err) {
+				$.ligerDialog.error('网络故障!');
+				return;
+			},
+			success : function(data) {
+				if (data.success === true) {
+					var d = data.datas;
+					var uLength = d.length;
+					for (var i = 0; i < uLength; i++) {
+						var str = '';
+						str += '<option value="'+d[i].roleId+'">'
+								+ d[i].roleName + '</option>';
+						$('#userRole').append(str);
+						$('#addRoleId').append(str);
+					}
+				} else {
+					$.ligerDialog.error(data.message);
+				}
+			}
+		});
+	});
+
+	function queryHadRoles() {
+		if ($("#addRoleId option:selected").index() != 0) {
+			return;
+		}
+		$.each($("#addRoleId option"), function() {
+			$(this).remove();
+		});
+		$
+				.ajax({
+					type : "POST",
+					url : '../role/queryChangeRolesByUid',
+					dataType : 'json',
+					data : {
+						userid : -1
+					},
+					error : function(xhr, status, err) {
+						$.ligerDialog.error('网络故障!');
+						return;
+					},
+					success : function(data) {
+						if (data.success === true) {
+							var d = data.datas;
+							var uLength = d.length;
+							$('#addRoleId').append(
+									'<option value="">--请选择--</option>');
+							for (var i = 0; i < uLength; i++) {
+								var str = '';
+								str += '<option value="'+d[i].roleId+'">'
+										+ d[i].roleName + '</option>';
+								$('#addRoleId').append(str);
+							}
+						} else {
+							$.ligerDialog.error(data.message);
+						}
+					}
+				});
+	}
+
+	 function closeAdd(){
+         closeDialog('add-dialog');
+     }
+	function closeUpdate() {
+		closeDialog('update-dialog');
+	}
+	function closeUpdateRole() {
+		closeDialog('update-role-dialog');
+	}
+</script>
+</head>
+<body>
+	<a class="tree-toggle-button"></a>
+	<div class="tree-layout">
+		<div id="tree" class="l-tree-custom"></div>
+	</div>
+	<div class="data-list">
+		<form class="form-inline data-list-search" id="usermanageformid"
+			name="usermanageform">
+			<input type="hidden" name="companyPath">
+			<div class="form-group">
+				<label for="exampleInputName2">登录名:</label> <input type="text"
+					class="form-control" id="loginnameid" name="loginName" style="width:120px">
+			</div>
+			<div class="form-group">
+				<label>账户状态:</label> <select class="form-control" name="status">
+					<option value="0">正常</option>
+					<option value="1">暂停</option>
+					<option value="2">删除</option>
+				</select>
+			</div>
+			<!-- <div class="form-group has-feedback">
+                <label>所属机构</label>
+                <select class="form-control" id="alarmType" >  
+                    <option value='' selected='selected'>请选择机构..</option>
+                </select> 
+            </div> -->
+			<div class="form-group">
+				<button type="button" class="btn btn-search" onclick="findUser()">
+					<i class="icon icon-search"></i>查询
+				</button>
+			</div>
+			<div class="form-group">
+				<button type="button" class="btn btn-search"
+					onclick="exportFile();return false;"
+					style="background-color: #3d8cd1;">
+					<i class="icon icon-search"></i>导出
+				</button>
+			</div>
+		</form>
+		<div id="main-grid" class="l-grid-custom panel-bar-split"></div>
+	</div>
+	<!-- 新增用户 -->
+	<div id="add-dialog" class="add">
+		<div
+			style="color: red; margin-bottom: 10px; margin-left: 27px; font-weight: normal;">注:带"*"的为必填项!</div>
+		<form id="add-form">
+			<input type="hidden" name="companyId">
+			<div class="form-group">
+				<label>登录名:</label> <input type="text"
+					class="form-control bitian" maxlength="20" name="loginName">
+					<span class="btfuhao">*</span>
+			</div>
+			<div class="form-group">
+				<label>登录密码:</label> <input
+					type="text" class="form-control bitian" name="loginPassword">
+					<span class="btfuhao">*</span>
+			</div>
+			<div class="form-group">
+				<label>用户姓名:</label> <input type="text"
+					class="form-control bitian" maxlength="12"  name="userName">
+					<span class="btfuhao">*</span>
+			</div>
+			<div class="form-group">
+				<label>用户角色:</label> <select
+					class="form-control" name="roleId" id="addRoleId"
+					onclick="queryHadRoles();return;">
+					<option value="">--请选择--</option>
+					<!-- <option value="2">企业管理员(系统角色)</option> -->
+					<!-- <option value="3">企业操作员(系统角色)</option>  -->
+				</select><span class="btfuhao">*</span>
+			</div>
+			<div class="form-group">
+				<label>账户状态:</label> <select class="form-control" name="status">
+					<option value="0">正常</option>
+					<option value="1">暂停</option>
+					<option value="2">删除</option>
+				</select>
+			</div>
+			
+			<div class="save">
+				<button type="button" class="btn btn-primary " id="addSubmit">保存</button>
+				<button type="reset" class="btn btn-primary">重置</button>
+				<button type="button" class="btn btn-primary " onclick="closeAdd()">关闭</button>
+			</div>
+		</form>
+	</div>
+	<!-- 修改用户 -->
+	<div id="update-dialog" class="update">
+		<div
+			style="color: red; margin-bottom: 10px; margin-left: 27px; font-weight: normal;">注:带"*"的为必填项!</div>
+		<form id="update-form">
+			<input type="hidden" name="userId">
+			<input type="hidden" name="companyId" id ="companyId_update">
+			<div class="form-group">
+				<label>登录名:</label> <input type="text" maxlength="20"
+					class="form-control bitian" name="loginName">
+					<span class="btfuhao">*</span>
+			</div>
+			<div class="form-group">
+				<label>登录密码:</label> <input type="text" class="form-control"
+					name="loginPassword">
+			</div>
+			<div class="form-group">
+				<label>账户状态:</label> <select class="form-control" name="status">
+					<option value="0">正常</option>
+					<option value="1">暂停</option>
+					<option value="2">删除</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label>用户姓名:</label> <input type="text" maxlength="12"
+					class="form-control bitian" name="userName">
+					<span class="btfuhao">*</span>
+			</div>
+			<!-- <div class="form-group">
+				<label>用户角色:</label> <select
+					class="form-control" name="roleid" id="userRole"
+					onclick="queryChanRoles();return;">
+					<option value="">--请选择--</option>
+					<option value="1">超级管理员</option> 
+                    <option value="2">企业管理员</option>
+                    <option value="3">企业操作员</option>
+				</select><span class="btfuhao">*</span>
+			</div> -->
+			<div class="save">
+				<button type="button" class="btn btn-primary " id="updateSubmit">保存</button>
+				<button type="button" class="btn btn-primary"
+					onclick="closeUpdate()">关闭</button>
+			</div>
+		</form>
+	</div>
+	
+	<!-- 修改用户所属角色 -->
+	<div id="update-role-dialog" class="update">
+		<form id="update-role-form">
+		    <input type="hidden" name="userId_role">
+		    <input type="hidden" name="companyId" id ="companyId_role_update">
+			<div class="form-group">
+				<label>原角色名:</label> 
+				<input type="text" class="form-control" name="roleName" readonly>
+			</div>
+			<div class="form-group">
+				<label>用户角色:</label> 
+				<select class="form-control" name="roleId" id="userRole" >
+				</select>
+			</div>
+			<div class="save">
+				<button type="button" class="btn btn-primary " id="updateRoleSubmit">保存</button>
+				<button type="button" class="btn btn-primary" onclick="closeUpdateRole()">关闭</button>
+			</div>
+		</form>
+	</div>
+</body>
+</html>

@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <!-- 启用360浏览器的极速模式(webkit) -->
+    <meta name="renderer" content="webkit">
+    <!-- 避免IE使用兼容模式 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>中国石化销售有限机构河南郑州石油分机构劳资系统</title>
+    <link rel="stylesheet" href="../vendor/bootstrap/dist/css/bootstrap.css"/>
+    <link rel="stylesheet" href="../vendor/ligerUI/skins/Aqua/css/ligerui-all.css"/>
+    <link rel="stylesheet" href="../css/public/ligerui-custom.css"/>
+     <link rel="stylesheet" href="../css/public/search-list-grid-tree.css"/>
+    <link rel="stylesheet" href="../css/public/autocomplete.css">
+    <script src="../vendor/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="../js/plugins/autocomplete.js"></script>
+    <script src="../vendor/ligerUI/js/ligerui.all.js"></script>
+    <script src="../js/plugins/DataToView.js"></script>
+    <script src="../js/plugins/ligerui.other.js"></script>
+    <!-- 添加 foundation-datepicker 支持-->
+    <link rel="stylesheet" href="../vendor/foundation-datepicker/css/foundation-datepicker.min.css"/>
+    <link rel="stylesheet" href="../vendor/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="../css/public/ligerui_form.css"/>
+    <script src="../vendor/foundation-datepicker/js/foundation-datepicker.min.js"></script>
+    <script src="../vendor/foundation-datepicker/js/locales/foundation-datepicker.zh-CN.js"></script>
+    <script src="../vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- 图片上传 支持-->
+     <link rel="stylesheet" href="../css/uploadimg/upload.css"/>
+     <script src="../css/uploadimg/jggl-upload.js"></script>
+    <style>
+        .refresh{
+            background: url(../images/refreshBg.png) no-repeat 0 3px;
+            width: 50px;
+            height: 20px;
+            display: inline-block;
+            padding-left: 20px;
+            text-decoration: none;
+            outline: none;
+            font-size: 14px;
+            cursor: pointer;
+        }
+		.l-grid-custom .l-grid-row.l-selected, .l-grid-custom .l-grid-row.l-selected a,.l-grid-custom .l-grid-row.l-selected div{
+			background:#1eb0da;
+			color:#fff;
+		}
+        a:hover{
+            text-decoration: none;
+        }
+		.save button{
+			margin-right:20px;
+		}
+
+		.l-dialog-close{
+            background: url(../images/closeHover.png) no-repeat;
+            width: 22px;
+            height: 22px;
+            position: absolute;
+            top: -2px;
+            right: 9px;
+        }
+        .xtcx{
+			padding:20px 0 0 0; 
+			font-size:14px; 
+			color:#f000000;
+		}
+		/*20170517修改*/
+		.l-dialog td div, #add-form label, #update-form label{color:#414141;}
+		.save{
+			background-color: #fff;
+			bottom: 0px;
+    		left: 8px;
+    		height:50px;
+		}
+		.save button{
+			border-radius:6px;
+			margin-top: 12px;
+		}
+		.l-dialog td .l-dialog-title{
+			font-size:16px;
+		}
+		/* .l-dialog-body {
+			height:430px !important;
+		} */
+		.btn-primary:hover,.btn-primary:active{
+		    color: #fff;
+		    background-color: #28a0b9;
+		    border-color:#28a0b9;
+		}
+		.l-dialog-table  .l-dialog-tc{padding-left: 24px;}
+		.nullheight{width:100%;height:62px;}
+		#add-form label,#update-form label{
+		    margin-left:30px;
+		    display: inline-block;
+    		width: 80px;
+    		text-align: right;
+		}
+		#add-dialog .form-group,#update-dialog .form-group{
+		    margin-bottom: 12px;
+		}
+		#add-dialog .form-group .form-control,#update-dialog .form-group .form-control{
+    		width: 220px;
+    	}
+    	#add-dialog,#update-dialog{margin-top:8px;}
+    	.btfuhao{color:red;}
+    	.imgContainer{margin-left:32%;}
+    </style>
+	<script>		
+		function getProposals(){
+			var proposals = "";
+			$.ajax({
+		        type: "POST",
+		        url: '../company/getAllAgencyName',
+		        error:function(xhr,status,err){
+		            $.ligerDialog.error('修改失败,网络故障!');
+		            return;
+		        },
+		        success:function(data){
+		            if(data.success===true){
+		            	proposals=data.datas;
+		            }else{
+		                $.ligerDialog.error(data.message);
+		            }
+		        },
+		         dataType:'json',
+		         async:false
+		    });
+			return proposals;
+		}
+	//机构树的start
+		$(function(){
+			$('#search-form').autocomplete({
+				hints:getProposals(),
+				width: 170,
+				height: 30,
+				onSubmit: function(text){
+					findTreeNode(text);
+				}
+			});
+		});
+
+        function findTreeNode(text){
+             $.ajax({
+                 type: "POST",
+                 data: {agencyName:text},
+                 url: '../company/queryTreeNodeListByAgencyName',
+                 error:function(xhr,status,err){
+                     $.ligerDialog.error('修改失败,网络故障!');
+                     return;
+                 },
+                 success:function(data){
+                     if(data.success===true){
+						var agencyIds = data.datas;
+						//如果为赛格导航则返回
+						if(agencyIds.length==1){
+							return;
+						}
+						agencyIds.shift();
+						//得到第一级节点的id号
+						var firstAgencyId = parseInt(agencyIds[0]);
+						var delManager = $("#tree").ligerGetTreeManager();
+		                var datas = delManager.getData()[0];
+		                var childArr = datas.children;
+		                //得到第一级节点
+		                var chooseNode = getPnode(childArr,firstAgencyId);
+		                if(agencyIds.length == 1){
+		                	var offsettop=$('#tree').find("li[treedataindex="+chooseNode.treedataindex+"]").offset().top;
+		                	if(offsettop==0){
+ 								$('#tree').find("li[treedataindex="+chooseNode.treedataindex+"]").parent().show();
+ 								offsettop=$('#tree').find("li[treedataindex="+chooseNode.treedataindex+"]").offset().top;
+ 							}
+		                	$(".tree-layout").scrollTop(offsettop);
+		                	tree.selectNode(chooseNode.treedataindex);
+		                }else{
+			                $.ajax({
+			                    type: "POST",
+			                    url: '../ company/queryTreeNodeList'+'?&nodeId='+chooseNode.params.id,
+			                    error:function(xhr,status,err){
+			                        $.ligerDialog.error('修改失败,网络故障!');
+			                        return;
+			                    },
+			                    success:function(newdata){
+			                    	var menuData = [];
+			                    	 $(newdata.datas.list).each(function() {
+			                             var leaf={text:this.text,delay:{url:'../company/queryTreeNodeList'+'?&nodeId='+this.id},params : this};
+			                             if(this.isLeaf){
+			                                 delete leaf.delay;
+			                             }
+			                             menuData.push(leaf);
+			                         })
+	
+			                         if(menuData.length <= 0){
+			                         	return;
+			                         }
+			                    	 if(chooseNode.delay !== undefined){
+			                         	tree.append(chooseNode,menuData);
+			                         	if(chooseNode){
+				                         	delete chooseNode.delay;	
+				                         }
+			                    	 }else{
+			                    		 $('#tree').find("li[treedataindex="+chooseNode.treedataindex+"]").children("ul").show();
+			                    	 }
+			                    	 agencyIds.shift();
+			                         if(agencyIds.length > 1){
+			 		                	loadTreeNode(chooseNode,agencyIds);
+			 						 }else{
+			 							childArr = chooseNode.children;
+			 							chooseNode = getPnode(childArr,parseInt(agencyIds[0]));
+			 							var offsettop=$('#tree').find("li[treedataindex="+chooseNode.treedataindex+"]").offset().top;
+			 							if(offsettop==0){
+			 								$('#tree').find("li[treedataindex="+chooseNode.treedataindex+"]").parent().show();
+			 								offsettop=$('#tree').find("li[treedataindex="+chooseNode.treedataindex+"]").offset().top;
+			 							}
+			 							$(".tree-layout").scrollTop(offsettop);
+			 							tree.selectNode(chooseNode.treedataindex);
+			 						 }
+			                    },
+			                    dataType:'json'
+			                });
+		                }
+                     }else{
+                         $.ligerDialog.warn(data.message);
+                     }
+                 },
+                  dataType:'json'
+             });
+        }
+        
+        //加载下级树形（按名称找查树节点）
+        function loadTreeNode(chooseNode,agencyIds){
+        	childArr = chooseNode.children;
+        	//得到当前节点
+			chooseNode = getPnode(childArr,parseInt(agencyIds[0]));
+			if(agencyIds.length <= 1){
+				var offsettop=$('#tree').find("li[treedataindex="+chooseNode.treedataindex+"]").offset().top;
+				if(offsettop==0){
+						$('#tree').find("li[treedataindex="+chooseNode.treedataindex+"]").parent().show();
+						offsettop=$('#tree').find("li[treedataindex="+chooseNode.treedataindex+"]").offset().top;
+					}
+				$(".tree-layout").scrollTop(offsettop);
+				tree.selectNode(chooseNode.treedataindex);
+			}else{
+	        	$.ajax({
+	                type: "POST",
+	                url: '../company/queryTreeNodeList'+'?&nodeId='+chooseNode.params.id,
+	                error:function(xhr,status,err){
+	                    $.ligerDialog.error('修改失败,网络故障!');
+	                    return;
+	                },
+	                success:function(newdata){
+	                	var menuData = [];
+	                	 $(newdata.datas.list).each(function() {
+	                         var leaf={text:this.text,delay:{url:'../company/queryTreeNodeList'+'?&nodeId='+this.id},params : this};
+	                         if(this.isLeaf){
+	                             delete leaf.delay;
+	                         }
+	                         menuData.push(leaf);
+	                     })
+	
+	                     if(menuData.length <= 0){
+	                     	return;
+	                     }
+		                 if(chooseNode.delay !== undefined){
+		                     tree.append(chooseNode,menuData);
+		                     if(chooseNode){
+		                     	delete chooseNode.delay;	
+		                     }
+	                	 }else{
+	                		 $('#tree').find("li[treedataindex="+chooseNode.treedataindex+"]").children("ul").show();
+	                	 }
+	                     agencyIds.shift();
+	                     loadTreeNode(chooseNode,agencyIds);
+	                     
+	                },
+	                dataType:'json'
+	            }); 
+			}
+        }
+        
+      //迭代函数
+      	function getPnode(nodeArr,delAgecnyId){
+      		var delNode = null;
+      		for(var i = 0; i < nodeArr.length; i++){
+      			var elem = nodeArr[i];
+        		var eId = parseInt(elem.params.id);
+        		if(eId == delAgecnyId){
+        			delNode = elem;
+        			break;
+        		}
+      		}
+      		return delNode;
+      	}
+	</script>
+    <script>
+        $(function(){
+            var treeToggleButton = $('.tree-toggle-button');
+            var body = $('body');
+            treeToggleButton.on('click',function(e){
+               if(treeToggleButton.hasClass('show')){
+                   treeToggleButton.removeClass('show');
+                   body.removeClass('hide-tree');
+               }else{
+                   treeToggleButton.addClass('show');
+                   body.addClass('hide-tree');
+               }
+                setTimeout(function(){
+                    $(window).trigger('resize');
+                },500);
+            });
+        });
+
+        //树初始化函数
+        function treeInit(){
+            var onOff=true;
+            window.freflag = false;
+            window.tree=$("#tree").ligerTree({
+                url:'../company/queryTreeRootNode',
+                nodeWidth:200,
+                checkbox: false,
+                slide: false,
+                btnClickToToggleOnly: false,
+                isExpand: false,
+                idFieldName : 'treedataindex',
+                onSelect : function(node) {
+	                var data = node.data;
+					console.log(node);
+					console.log(node._parentNode);
+	                //changeURL(node.data.params.attributesPath);
+	                changeURL(node.data.params.companyPath);
+                    $("#add-dialog input[name='parentCompanyId']").prop('value',data.params.id);
+                    
+                    console.log('attributePath',$("#add-dialog input[name='parentCompanyId']").val());////////////////////
+                    function changeURL(data){
+                        //var formParam={};
+                        console.log('LLLLLLL',data);//////////////////////
+                        var formParam = getFormDataAll('searchForm');
+                        formParam.page = 1;
+                        var rp_value = $("select[name='rp']").val();
+                        formParam.pagesize = rp_value;
+                        formParam.companyPath=data;
+                        mainGrid.setParm('companyPath',data);
+                        mainGrid.setParm('agencyName',formParam.agencyName);
+                        $("#main-grid").find(".l-bar-btnfirst").trigger("click");
+                        $('#searchForm').find('[name="companyPath"]').val(data);
+                        $("#main-grid").ligerGetGridManager().loadServerData(formParam); 
+                    }
+                },
+                isLeaf: function(data) {
+                    return !(data.delay !== undefined || data.children !== undefined);
+                },
+                onExpand : function(e) {
+                    this._parentNode = e.target;
+                },
+                onError:function(XMLHttpRequest, textStatus, errorThrown){
+                    console.log(arguments);
+                },
+                onSuccess : function(newdata) { 
+					console.log(this);
+                    var parentNode = this._parentNode;
+                    var menuData = [];
+                    var parent = $(parentNode);
+                    var parentData = this.getDataByID(parent.attr('treedataindex'));
+                    if(parentData != undefined && parentData.delay==undefined){
+                    	return;
+                    }
+                if(parentData === null){
+                    // 父节点为空时（即该节点为根节点时）
+                    if(onOff){
+                        $(newdata.datas).each(function() {
+                        	//if(this != null && typeof(this) != 'undefined'&& typeof(this.id) != 'undefined'){
+                        		menuData.push({
+                                    text:this.text,
+                                    delay:{url: '../company/queryTreeNodeList'+'?&nodeId='+this.id},
+                                    params : this
+                                });	
+                        	//}
+                        })
+                        // if(newdata.datas){
+                        //     changeURL(newdata.datas.attributesPath);
+                        // }
+                        if (menuData.length <= 0)return;
+                        this.append(this._parentNode, menuData);
+                        if(parentData) delete parentData.delay;
+                        onOff=false;
+                        function a(){
+                            //$('.l-body').trigger('click');
+							$('#tree').find("li[treedataindex='0']").find("div[class='l-body']").trigger('click');
+                        }
+                        a();
+                    }else{
+                        $(newdata.datas.list).each(function() {
+                            var leaf={text:this.text,delay:{url:'../company/queryTreeNodeList'+'?&nodeId='+this.id},params : this};
+                            if(this.isLeaf){
+                                delete leaf.delay;
+                            }
+                            menuData.push(leaf);
+                        })
+
+                        if(menuData.length <= 0){
+                        	return;
+                        }
+                        this.append(this._parentNode,menuData);
+                        if(parentData){
+                        	delete parentData.delay;	
+                        }
+                    }
+                }else{
+                    //该节点有父节点，不为根节点时
+                    $(newdata.datas.list).each(function() {
+                        var leaf={text:this.text,delay:{url:'../company/queryTreeNodeList'+'?&nodeId='+this.id},params : this};
+                        if(this.isLeaf){
+                            delete leaf.delay;
+                        }
+                        menuData.push(leaf);
+                    })
+
+                    if (menuData.length <= 0){
+                    	return;
+                    }
+                    this.append(this._parentNode, menuData);
+                    if(parentData){
+                    	delete parentData.delay;
+                    }
+                }
+             }
+          });
+        }
+        
+
+      //修改机构填充机构树数据
+		$(function(){
+			var onOff=true;
+			window.orgtree=$("#org-tree").ligerTree({
+				url:'../company/queryTreeRootNode',
+				nodeWidth:300,
+				checkbox: false,
+				//single:true,
+				slide: false,
+				btnClickToToggleOnly: false,
+				isExpand: true,
+				idFieldName : 'treedataindex',
+				onSelect : function(node) {
+						var data = node.data;
+						console.log(node);////////////
+						// if (data.delay !== undefined)return;
+						//changeURL(node.data.params.id);
+						$("#add-dialog input[name='companyId']").prop('value',data.params.id);
+						$("#update-dialog input[name='companyId']").prop('value',data.params.id);
+						$("#org-dialog input[name='companyId']").prop('value',data.params.id);
+						$("#searchForm input[name='companyPathUpdate']").prop('value',data.params.companyPath);
+						//$("#searchForm input[name='agencyName']").prop('value',data.params.text);
+						//saveSearch();
+						// $("#add-dialog input[name='agencyName']").prop('value',data.params.text);
+				},
+				isLeaf: function(data) {
+						return !(data.delay !== undefined || data.children !== undefined);
+				},
+				onExpand : function(e) {
+						this._parentNode = e.target;
+				},
+				onError:function(XMLHttpRequest, textStatus, errorThrown){
+						console.log(arguments);
+				},
+				onSuccess : function(newdata) { 
+						var parentNode = this._parentNode;
+						var menuData = [];
+						var parent = $(parentNode);
+						var parentData = this.getDataByID(parent.attr('treedataindex'));
+						if(parentData === null){
+								// 父节点为空时（即该节点为根节点时）
+								if(onOff){
+									$(newdata.datas).each(function() {
+											menuData.push({
+													text:this.text,
+													delay:{url:'../company/queryTreeNodeList'+'?&nodeId='+this.id},
+													params : this
+											});
+									});
+
+									// if(newdata.datas){
+									//     changeURL(newdata.datas.companyPath);
+									// }
+									if (menuData.length <= 0)return;
+									this.append(this._parentNode, menuData);
+									if(parentData) delete parentData.delay;
+									onOff=false;
+									function a(){
+											//$('.l-body').trigger('click');
+											$('#org-tree').find("li[treedataindex='0']").find("div[class='l-body']").trigger('click');
+									}
+									a();
+								}else{
+									$(newdata.datas.list).each(function() {
+											var leaf={text:this.text,delay:{url:'../company/queryTreeNodeList'+'?&nodeId='+this.id},params : this};
+											if(this.isLeaf){
+													delete leaf.delay;
+											}
+											menuData.push(leaf);
+									});
+									if (menuData.length <= 0)return;
+									this.append(this._parentNode, menuData);
+									if(parentData) delete parentData.delay;
+								}
+						}else{
+							//该节点有父节点，不为根节点时
+							$(newdata.datas.list).each(function() {
+									var leaf={text:this.text,delay:{url:'../company/queryTreeNodeList'+'?&nodeId='+this.id},params : this};
+									if(this.isLeaf){
+											delete leaf.delay;
+									}
+									menuData.push(leaf);
+							});
+
+							if (menuData.length <= 0)return;
+							this.append(this._parentNode, menuData);
+							if(parentData) delete parentData.delay;
+						}
+				}
+
+			});
+
+		});
+
+         
+    </script>
+
+    <script>
+        $(function () {
+        	$("#closeModal").click(function(){
+    			$('#myModal').modal('hide');
+    			$("#imgBox").html("");
+    			$("#orderModal").val();
+    			imgSrc=[];
+    		})    
+            window.gridParms = {
+                url: '../company/queryCompanyPage',
+                //工具栏
+                toolbar: {
+                    items: [
+                        { text: '添加', click: addRow, icon: 'add'},
+                        { text: '删除', id:'excel',click: deleteRow, icon: 'delete'},
+                        { text: '修改', click: updateRow, icon: 'xiugai'},
+                        { text: '更改所属机构', click:updateOrg,icon: 'xiugai'}
+                    ]
+                },
+                width: '100%',
+                parms: [],
+                height: '100%',
+                pageSizeOptions: [5, 10, 15, 20],
+                delayLoad:true,
+                checkbox: false,
+                rownumbersColWidth:60
+            };
+            
+            var maxlenggrid;
+            //表格列
+             $.ajax({
+                 type:"POST",
+         	     dataType:"json",
+         	    url: '../company/queryMaxLeng',
+         	   async:false,
+         	     success:function(data){
+         	    	 maxlenggrid= data.datas; 
+         		 },
+         		 error:function(xhr,status,err){
+         			//alert("出问题了");
+         		 }		
+         	 });
+            
+            //动态载入数据
+            window.mainGrid = initMainGrid('main-grid', gridParms,D2V.CompanyManageGrid);
+            treeInit();
+          //点击修改机构保存按钮，主动触发
+			$('#orgSubmit').on('click',function(e){
+				var form = $('#org-form');
+                var onOff=true;
+				$('#org-form .l-box').each(function(i,elem){
+					if(onOff){
+						var t=$(elem);
+						t.removeClass('redBorder');
+						var num=$('.l-checkbox-checked');
+						if (num==''){
+							$.ligerDialog.warn('请选择一个机构!');
+							onOff=false;
+						}
+					}
+				});
+				if(!onOff){
+	                return;
+	              }
+			//触发提交表单事件
+	        form.trigger('submit');
+		});
+			
+		//更改机构机构提交表单，与后台交互
+		$('#org-form').submit(function(e){
+			e.preventDefault();
+			var selectData = mainGrid.getSelectedRows();
+			var agencyIds = ""; 
+			if(($("#searchForm input[name='companyPathUpdate']").val()).indexOf(","+selectData[0].companyId+",")!=-1){
+				$.ligerDialog.warn('不能修改为当前机构或下级机构的子机构!');
+				return;
+			}							
+			else{
+				console.log('agencyId:'+selectData[0].companyId);
+				console.log('parentId:'+$("#org-dialog input[name='companyId']").val());
+				console.log('companyPathUpdate:'+$("#searchForm input[name='companyPathUpdate']").val());
+				$.ajax({
+					url :'../company/moveAgency',
+					type : 'post',
+					dataType:'json',
+					contentType: "application/json; charset=utf-8",								
+					data :JSON.stringify({
+						companyId:selectData[0].companyId,
+						parentCompanyId:$("#org-dialog input[name='companyId']").val(),								
+						parentCompanyPath:$("#searchForm input[name='companyPathUpdate']").val()
+					}), 
+					success:function(data){
+						if(data.success===true){
+								$.ligerDialog.success('机构更改成功,请刷新界面!');
+								closeDialog('org-dialog');
+								$('#orgSubmit').removeAttr('disabled');
+								mainGrid.reload();
+						}else{
+							    $.ligerDialog.error(data.message);
+								$('#orgSubmit').removeAttr('disabled'); 									
+						}
+					},
+					error : function(xhr,status,err) {
+						$('#orgSubmit').removeAttr('disabled');
+						return;
+					}
+				});
+			}
+		});
+
+		//修改机构信息
+	       $('#updateSubmit').on('click',function(e){
+	       	var companyName = $("#update-dialog input[name='companyName']").val();
+			$(this).attr("disabled","true"); //设置变灰按钮
+	           if(companyName == ''||companyName == null){          
+	               $.ligerDialog.warn('机构名称为必填项!');
+	               return;
+	           }else if(companyName.length>50){
+	           	$.ligerDialog.warn('机构名称过长,请重新输入!');
+	               return;
+	           }
+	
+	           $('#update-form').trigger('submit');
+	           setTimeout("$('#updateSubmit').removeAttr('disabled')",3000); //设置三秒后提交按钮 显示
+	       });
+
+        $('#update-form').submit(function(e){
+               e.preventDefault();
+               var companyId = parseInt(mainGrid.getSelectedRows()[0].companyId);
+               var companyPath = mainGrid.getSelectedRows()[0].companyPath;
+             	//1.从树中遍历要删除的节点的父节点
+             	var delManager = $("#tree").ligerGetTreeManager();
+               var datas = delManager.getData()[0];
+               var childArr = datas.children;
+               var delNode = getPnode(childArr,companyId,companyPath);//获得要删除的节点；
+               var parentNode = delNode ? tree.getParentTreeItem(delNode.treedataindex) : null;
+               var agencyName = $("#update-dialog input[name='agencyName']").val();
+               $.ajax({
+                   type: "POST",
+                   data:getFormAjaxData('update-form'),
+                   url: '../company/update',
+                   error:function(xhr,status,err){
+                       $.ligerDialog.error('修改失败,网络故障!');
+                       return;
+                   },
+                   success:function(data){
+                       if(data.success===true){
+                           closeDialog('update-dialog');
+                           $.ligerDialog.success('修改成功!');
+                         	//1.修改成功之后要刷新树节点；
+                           if(delNode){
+                           	var parentData = tree.getDataByID(+$(parentNode).attr('treedataindex'));
+                               var url = parentData ? '../company/queryTreeNodeList'+'?&nodeId='+parentData.params.id : '../company/queryTreeRootNode';
+
+                             // $(parentNode).find('.l-children').html('');
+                             delManager.loadData(parentNode,url);
+                           }
+                           mainGrid.reload();
+                           $("#tree li span").each(function(index,value){
+                          	   if($(this).text()==delNode.text){
+                          		   var updatetext = $(this);
+                          		   updatetext.text(agencyName);
+                          		   delNode.text = agencyName;
+                          	   }
+                             });
+                       }else{
+                           $.ligerDialog.error(data.message);
+                       }
+                   },
+                    dataType:'json'
+               });
+           });
+
+	        //点击添加按钮事件,主动触发。
+           $('#addSubmit').on('click',function(e){
+               var agencyNameLength=$("#add-dialog input[name='companyName']").val();
+               if( agencyNameLength == ''){
+                   $.ligerDialog.warn('机构名称为必选项!');
+                   return;
+               }else if(agencyNameLength.length>80){
+               	 $.ligerDialog.warn('机构名称过长,请重新输入!');
+                    return;
+               }
+               
+               $.ajax({
+                   type: "POST",
+                   data:{companyName:agencyNameLength},
+                   url: '../company/queryCompanyByName',
+                   error:function(xhr,status,err){
+                       console.log(status,err)
+                       $.ligerDialog.error('提交失败,网络故障!');
+                       return;
+                   },
+                   success:function(data){
+                       //console.log(data.datas.length);
+                       if(data.success===true){
+                          if(data.datas == null || data.datas.length==0){
+                               $('#add-form').trigger('submit');
+                          }else if(data.datas != null && data.datas.length>0){
+                                $.ligerDialog.error('该\'机构名称\'已存在,请更换所填写的机构名称!');
+                          }
+                           console.log(window.location.href);
+                       }else{
+                           $.ligerDialog.error(data.message);
+                       }
+                   },
+                    dataType:'json'
+               });
+           });
+
+            //添加提交表单,与后台交互。
+            $('#add-form').submit(function(e){
+                e.preventDefault();
+                var pNode = tree.getSelected();//父节点
+                if(pNode == null || typeof(pNode) == "undefined"){
+                	 $.ligerDialog.error("未选择添加机构的节点！");
+                	 closeDialog('add-dialog');
+                	 return;
+                }
+                $.ajax({
+                    type: "POST",
+                    data:getFormAjaxData('add-form'),
+                    url: '../company/add',
+                    error:function(xhr,status,err){
+                        console.log(status,err)
+                        $.ligerDialog.error('提交失败,网络故障!');
+                        return;
+                    },
+                    success:function(data){
+                        if(data.success===true){
+                            $.ligerDialog.success('添加机构成功,请刷新机构树!');
+                            closeDialog('add-dialog');
+							console.log(data);
+							freflag = true;
+							//1.立即在树节点中添加相应的树节点；
+							var manager = $("#tree").ligerGetTreeManager();
+							var reNode = data.datas;
+							var nNode = {
+	                                text:reNode.text,
+	                                delay:{url:'../company/queryTreeNodeList'+'?&nodeId='+reNode.id},
+	                                params:reNode
+	                            };
+							var nNodes = [];
+							nNodes.push(nNode);
+ 							if (pNode){
+								manager.append(pNode.target, nNodes);
+							}
+							//2.刷新父节点							
+							/*
+							var url = '../ company/queryTreeNodeList'+'?&nodeId='+pNode.data.params.id;
+							console.log(pNode);
+							manager.loadData(pNode,url);
+							*/
+							//3.刷新表数据;							
+							mainGrid.reload();
+							$(".l-dialog-btn .l-dialog-btn-inner").click(function(){
+							});
+                        }else{
+                            $.ligerDialog.error(data.message);
+                        }
+                    },
+                    dataType:'json'
+                });
+            });
+			            
+          //更改机构
+			function updateOrg(){
+				var selectDatas = mainGrid.getSelectedRows();
+    	            selectDatas.length == 1 ?openDialog('org-dialog',{title:'更改所属机构',width:320,height:620,isResize:true},function dialog(){ 
+					var rowdata = selectDatas[0];
+				}) : $.ligerDialog.warn('请选择一条数据!');
+			}
+          
+          	//迭代函数
+          	function getPnode(nodeArr,delAgecnyId,attributesId){
+          		var delNode = null;
+          		for(var i = 0; i < nodeArr.length; i++){
+          			var elem = nodeArr[i];
+          			console.log(i,elem);
+            		var eId = parseInt(elem.params.id);
+            		if(eId == delAgecnyId){
+            			delNode = elem;
+            			break;
+            		}
+            		if(attributesId.indexOf(elem.params.companyPath)!=-1){
+            			var subNodeArr = elem.children;
+                		if(subNodeArr != null){
+                			return getPnode(subNodeArr,delAgecnyId,attributesId);
+                		}
+            		}
+          		}
+          		return delNode;
+          	}
+
+            //删除
+            function deleteRow(event){
+                var selectData = mainGrid.getSelectedRows();
+                if(selectData.length>1){
+                    $.ligerDialog.warn('一次操作只能删除一条!');
+                    return;
+                }
+                selectData.length > 0 ? $.ligerDialog.confirm('确定要删除所选记录!', function(yes){
+                    if(yes === false) return;
+                    
+                    var delCompanyId = parseInt(selectData[0].companyId);//表格中:要删除的节点id;
+                    var companyPath = selectData[0].companyPath;
+                    var delManager = $("#tree").ligerGetTreeManager();
+                    
+                    //1.从树中遍历要删除的节点的父节点
+                    var datas = delManager.getData()[0];
+                    var childArr = datas.children;
+                    var delNode = getPnode(childArr,delCompanyId,companyPath);//获得要删除的节点；
+                    var parentNode = delNode ? tree.getParentTreeItem(delNode.treedataindex) : null;
+                    
+                    $.ajax({
+                        type: "POST",
+                        url: '../company/del',
+                        data:{
+                            companyId: delCompanyId
+                        },
+                        error:function(xhr,status,err){
+                            $.ligerDialog.error('保存失败,网络故障!');
+                            return;
+                        },
+                        success:function(data){
+                            if(data.success===true){
+                                $.ligerDialog.success('删除成功，请刷新!');
+                                //1.删除成功之后要刷新树节点；
+                                if(delNode){
+                                	var parentData = tree.getDataByID(+$(parentNode).attr('treedataindex'));
+                                    var url = parentData ? '../company/queryTreeNodeList'+'?&nodeId='+parentData.params.id : '../company/queryTreeRootNode';
+	                                  var del_node = delNode.treedataindex;
+	                                  var this_node = $("#tree li[treedataindex="+del_node+"]");
+	                                  this_node.remove();
+	                                  //this_node.siblings("li").last().removeClass('l-first').addClass("l-last");
+                                    //$(parentNode).find('.l-children').html('');
+                                  // delete parentData.children;
+                                   parentData.delay = {"url":url};
+                                   tree.selectNode(parentData.treedataindex);
+                                   //delManager.loadData(parentNode,url);
+                                }
+                                //3.表格重新加载;
+                                mainGrid.reload();
+                            }else{
+                                $.ligerDialog.warn(data.message);
+                            }
+                        },
+                        dataType:'json'
+                    });
+                }) : $.ligerDialog.warn('您没有选中任何信息!');
+            }
+        });
+
+        //点击添加按钮时的事件
+        function addRow(){
+            clearForm('add-form',{parentCompanyId:true});
+            openDialog('add-dialog',{title:'新增机构',width:380,height:440},function dialog(){});
+        }
+
+        //点击修改按钮时的事件
+        function updateRow(){
+            var selectData = mainGrid.getSelectedRows();
+            if(selectData.length>1){
+                $.ligerDialog.warn('您选中的条数过多,一次只能选中一条信息!');
+                return;
+            }
+
+            if(selectData.length<1){
+                $.ligerDialog.warn('您没有选中任何信息!');
+                return;
+            }
+            injectDataToForm('update-form',selectData[0]);  
+            console.log(selectData[0])
+            openDialog('update-dialog',{title:'修改机构',width:380,height:440},function(dialog){});
+        }
+
+        //导出
+        function exportFile(){
+        	var formParam = getFormDataAll('searchForm');
+        	var url = D2V.TWGCountExportURL.jggl;
+        	var paramStr ='?';
+        	if(formParam['companyPath'] !=null && formParam['companyPath'].length >0){
+        		paramStr = paramStr + "&companyPath=" + formParam['companyPath'];
+        	}
+        	formParam['agencyName']=encodeURIComponent(encodeURIComponent(formParam['agencyName']));
+        	paramStr = paramStr + "&agencyName=" + formParam['agencyName'];
+        	if(formParam['saleManagerId'] !=null && formParam['saleManagerId'].length >0){
+        		paramStr = paramStr + "&saleManagerId=" + formParam['saleManagerId'];
+        	}
+        	url =url + paramStr;
+        	console.log(url);
+        	window.open(url,'_self');
+        }
+
+        //搜索
+        function saveSearch(){
+        	//修改显示页码不正常
+        	mainGrid.setOptions({ newPage: 1 }); 
+            var searchData={};
+            var formParam = getFormDataAll('searchForm');
+            for(var k in formParam){
+               var newdata;
+               newdata=$.trim(formParam[k]);
+               if(newdata!=''){
+                   searchData[k]=newdata;
+                   mainGrid.setParm(k,newdata);
+               }else{
+                   mainGrid.removeParm(k);
+                   delete formParam[k];
+               }
+           }
+            var rp_value = $("select[name='rp']").val();
+            formParam.page = 1;
+            formParam.pagesize = rp_value;
+           $("#main-grid").ligerGetGridManager().loadServerData(formParam);
+        }
+    </script>
+</head>
+
+<body>
+    <!-- 左边的一栏 -->
+    <a class="tree-toggle-button"></a>
+    <div class="tree-layout">
+    	<!-- 搜索树节点 -->
+		<div id="agencyNameSearch">
+			<div class="wrapper">
+				<div id="search-form"></div>
+			</div>
+		</div>
+       <!--  树 -->
+        <div id="tree" class="l-tree-custom"></div>
+    </div>
+
+    <!-- 搜索 -->
+    <div class="data-list">
+        <form class="form-inline data-list-search" id="searchForm">
+            <!-- <input type="hidden" name="attributesPath" />
+            <input type="hidden" name="attributesPathUpdate" /> -->
+            <input type="hidden" name="companyPath" />
+            <input type="hidden" name="companyPathUpdate" />
+            
+            <div class="form-group">
+                <label>机构名称:</label>
+                <input type="text" class="form-control" maxlength="32"   name="companyName">
+            </div>
+            <div class="form-group">
+                <button type="button" class="btn btn-search"  onclick="saveSearch();return false;"><i class="icon icon-search"></i>查询</button>
+            </div>
+            <!-- <div class="form-group">
+                <button type="button" class="btn btn-search"  onclick="exportFile();return false;" style="background-color:#3d8cd1;"><i class="icon icon-search"></i>导出</button>
+            </div> -->
+        </form>
+        <div id="main-grid" class="l-grid-custom panel-bar-split"></div>
+    </div>
+
+    <!-- 新增 -->
+    <div id="add-dialog" class="add">
+        <form id="add-form">
+            <input type="hidden" name="parentCompanyId">
+            <div class="form-group">
+                <label>机构名称:</label>
+                <input type="text" maxlength="32" class="form-control" name="companyName">
+				<span class="btfuhao">*</span>
+            </div>
+            <div class="form-group">
+                <label>机构地址:</label>
+                <input maxlength="100" type="text" class="form-control" name="companyAddress">
+            </div>
+            <div class="form-group">
+                <label>邮编:</label>
+                <input maxlength="100" type="text" class="form-control" name="companyPost">
+            </div>
+            <div class="form-group">
+                <label>工作电话:</label>
+                <input maxlength="100" type="text" class="form-control" name="workPhone">
+            </div>
+            <div class="form-group">
+                <label>传真:</label>
+                <input maxlength="100" type="text" class="form-control" name="fax">
+            </div>
+
+            <div class="form-group">
+                <label>负责人:</label>
+                <input maxlength="100" type="text" class="form-control" name="leader">
+            </div>
+            <div class="form-group">
+                <label>负责人电话:</label>
+                <input maxlength="100" type="text" class="form-control" name="leaderPhone">
+            </div>
+            <div class="form-group">
+                <label>负责人邮箱:</label>
+                <input maxlength="100" type="text" class="form-control" name="leaderEmail">
+            </div>
+
+            <div class="save">
+                <button type="button" class="btn btn-primary " id="addSubmit">保存</button>
+                <button type="reset" class="btn btn-primary">重置</button>
+				<button type="button" class="btn btn-primary" onclick="closeAdd()">关闭</button> 
+            </div>
+         </form>
+    </div>
+
+    <!-- 修改 -->
+	<div id="update-dialog" class="update">
+		<form id="update-form">
+			<input type="hidden" name="parentCompanyId"> 
+			<input type="hidden" name="companyId">
+			<div class="form-group">
+                <label>机构名称:</label>
+                <input type="text" maxlength="32" class="form-control" name="companyName">
+				<span class="btfuhao">*</span>
+            </div>
+            <div class="form-group">
+                <label>机构地址:</label>
+                <input maxlength="100" type="text" class="form-control" name="companyAddress">
+            </div>
+            <div class="form-group">
+                <label>邮编:</label>
+                <input maxlength="100" type="text" class="form-control" name="companyPost">
+            </div>
+            <div class="form-group">
+                <label>工作电话:</label>
+                <input maxlength="100" type="text" class="form-control" name="workPhone">
+            </div>
+            <div class="form-group">
+                <label>传真:</label>
+                <input maxlength="100" type="text" class="form-control" name="fax">
+            </div>
+
+            <div class="form-group">
+                <label>负责人:</label>
+                <select class="form-control" name="leader">
+                </select>
+            </div>
+            <div class="form-group">
+                <label>负责人电话:</label>
+                <select class="form-control" name="leaderPhone">
+                </select>
+            </div>
+            <div class="form-group">
+                <label>负责人邮箱:</label>
+                <select class="form-control" name="leaderEmail">
+                </select>
+            </div>
+
+			<div class="save">
+				<button type="button" class="btn btn-primary " id="updateSubmit">保存</button>
+				<button type="reset" class="btn btn-primary" id="resetbtn">重置</button>
+				<button type="button" class="btn btn-primary"
+					onclick="closeUpdate()">关闭</button>
+			</div>
+		</form>
+	</div>
+	<div id="org-dialog" class="add">
+		<div style="color:red;margin-bottom:10px;margin-left:27px;font-weight:normal;">注:请选择其中一个机构!</div>
+		<form id="org-form">
+			<input type='hidden' name='companyId'>
+			<div id="org-tree"></div>
+			<div class="nullheight"></div>
+			<div class="save">
+				<button type="button" class="btn btn-primary " id="orgSubmit">更改</button>
+				<button type="button" class="btn btn-primary " onclick="closeOrg()">关闭</button>
+			</div>
+		</form>
+	</div>
+	<script>
+		function closeAdd(){
+			closeDialog('add-dialog');
+		}
+		function closeUpdate(){
+			closeDialog('update-dialog');
+		}
+
+		function closeOrg(){
+            closeDialog('org-dialog');
+			//mainGrid.reload();
+        }
+		$("#resetbtn").click(function(){
+			
+		});
+	</script>
+</body>
+
+</html>

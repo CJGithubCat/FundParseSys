@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>    
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"    
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<!-- 全局缓存开关 -->
+		<setting name="cacheEnabled" value="true" />
+		<!-- 自动匹配java驼峰命名法对应的属性，手动优先级更高 -->
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+	</settings>
+</configuration>		
+			

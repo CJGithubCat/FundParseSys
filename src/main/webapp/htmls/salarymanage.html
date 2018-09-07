@@ -1,0 +1,600 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <!-- 启用360浏览器的极速模式(webkit) -->
+    <meta name="renderer" content="webkit">
+    <!-- 避免IE使用兼容模式 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>中国石化销售有限公司河南郑州石油分公司劳资系统</title>
+    <link rel="stylesheet" href="../vendor/bootstrap/dist/css/bootstrap.css"/>
+    <link rel="stylesheet" href="../vendor/ligerUI/skins/Aqua/css/ligerui-all.css"/>
+    <link rel="stylesheet" href="../css/public/ligerui-custom.css"/>
+    <link rel="stylesheet" href="../css/public/search-list-grid-tree.css"/>
+    <link href="../js/plugins/uploadify/uploadify.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../css/public/autocomplete.css">
+    <script src="../vendor/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="../js/plugins/autocomplete.js"></script>
+    <script src="../vendor/ligerUI/js/ligerui.all.js"></script>
+    <script src="../js/plugins/uploadify/jquery.uploadify.min.js"></script>
+    <script src="../vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="../js/plugins/DataToView.js"></script>
+    <script src="../js/plugins/ligerui.other.js"></script>
+    <script src="../js/util/dateutil.js"></script>
+	<script src="../js/util/unittype.js"></script>
+    <!-- 添加 foundation-datepicker 支持-->
+    <link rel="stylesheet" href="../vendor/foundation-datepicker/css/foundation-datepicker.min.css"/>
+    <link rel="stylesheet" href="../vendor/font-awesome/css/font-awesome.min.css"/>
+    <script src="../vendor/foundation-datepicker/js/foundation-datepicker.min.js"></script>
+    <script src="../vendor/foundation-datepicker/js/locales/foundation-datepicker.zh-CN.js"></script>
+    <style>
+         button{
+            outline: none;
+        }
+        a:hover{
+            text-decoration: none;
+        }
+        .add,.update{
+            display: none;
+            font-size: 14px;
+            font-family: '微软雅黑';
+        }
+        /*add样式修改*/
+        .l-dialog-tl{
+            height:42px;
+        }
+        .l-dialog-tc{
+            padding-left: 32px;
+            /*border-top: 2px solid #fff;*/
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            background: none;
+            background-color: #efefef;
+        }
+        .l-dialog td div,#add-form label,#update-form label{
+            font-size: 14px;
+            font-family: '微软雅黑';
+            font-weight: normal;
+            color:#343f56;
+        }
+        .l-dialog-max,.l-dialog-collapse{
+            display: none;
+        }
+        .l-dialog-close{
+            background: url(../images/close.png) no-repeat;
+            width: 22px;
+            height: 22px;
+            position: absolute;
+            top: -6px;
+            right: 3px;
+        }
+        .l-dialog-close:hover{
+            background: url(../images/closeHover.png) no-repeat;
+        }
+        #add-dialog .form-group .form-control,#update-dialog .form-group .form-control{
+            width: 290px;
+            height: 30px;
+            display: inline-block;
+        }
+        #add-form label,#update-form label{
+            margin-left: 2px;
+            width: 70px;
+            text-align: right;
+        }
+        #add-dialog .form-control,#update-dialog .form-control{
+            padding: 4px 12px;
+        }
+        #add-dialog,#update-dialog{
+            margin-top: 12px;
+        }
+        #add-dialog .form-group,#update-dialog .form-group{
+            margin-bottom: 14px;
+            display: inline-block;
+        }
+        #add-form label, #update-form label {
+            margin-left: 24px;
+        }
+        .save{
+            position: absolute;
+            bottom: 0px;
+            left: 0;
+            height: 62px;
+            background-color: #efefef;
+            width: 100%;
+            text-align: center;
+        }
+        .save button{
+            margin-top: 15px;
+            width: 70px;
+            height: 30px;
+            border-color: #40c5e1;
+            background-color: #40c5e1;
+            line-height: 1;
+            outline: none;
+            margin-left: 10px;
+        }
+        #addSubmit,#updateSubmit{
+            margin-right: 8px;
+        }
+        .l-dialog-cc,.l-dialog-body{
+            border-bottom-left-radius:8px;
+            border-bottom-right-radius:8px;
+        }
+        .l-dialog-cc{
+            border-top: none;
+        }
+        .l-dialog-win,.l-dialog{
+            border: none;
+        }
+        .l-window-mask{
+            background: none;
+            background: url(../images/Bgmask.png);
+            opacity: 1;
+        }
+        .data-list-search .btn{
+            outline: none;
+        } */   
+        .form-control{
+            padding: 4px 12px;
+        }
+        #add-form::-webkit-scrollbar{width:8px;height: 4px;position: absolute;right: 4px;}
+        #add-form::-webkit-scrollbar-track{background-color:#e6e6e6;-webkit-border-radius: 4px;border-radius: 4px;}
+        #add-form::-webkit-scrollbar-thumb{background-color:#b3b3b3;-webkit-border-radius: 4px;border-radius: 4px;}
+        #add-form::-webkit-scrollbar-thumb:hover {background-color:#b3b3b3;}
+        #add-form::-webkit-scrollbar-thumb:active {background-color:#b3b3b3;}
+        .map-layout{
+            box-shadow:inset 0 0 3px 2px rgba(0,0,0,0.3);
+            position: absolute;
+            top:159px;
+            bottom: 30px;
+            right: 20px;
+            left: 740px;
+            z-index: 2;
+            -webkit-transition: all 0.2s ease-in-out;
+            -ms-transition: all 0.2s ease-in-out;
+            transition: all 0.2s ease-in-out;
+            overflow: hidden;
+        }
+        .map{
+            height: 100%;
+            width: 100%;
+        }
+        .map-layout .icon-map-close{
+            position: absolute;
+            right: 30px;
+            top:20px;
+            cursor: pointer;
+        }
+        .toggle-route {
+            position: relative;
+            display: block;
+            background: #ebf8f5;
+            margin: -15px -6px 0 0px;
+            line-height: 52px;
+            cursor: pointer;
+        }
+        .toggle-route.active{
+            background: #37bd9c;
+            color: #fff;
+            box-shadow: 0 0 4px 2px rgba(0,0,0,0.2);
+            transform: translate3D(0,0,1px);
+        }
+        .toggle-route.active:before{
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border: 8px solid transparent;
+            border-left-color:#37bd9c;
+            right: -16px;
+            top:16px;
+        }
+        .qymc{
+            min-width: 120px !important;
+        }
+        .kj{
+            min-width: 110px !important;
+        }
+        .zt{
+            min-width: 79px !important;
+        }
+        .xz{
+            min-width: 94px !important;
+        }
+        .cx{
+            min-width: 80px !important;
+        }
+        #searchForm .form-group{
+            display: inline-block;
+        }
+        #searchForm .form-control{
+            display: inline-block;
+        }
+        .qydj{
+            width: 290px;
+        }
+        .dq{
+            vertical-align: top;
+        }
+        label.bindLabel{
+            font-weight: normal;
+        }
+        .bindgz{
+            display: inline-block;
+            width: 179px;
+        }
+        .bingCarAll{
+            margin-bottom: 0px;
+            border-left: 1px solid #dadbdb;
+            border-right:1px solid #dadbdb;
+            height: 50px;
+            padding-top: 8px;
+            padding-left: 21px;
+            background: #f2f3f6;
+        }
+        #noticeNoForm,#noticeNo-grid{
+            box-shadow: none;
+        }
+        .bingCarButton{
+            border-radius: 18px;
+            border-radius: 18px;
+            padding: 6px 25px 6px 25px;
+            box-shadow: inset 0 0 2px 1px rgba(0, 0, 0, 0.1);
+            color: #fff;
+            background:#4295DE;
+            margin-left: 13px;
+            outline: none;
+        }
+        .btn:focus{
+            outline: none;
+        }
+        #noticeNo-grid .l-panel-bwarp{
+            box-shadow: none;
+            border: 1px solid #e1e1e1;
+        }
+        #bind-vehicle-dialog .data-list{
+            padding: 0 10px;
+        }
+        #noticeNo-grid{
+            width:100%;
+        }
+        #noticeNo-grid .l-clear{
+            height: 0px;
+        }
+        #add-SS-form,#update-SS-form{
+            margin-top: 10px;
+        }
+        #add-SS-form .form-control,#update-SS-form .form-control{
+            width: 120px;
+            display: inline-block;
+            text-align: center;
+        }
+        #add-SS-form label,#update-SS-form label{
+            width: 90px;
+            text-align: right;
+            font-weight: normal;
+        }
+        #add-dialog .addSSshow,#update-dialog .updateSSshow{
+            display: none;
+        }
+        .ckxq .l-grid-custom .l-grid-hd-cell-text{
+            margin-top:9px;
+        }
+        .ckxq .data-list{
+            padding:0;
+        }
+        .ckxq .l-grid-custom.panel-bar-split .l-panel-bar{
+            margin:0;
+        }
+        .ckxq .l-grid-custom .l-bar-group{
+            margin-right:0;
+        }
+         #searchForm .form-group{
+       		margin-bottom:3px;
+        }
+        #export-salary-dialog  .data-list,#look-driver-grid  .data-list{padding:0px;}
+        #noticeNo-grid .l-panel-bar,#look-driver-grid .l-panel-bar{margin:0px;}
+    </style>    
+    <script>
+    	<!-- 机构树的管理 -->
+	    $(function() {
+			var treeToggleButton = $('.tree-toggle-button');
+			var body = $('body');
+			treeToggleButton.on('click', function(e) {
+				if (treeToggleButton.hasClass('show')) {
+					treeToggleButton.removeClass('show');
+					body.removeClass('hide-tree');
+				} else {
+					treeToggleButton.addClass('show');
+					body.addClass('hide-tree');
+				}
+				setTimeout(function() {
+					$(window).trigger('resize');
+				}, 500);
+			});
+		});
+	    $(function() {
+			var onOff = true;
+			window.tree = $("#tree")
+					.ligerTree(
+							{
+								url : '../company/queryTreeRootNode',
+								nodeWidth : 200,
+								checkbox : false,
+								slide : false,
+								btnClickToToggleOnly : false,
+								isExpand : false,
+								idFieldName : 'treedataindex',
+								onSelect : function(node) {
+									$("input[name='companyPath']").prop('value',node.data.params.companyPath);
+									$("input[name='companyId']").prop('value',node.data.params.id);
+									$("input[name='companyType']").prop('value',node.data.params.companyType);
+									//根据机构类型决定展示的查询输入框
+									if(parseInt(node.data.params.companyType) == 5){//加油站的话就不展示名称的输入框
+										$("#bmInputId").css('display','none');
+										$("#jyzInputId").css('display','none');
+									}
+									saveSearch();
+								},
+								isLeaf : function(data) {
+									return !(data.delay !== undefined || data.children !== undefined);
+								},
+								onExpand : function(e) {
+									this._parentNode = e.target;
+								},
+								onError : function(XMLHttpRequest, textStatus,
+										errorThrown) {
+									console.log(arguments);
+								},
+								onSuccess : function(newdata) {
+									var parentNode = this._parentNode;
+									var menuData = [];
+									var parent = $(parentNode);
+									// console.log(newdata)
+									$("input[name='companyPath']").prop('value',newdata.datas.companyPath);
+									$("input[name='companyId']").prop('value',newdata.datas.id);
+									var parentData = this.getDataByID(parent.attr('treedataindex'));
+									if (parentData === null) {
+										// 父节点为空时（即该节点为根节点时）
+										if (onOff) {
+											$(newdata.datas)
+													.each(
+															function() {
+																menuData
+																		.push({
+																			text : this.text,
+																			delay : {
+																				url : '../company/queryTreeNodeList'
+																						+ '?&nodeId='
+																						+ this.id
+																			},
+																			params : this
+																		});
+															})
+											// if(newdata.datas){
+											//     changeURL(newdata.datas.companyPath);
+											// }
+											if (menuData.length <= 0)
+												return;
+											this.append(this._parentNode, menuData);
+											if (parentData)
+												delete parentData.delay;
+											onOff = false;
+											function a() {
+												$('.l-body').trigger('click');
+											}
+											a();
+										} else {
+											$(newdata.datas.list)
+													.each(
+															function() {
+																var leaf = {
+																	text : this.text,
+																	delay : {
+																		url : '../company/queryTreeNodeList'
+																				+ '?&nodeId='
+																				+ this.id
+																	},
+																	params : this
+																};
+																if (this.isLeaf) {
+																	delete leaf.delay;
+																}
+																menuData.push(leaf);
+															})
+											if (menuData.length <= 0)
+												return;
+											this.append(this._parentNode, menuData);
+											if (parentData)
+												delete parentData.delay;
+										}
+									} else {
+										//该节点有父节点，不为根节点时
+										$(newdata.datas.list)
+												.each(
+														function() {
+															var leaf = {
+																text : this.text,
+																delay : {
+																	url : '../company/queryTreeNodeList'
+																			+ '?&nodeId='
+																			+ this.id
+																},
+																params : this
+															};
+															if (this.isLeaf) {
+																delete leaf.delay;
+															}
+															menuData.push(leaf);
+														})
+										if (menuData.length <= 0)
+											return;
+										this.append(this._parentNode, menuData);
+										if (parentData)
+											delete parentData.delay;
+									}
+								}
+							});
+		});
+    
+        $(function(){
+            window.gridParms={
+            		url : D2V.salaryURL.query,
+        			onLoaded : function(grid) {
+        				setTimeout(function() {
+        					$('.l-grid-loading').hide();
+        					$(".l-grid-row-cell-inner").each(function() {
+        						var that = $(this);
+        						that.attr('title', that.text());
+        					})
+        				}, 200);
+        			},
+        			onSuccess : function(data) {
+        				if (data.success == true) {
+        					data.list = data.datas.list;
+        					data.count = data.datas.count;
+        				} else {
+        					$.ligerDialog.warn(data.message);
+        				}
+        			},
+                width: '100%',
+                parms: [],
+                pageSizeOptions: [5, 10, 15, 20],
+                height: '100%',
+                delayLoad : true,
+                checkbox : false,
+    			rownumbers : true,
+            };
+            //添加操作选项
+            var optcol=[];
+            window.mainGrid = initMainGrid('main-grid',gridParms,optcol.concat(D2V.salaryGird));
+        });
+
+        function saveSearch(){
+            var searchData={};
+            var formParam = getFormDataAll('salarymanageformid');
+            for(var k in formParam){
+               var newdata;
+               newdata=$.trim(formParam[k]);
+               if(newdata!=''){
+                   searchData[k]=newdata;
+                   mainGrid.setParm(k,newdata);
+               }else{
+                   mainGrid.removeParm(k);
+                   delete formParam[k];
+               }
+           }
+            formParam.page = 1;
+            var rp_value = $("#main-grid select[name='rp']").val();
+            formParam.pagesize = rp_value;
+            mainGrid.changePage('first');
+            $("#main-grid").ligerGetGridManager().loadServerData(formParam);
+        }
+    	//导出
+    	function exportFile() {
+    		var formParam = getFormDataAll('salarymanageformid');
+    		var url = D2V.salaryURL.exportSalary;
+    		var paramStr = '?';
+    		if (formParam['companyPath'] != null&& formParam['companyPath'].length > 0) {
+    			paramStr = paramStr + "&companyPath=" + formParam['companyPath'];
+    		}
+    		formParam['dw'] = encodeURIComponent(encodeURIComponent(formParam['dw']));
+    		formParam['tzdh'] = encodeURIComponent(encodeURIComponent(formParam['tzdh']));
+    		paramStr = paramStr + "&dw=" + formParam['dw'];
+    		paramStr = paramStr + "&tzdh=" + formParam['tzdh'];
+    		console.log(paramStr);
+    		url = url + paramStr;
+    		window.open(url, '_self');
+    	}
+    </script>
+</head>
+<body>
+	<a class="tree-toggle-button"></a>
+	<div class="tree-layout">
+		<div id="tree" class="l-tree-custom"></div>
+	</div>
+    <!-- 搜索 -->
+    <div class="data-list">
+        <form class="form-inline data-list-search" id="salarymanageformid">
+            <input type="hidden" name="companyPath">
+            <input type="hidden" name="companyId">  
+			<input type="hidden" name="companyType">
+            <div class="form-group" style="margin-top:3px;" id="bmInputId">
+                <label>部门:</label>
+                <input type="text" class="form-control" name="dw" style="width:120px;">
+            </div>
+            <div class="form-group" style="margin-top:3px;" id="jyzInputId">
+                <label>加油站:</label>
+                <input type="text" class="form-control" name="jyzName" style="width:120px;">
+            </div>
+            <div class="form-group" style="margin-top:3px;">
+                <label>考核通知单号:</label>
+                <input type="text" class="form-control" id="distance" name="tzdh" style="width:120px;">
+            </div>
+            <div class="form-group">
+                <button type="button" class="btn btn-search"  onclick="saveSearch();return false;"><i class="icon icon-search"></i>查询</button>
+            </div>
+            <div class="form-group">
+				<button type="button" class="btn btn-search" onclick="exportFile();return false;" style="background-color: #3d8cd1;"><i class="icon icon-search"></i>导出
+				</button>
+			</div>
+        </form>
+        <div id="main-grid" class="l-grid-custom panel-bar-split"></div>
+    </div>
+
+
+    <div id="export-salary-dialog" style="display:none;">
+        <div class="data-list">
+            <form id="noticeNoForm" class="form-inline data-list-search">
+                <div class="form-group">
+                    <label>通知单号:</label>
+                    <input type="text" class="form-control"  name="areaName">
+                </div>
+                <div class="form-group">
+                    <button type="button" class="btn btn-search" id="bindDriverSaveSearch" onclick="saveSearchBind();return false;"><i class="icon icon-search"></i>搜索</button>
+                </div>
+            </form>
+            <div id="noticeNo-grid" class="l-grid-custom panel-bar-split" style="width:100%;"></div>
+        </div>
+        <!-- <div id="noticeNo-grid"></div> -->
+    </div>
+    
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true" onclick="javascript: $('#file_upload').uploadify('cancel', '*')">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">工资明细导入</h4>
+				</div>
+				<div class="modal-body">
+					<input id="file_upload" name="file_upload" type="file"
+						multiple="multiple" />
+					<div id="fileQueue" class="fileQueue"></div>
+
+					<div id="div_files"></div>
+					<br />
+				</div>
+				<div class="modal-footer">
+					<a href="javascript:;" class="btn btn-primary" id="btnUpload"
+						onclick="javascript: $('#file_upload').uploadify('upload', '*')">上传</a>
+					<a href="javascript:;" class="btn btn-default" id="btnCancelUpload"
+						onclick="javascript: $('#file_upload').uploadify('cancel', '*')">取消</a>
+					<a href="javascript:;" class="btn btn-default" data-dismiss="modal"  id="close"
+						onclick="javascript: $('#file_upload').uploadify('cancel', '*')">关闭</a>	
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal -->
+	</div>
+	
+    <div id="look-driver-dialog" style="display:none;" class="ckxq">
+        <div class="data-list">
+            <div id="look-driver-grid" class="l-grid-custom panel-bar-split" style="width:100%;"></div>
+        </div>
+    </div>
+</body>
+</html>

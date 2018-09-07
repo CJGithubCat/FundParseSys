@@ -1,0 +1,20 @@
+[ {
+	"id" : "d2970c9a2c2b4f329933bc7a3491227e",
+	"parent" : "#",
+	"text" : "网查系统",
+	"state":{
+	    "opened":true
+	}
+}, {
+	"id" : "516850027f7d4546b2aa65baa5509460",
+	"parent" : "d2970c9a2c2b4f329933bc7a3491227e",
+	"text" : "网查系统管理员"
+}, {
+	"id" : "5311305572fb47dcb9ab3145c9d0c0f0",
+	"parent" : "d2970c9a2c2b4f329933bc7a3491227e",
+	"text" : "网查系统测试"	
+}, {
+	"id" : "c5a205b0cc9a4e7cbf2406c17ea16aed",
+	"parent" : "d2970c9a2c2b4f329933bc7a3491227e",
+	"text" : "网查系统录入员"
+} ]

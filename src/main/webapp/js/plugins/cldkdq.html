@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <!-- 启用360浏览器的极速模式(webkit) -->
+    <meta name="renderer" content="webkit">
+    <!-- 避免IE使用兼容模式 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>中国石化销售有限公司河南郑州石油分公司劳资系统</title>
+    <link rel="stylesheet" href="../vendor/bootstrap/dist/css/bootstrap.css"/>
+    <link rel="stylesheet" href="../vendor/ligerUI/skins/Aqua/css/ligerui-all.css"/>
+    <link rel="stylesheet" href="../css/public/ligerui-custom.css"/>
+    <link rel="stylesheet" href="../css/public/search-list-grid-tree.css"/>
+    <script src="../vendor/jquery/dist/jquery.js"></script>
+
+    <script src="../vendor/ligerUI/js/ligerui.all.js"></script>
+    <script src="../js/plugins/DataToView.js"></script>
+    <script src="../js/plugins/ligerui.other.js"></script>
+
+    <!-- 添加 foundation-datepicker 支持-->
+    <link rel="stylesheet" href="../vendor/foundation-datepicker/css/foundation-datepicker.min.css"/>
+    <link rel="stylesheet" href="../vendor/font-awesome/css/font-awesome.min.css"/>
+    <script src="../vendor/foundation-datepicker/js/foundation-datepicker.min.js"></script>
+    <script src="../vendor/foundation-datepicker/js/locales/foundation-datepicker.zh-CN.js"></script>
+
+    <style>
+        .refresh{
+            background: url(../images/refreshBg.png) no-repeat 0 3px;
+            width: 50px;
+            height: 20px;
+            display: inline-block;
+            padding-left: 20px;
+            text-decoration: none;
+            outline: none;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        a:hover{
+            text-decoration: none;
+        }
+    </style>
+
+    <script>
+        $(function(){
+            $('#timeStart').fdatepicker({
+                language:'zh-CN',
+                format: 'yyyy-mm-dd'
+            });
+            $('#timeEnd').fdatepicker({
+                language:'zh-CN',
+                format: 'yyyy-mm-dd'
+            });
+        });
+        $(function(){
+            var treeToggleButton = $('.tree-toggle-button');
+            var body = $('body');
+            treeToggleButton.on('click',function(e){
+               if(treeToggleButton.hasClass('show')){
+                   treeToggleButton.removeClass('show');
+                   body.removeClass('hide-tree');
+               }else{
+                   treeToggleButton.addClass('show');
+                   body.addClass('hide-tree');
+               }
+                setTimeout(function(){
+                    $(window).trigger('resize');
+                },500);
+            });
+        });
+        $(function ()
+        {
+            $("#tree").ligerTree({
+                data: [
+                    { text: '节点1',  children: [
+                        { text: '节点1.1' },
+                        { text: '节点1.2' },
+                        { text: '节点1.3',  children: [
+                            { text: '节点1.3.1' },
+                            { text: '节点1.3.2'}
+                        ]
+                        },
+                        { text: '节点1.4'}
+                    ]
+                    },
+                    { text: '节点2'},
+                    { text: '节点3'},
+                    { text: '节点4'}
+                ],
+                nodeWidth:200,
+                checkbox: false
+            });
+        });
+
+    </script>
+    <script>
+        $(function () {
+
+            var data = $.parseJSON('{"message":null,"data":{"count":12,"list":[{"name":"交警","remark":"交警部门备注","value":1},{"name":"运输企业","remark":"运输企业备注","value":2},{"name":"车辆协会","remark":"车辆协会备注","value":3},{"name":"旅游运输企业","remark":null,"value":4},{"name":"校车企业","remark":null,"value":5},{"name":"道路客运企业","remark":null,"value":6},{"name":"公交出租企业","remark":null,"value":7},{"name":"危险品运输企业","remark":null,"value":8},{"name":"普通货运企业","remark":null,"value":9},{"name":"泥头车运输企业","remark":null,"value":10},{"name":"租赁企业","remark":null,"value":11},{"name":"其它","remark":null,"value":12}]},"success":true}');
+            data.list = data.data.list;
+            data.count = data.data.count;
+            window.gridParms = {
+                data: data,
+                onLoaded: function (grid) {
+                    setTimeout(function () {
+                        $('.l-grid-loading').hide();
+                        $(".l-grid-row-cell-inner").each(function () {
+                            var that = $(this);
+                            that.attr('title', that.text());
+                        })
+                    }, 200);
+                },
+                onError: function (XMLHttpRequest, textStatus, errorThrown) {
+                },
+                width: '100%',
+                parms: [],
+                height: '100%',
+                rownumbers :false,
+                selectable:false
+
+            };
+            //添加操作选项
+            var optcol = [
+                {show: '操作', field: 'zzz0', width: 180, align: 'center', render: 'renderOpt'}
+               
+            ];
+            window.mainGrid = initMainGrid('main-grid', gridParms, optcol.concat(D2V.swtcjlbjtj));
+        });
+        function renderOpt(rowdata, index, value) {
+            var str = '';
+            str += '<a href="javascript:;" class="operate" onclick="updateRow(' + index + ')">详情</a>';
+            str += '<a href="javascript:;" class="operate" onclick="updateRow(' + index + ')">修改</a>';
+            str += '<a href="javascript:;" class="operate delete" onclick="updateRow(' + index + ')">删除</a>';
+            return str;
+        }
+    </script>
+</head>
+<body>
+
+    <a class="tree-toggle-button"></a>
+    <div class="tree-layout">
+        <div class="form-group has-feedback search">
+            <input type="text" class="form-control" placeholder="请输入机构名称">
+            <span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
+        </div>
+        <div id="tree" class="l-tree-custom">
+
+        </div>
+    </div>
+    <div class="data-list">
+        <form class="form-inline data-list-search">
+            <div class="form-group has-feedback">
+                <label>开始时间</label>
+                <input type="text" class="form-control" id="timeStart">
+                <span class="glyphicon glyphicon-calendar form-control-feedback" aria-hidden="true"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <label>结束时间</label>
+                <input type="text" class="form-control" id="timeEnd">
+                <span class="glyphicon glyphicon-calendar form-control-feedback" aria-hidden="true"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <label>车牌号码</label>
+                <input type="text" class="form-control" id="a">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-search"><i class="icon icon-search"></i>查询</button>
+            </div>
+             <div class="form-group">
+                <button type="submit" class="btn btn-search" style="background-color:#3d8cd1;"><i class="icon icon-search"></i>导出</button>
+            </div>
+            <div class="form-group">
+                <a class="refresh">刷新</a>
+            </div>
+            <div class="other-operate">
+                <a class="icon-reload"></a>
+                <a class="icon-export"></a>
+            </div>
+        </form>
+        <div id="main-grid" class="l-grid-custom panel-bar-split"></div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,538 @@
+/*reset css*/
+html{ height: 100%; }
+body{
+	/* padding-top: 51px; */
+	height: 100%;
+	font-family: "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, "Droid Sans","wenquanyi micro hei","Hiragino Sans GB", "Hiragino Sans GB W3", Arial, sans-serif;
+}
+
+.container-fluid{
+	position: relative;
+	height: 100%;
+}
+
+
+.form-group-xs{
+	padding: 15px;
+}
+.form-group-xs .form-control {
+	height: 22px;
+	padding: 1px 5px;
+	font-size: 12px;
+	line-height: 1.5;
+	border-radius: 3px;
+}
+
+.sidebar,.content{
+	position: absolute;
+	height: 100%;
+}
+.sidebar{
+	left: 0;
+	padding: 0;
+	background: #fff;
+	border: 1px solid #ddd;
+}
+#leftIndexBar{
+	/*width: 22%;*/
+	width: 320px;
+}
+#middleIndexBar{
+    /*left: 22%;*/
+    left: 320px;
+	/*width: 78%;*/
+    z-index: 900;
+}
+.content{
+	right: 0;
+	background: #fff;
+}
+#rightIndexBar{
+    position: absolute;
+    padding: 0;
+    width: 0;
+    right: 0;
+    height: 100%;
+    border: 1px solid #ddd;
+    z-index: 903;
+    background-color: #fff;
+    z-index: 1050;
+}
+#rightIndexBar .rightSideBar{
+    width: 100%;
+    height: 100%;
+}
+#leftIndexBar .nav-sidebar,#rightIndexBar .rightSideBar{
+	position: relative;
+}
+.indexRightPanel .tab-content .tab-pane{
+	padding: 5px 15px;
+}
+#rightIndexBar .right-panel-content{
+    display: none;
+}
+
+.sidebar .nav-sidebar>.left-h-t1>.item-ht1{
+	padding: 15px;
+	color: #999;
+	background-color: #fff;
+	border-bottom: 1px solid #ddd;
+}
+.sidebar .nav-sidebar>.left-h-t1>.item-ht1:hover,.sidebar>.nav-sidebar>.left-h-t1>.item-ht1:focus{
+    color: #333;
+	background-color: #fff;
+}
+.left-h-t1>.item-ht1>.title-ht1{
+	max-width: 8em;
+	font-size: 16px;
+}
+.left-h-t1 .title-arrow{
+	float: right;
+	font-size: 18px;
+}
+.left-h-t2{
+	border-top: 1px solid #ddd;
+}
+.left-h-t2>.item-ht2{
+	border-bottom: 1px solid #ddd;
+}
+.left-h-t2>.item-ht2:last-child{
+	border-top: 1px solid #ddd;
+}
+.left-h-t2 .title-arrow{
+	float: right;
+	font-size: 14px;
+	color: #3EAFDB;
+	vertical-align: middle;
+}
+.nav-sidebar>.left-h-t2>.item-ht2,.nav-sidebar>.left-h-t2>.close-ht2{
+	background-color: #F6F7F9;
+}
+.left-h-t2>.item-ht2>.title-ht2,.left-h-t2>.close-ht2>.title-ht2{
+	padding-left: 4px;
+	max-width: 8em;
+	font-size: 16px;
+	color: #3EAFDB;
+	border-left: 3px solid #3EAFDB;
+}
+.left-h-t2 .sidebar-form-inline{
+	background-color: #d5d8dd;
+}
+.sidebar-form-inline .form-group-xs{
+	padding: 8px;
+}
+.item-ht1>.title-arrow>i,.item-ht2>.title-arrow>i{
+	font-family: webgisfont;
+	font-style: normal;
+	font-weight: 400;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-transition: all 500ms ease-in-out;
+	transition: all 500ms ease-in-out;
+}
+.item-ht1>.title-arrow>i.t1-icon:before{
+	content: "\f101";
+}
+.item-ht1.open>.title-arrow>i.t1-icon:before{
+	content: "\f100";
+}
+.item-ht2>.title-arrow>i.t2-icon:before{
+	content: "\f067";
+}
+.item-ht2.open>.title-arrow>i.t2-icon:before{
+	content: "\f068";
+}
+.item-content-t2 .title-ht3,.t3-CarList .title-ht3{
+    margin-top: 0;
+    margin-bottom: 0;
+	font-size: 16px;
+	line-height: 2;
+	background-color: #F6F7F9;
+	color: #666;
+	border: 1px solid #ddd;
+}
+.item-content-t2 .sidebar-tab .tab-content{
+    padding-top: 2px;
+}
+/*#car-tree-list , .sidebar-datatable>.agent-car-info{
+    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: auto;
+}*/
+.th-inner.sortable{
+    min-width: 5em;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+/*鍙充晶鏀剁缉灞曞紑*/
+.mapinfo-but {
+    position: absolute;
+    z-index: 910;
+    right: 0;
+    top: 50%;
+    margin-top: -32px;
+	width: 20px;
+    height: 64px;
+    overflow: hidden;
+}
+.mapinfo-but-con {
+    position: absolute;
+    width: 20px;
+    height: 56px;
+    line-height: 56px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    border-right: 0;
+    background-color: #fff;
+}
+.mapinfo-but-con .fa-angle-left,.mapinfo-but-con .fa-angle-right{
+    width: 8px;
+    height: 9px;
+    margin-left: 9px;
+}
+
+
+/*鎸囦护寮圭獥*/
+.cmd_motal .cmd_Carlist{
+	list-style: none;
+  	overflow: hidden;
+	border-bottom: #e5e5e5 1px solid;
+	padding: 6px 10px;
+}
+.cmd_motal .cmd_Carlist li{
+	float: left;
+	background-color: #beebff;
+	border-radius: 5px;
+	margin: 0 5px 5px;
+	padding: 0 5px;
+}
+.cmd_motal .cmd_Carlist li p{
+	margin: 0;
+}
+.cmd_motal .custInfo_label{
+	padding-right: 0;
+	text-align: right;
+}
+.cmd_motal .custInfo_text{
+	padding-left: 0;
+	padding-right: 0;
+	border-bottom: 1px solid #beebff;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 20px;
+}
+.cmd_motal .setblue{
+	color: #009DE0;
+}
+.cmd_motal input{
+	height: 24px;
+	line-height: 20px;
+	padding: 0 5px;
+}
+#play_history_dlg .modal-dialog{
+	width: 380px;
+}
+#play_history_dlg .modal-dialog .row{
+	line-height: 24px;
+	margin-bottom: 5px;
+}
+#setCommParam .row{
+	margin-bottom: 5px;
+}
+#setCommParam .radio-inline input[type="radio"] {
+  height: 14px;
+}
+/*------椤堕儴澶氱骇鑿滃崟------*/
+.dropdown:hover .menu-top {
+	display: block;
+}
+
+.dropdown-submenu{
+	position:relative;
+}
+
+.dropdown-submenu > .dropdown-menu{
+	top:0;
+	left:100%;
+	margin-top:-6px;
+	margin-left:-1px;
+	-webkit-border-radius:0 6px 6px 6px;
+	-moz-border-radius:0 6px 6px 6px;
+	border-radius:0 6px 6px 6px;
+}
+
+.dropdown-submenu:hover > .dropdown-menu{
+	display:block;
+}
+
+.dropdown-submenu > a:after{
+	display:block;
+	content:" ";
+	float:right;
+	width:0;
+	height:0;
+	border-color:transparent;
+	border-style:solid;
+	border-width:5px 0 5px 5px;
+	border-left-color:#cccccc;
+	margin-top:5px;
+	margin-right:-10px;
+}
+
+.dropdown-submenu:hover > a:after{
+	border-left-color:#ffffff;
+}
+
+.dropdown-submenu .pull-left{
+	float:none;
+}
+
+.dropdown-submenu.pull-left > .dropdown-menu{
+	left:-100%;
+	margin-left:10px;
+	-webkit-border-radius:6px 0 6px 6px;
+	-moz-border-radius:6px 0 6px 6px;
+	border-radius:6px 0 6px 6px;
+}
+
+#mapControlBar>li>a{
+	font-size: 18px;
+	/*padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 5px;*/
+	padding: 5px 10px 4px;
+}
+
+#mapControlBar .dropdown-menu {
+	left: 0;
+}
+
+.caret{
+	display: inline-block;
+	width: 0;
+	height: 0;
+	margin-left: 2px;
+	vertical-align: middle;
+	border-top: 4px solid;
+	border-right: 4px solid transparent;
+	border-left: 4px solid transparent;
+}
+
+/*---璀︽儏寮瑰嚭妗�--*/
+#pop {
+	background: #fff;
+	width: 100px;
+	height: 100px;
+	font-size: 12px;
+	position: absolute;
+	right: 0;
+	bottom: 10px;
+	z-index: 1040;
+}
+
+#popHead {
+	line-height: 32px;
+	background: #f6f0f3;
+	border-bottom: 1px solid #e0e0e0;
+	font-size: 12px;
+	padding-left: 10px;
+}
+
+#popHead h2 {
+	font-size: 14px;
+	color: #666;
+	line-height: 32px;
+	height: 32px;
+}
+
+#popHead #popClose {
+	position: absolute;
+	right: 10px;
+	top: 0px;
+}
+
+#popHead a#popClose:hover {
+	color: #f00;
+	cursor: pointer;
+}
+
+/*---鍖哄煙鐩戞帶---*/
+.item-content-t3 .row{
+	padding: 0;
+	overflow: hidden;
+	height: 30px;
+}
+
+.item-content-t3 .row span{
+	padding: 5px;
+	line-height: 24px;
+}
+
+.item-content-t3 .row .area_label{
+	text-align: right;
+}
+
+.item-content-t3 .row span input,.item-content-t3 .row span select{
+	line-height: 24px;
+	height: 24px;
+	font-size: 12px;
+	padding: 0 5px;
+}
+
+.t3-btnGroup{
+	padding: 10px 15px;
+	text-align: right;
+}
+
+.t3-btnGroup button{
+	margin-bottom: 5px;
+}
+
+.t3-CarList{
+	padding: 10px 0;
+}
+
+/*鍦板浘搴曢儴*/
+#consolediv_tabs li a{
+	padding:5px 10px;
+}
+
+#sidebar_ul li a{
+	padding:5px 10px;
+}
+/*boostrap css override start*/
+.nav-tabs {
+    background-color: #f5f5f5;
+}
+/*boostrap css override end*/
+/*boostrap table css override start*/
+.fixed-table-container {
+	border: 0;
+}
+.fixed-table-pagination{
+	height: 100%;
+	background-color: #f5f5f5;
+}
+.fixed-table-pagination > div{
+	background-color: #f5f5f5;
+}
+.fixed-table-pagination > div.pull-right{
+	margin-top: 6px;
+}
+.agent-car-info .clearfix,.monitor-table .clearfix,.t3-CarList .clearfix{
+	background-color: #f5f5f5;
+}
+.fixed-table-pagination .pagination,.fixed-table-pagination .pagination-detail{
+	margin-bottom: 0;
+	margin-top: 0px;
+	/*width: 100%;*/
+}
+
+.fixed-table-body {
+  border-bottom: 1px solid #ddd;
+}
+.fixed-table-pagination .pagination-detail button{
+	  padding: 1px 6px;
+}
+.fixed-table-pagination .pagination a{
+	padding: 1px 0;
+	width: 25px;
+  	text-align: center;
+  	font-size: 14px;
+}
+.btn-group .dropdown-menu{
+	min-width: 20px;
+	width: 100%;
+}
+.btn-group .dropdown-menu a{
+	padding: 0 5px;
+}
+
+/*add 琛ㄦ牸琛岄珮璋冩暣*/
+.bootstrap-table .table, .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td {
+  padding: 4px!important;
+}
+
+.fixed-table-container thead th .th-inner {
+  padding: 4px;
+  line-height: 20px;
+}
+
+.fixed-table-footer, .fixed-table-header {
+  height: 30px;
+}
+
+.bootstrap-table .table>thead>tr>th {
+  vertical-align: top;
+}
+/*boostrap table css override end*/
+.monitor-list{
+	overflow: hidden;
+}
+/*杞﹁締鍒楄〃濉壊*/
+#indexCarListInfo.table>tbody>tr.danger>td{
+	background-color: #e7a6a6;
+}
+
+#indexCarListInfo.table-hover>tbody>tr.danger:hover>td{
+	background-color: #ee9393;
+}
+
+#indexCarListInfo.table>tbody>tr.active>td{
+	background-color: #d6d0d0;
+}
+
+#indexCarListInfo.table-hover>tbody>tr.active:hover>td{
+	background-color: #c3bebe;
+}
+
+/*#user-name{
+	line-height: 16px;
+	vertical-align: text-top;
+}*/
+
+.sidebar-datatree{
+	overflow: auto;
+}
+
+.tips_bar{
+	height: 20px;
+	background-color: #efefef;
+	position: relative;
+}
+.float_tips{
+	position: absolute;
+	top: -20px;
+	background-color: #beebff;
+	display: inline-block;
+	width: 100%;
+	text-align: center;
+	display: none;
+}
+.tips_bar i{
+	width: 15px;
+	height: 15px;
+	display: inline-block;
+	border: 1px solid #bbb;
+	vertical-align: sub;
+}
+.tips_bar i.color_block_red{
+	background-color: #e7a6a6;
+}
+.tips_bar i.color_block_grad{
+	background-color: #d6d0d0;
+}
+.tips_bar i.color_block_green{
+	background-color: #dff0d8;
+}
+.tips{
+	width: 100%;
+	display: inline-block;
+	text-align: center;
+}

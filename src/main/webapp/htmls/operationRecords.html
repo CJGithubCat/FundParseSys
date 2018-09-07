@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <!-- 启用360浏览器的极速模式(webkit) -->
+    <meta name="renderer" content="webkit">
+    <!-- 避免IE使用兼容模式 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>操作记录</title>
+    <link rel="stylesheet" href="../vendor/bootstrap/dist/css/bootstrap.css"/>
+    <link rel="stylesheet" href="../vendor/ligerUI/skins/Aqua/css/ligerui-all.css"/>
+    <link rel="stylesheet" href="../css/public/ligerui-custom.css"/>
+    <link rel="stylesheet" href="../css/public/search-list-grid-tree.css"/>
+    <script src="../vendor/jquery/dist/jquery.js"></script>
+
+    <script src="../vendor/ligerUI/js/ligerui.all.js"></script>
+    <script src="../js/plugins/DataToView.js"></script>
+    <script src="../js/plugins/ligerui.other.js"></script>
+    <script src="../js/util/dateutil.js"></script>
+
+    <!-- 添加 foundation-datepicker 支持-->
+    <link rel="stylesheet" href="../vendor/foundation-datepicker/css/foundation-datepicker.min.css"/>
+    <link rel="stylesheet" href="../vendor/font-awesome/css/font-awesome.min.css"/>
+    <script src="../vendor/foundation-datepicker/js/foundation-datepicker.min.js"></script>
+    <script src="../vendor/foundation-datepicker/js/locales/foundation-datepicker.zh-CN.js"></script>
+    <style>
+        .refresh{
+            background: url(../images/refreshBg.png) no-repeat 0 3px;
+            width: 50px;
+            height: 20px;
+            display: inline-block;
+            padding-left: 20px;
+            text-decoration: none;
+            outline: none;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        a:hover{
+            text-decoration: none;
+        }
+        .data-list{
+            padding: 20px;
+            padding-left: 270px;
+        }
+    </style>
+    <!-- 机构树生成 -->
+    <script>   
+    $(function(){
+        var treeToggleButton = $('.tree-toggle-button');
+        var body = $('body');
+        treeToggleButton.on('click',function(e){
+           if(treeToggleButton.hasClass('show')){
+               treeToggleButton.removeClass('show');
+               body.removeClass('hide-tree');
+           }else{
+               treeToggleButton.addClass('show');
+               body.addClass('hide-tree');
+           }
+            setTimeout(function(){
+                $(window).trigger('resize');
+            },500);
+        });
+    });
+		$(function (){
+			var onOff=true;
+				window.tree=$("#tree").ligerTree({
+					url:'../company/queryTreeRootNode',
+					nodeWidth:200,
+					checkbox: false,
+					slide: false,
+					btnClickToToggleOnly: false,
+					isExpand: false,
+					idFieldName : 'treedataindex',
+					onSelect : function(node) {
+							var data = node.data;
+							//changeURL(node.data.params.attributesPath);
+							$("input[name='attributesPath']").prop('value',node.data.params.attributesPath);
+							$("input[name='agencyId']").prop('value',node.data.params.id);
+					},
+					isLeaf: function(data) {
+							return !(data.delay !== undefined || data.children !== undefined);
+					},
+					onExpand : function(e) {
+							this._parentNode = e.target;
+					},
+					onError:function(XMLHttpRequest, textStatus, errorThrown){
+							console.log(arguments);
+					},
+					onSuccess : function(newdata) { 
+							var parentNode = this._parentNode;
+							var menuData = [];
+							var parent = $(parentNode);
+						 // console.log(newdata)
+							$("input[name='attributesPath']").prop('value',newdata.datas.attributesPath);
+							$("input[name='agencyId']").prop('value',newdata.datas.id);
+							var parentData = this.getDataByID(parent.attr('treedataindex'));
+							if(parentData === null){
+								// 父节点为空时（即该节点为根节点时）
+									if(onOff){
+											$(newdata.datas).each(function() {
+													menuData.push({
+															text:this.text,
+															delay:{url:'../company/queryTreeNodeList'+'?&nodeId='+this.id},
+															params : this
+													});
+											})
+											// if(newdata.datas){
+											//     changeURL(newdata.datas.attributesPath);
+											// }
+											if (menuData.length <= 0)return;
+											this.append(this._parentNode, menuData);
+											if(parentData) delete parentData.delay;
+											onOff=false;
+											function a(){
+													$('.l-body').trigger('click');
+											}
+											a();
+									}else{
+											$(newdata.datas.list).each(function() {
+													var leaf={text:this.text,delay:{url:'../company/queryTreeNodeList'+'?&nodeId='+this.id},params : this};
+													if(this.isLeaf){
+															delete leaf.delay;
+													}
+													menuData.push(leaf);
+											})
+											if (menuData.length <= 0)return;
+											this.append(this._parentNode, menuData);
+											if(parentData) delete parentData.delay;
+									}
+							}else{
+								//该节点有父节点，不为根节点时
+								$(newdata.datas.list).each(function() {
+										var leaf={text:this.text,delay:{url:'../company/queryTreeNodeList'+'?&nodeId='+this.id},params : this};
+										if(this.isLeaf){
+												delete leaf.delay;
+										}
+										menuData.push(leaf);
+								})
+									if (menuData.length <= 0)return;
+									this.append(this._parentNode, menuData);
+									if(parentData) delete parentData.delay;
+							}
+					}
+				});
+		});
+		$(function(){
+			var nowDate=new Date();
+			var todayYear=nowDate.getFullYear();
+			var todayMonth=(nowDate.getMonth()+1)>9 ? (nowDate.getMonth()+1) :'0'+(nowDate.getMonth()+1);
+			var todayRiqi=(nowDate.getDate())>9?nowDate.getDate():'0'+nowDate.getDate();
+			var yesterdayRiqi=(nowDate.getDate()-1)>9?(nowDate.getDate()-1):'0'+(nowDate.getDate()-1);
+			//上面时间计算有问题
+			function GetDateStr(AddDayCount) { 
+					var dd = new Date(); 
+					dd.setDate(dd.getDate()+AddDayCount);//获取AddDayCount天后的日期 
+					var y = dd.getFullYear(); 
+					var m = dd.getMonth()+1;//获取当前月份的日期 
+					m = m>=10?m:'0'+m;
+					var d = dd.getDate();
+					d = d >= 10 ? d:'0'+d;
+					return y+"-"+m+"-"+d; 
+			}
+			var nowTemp = new Date();
+			var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate()+1, 0, 0, 0, 0);
+			var checkin =  $('#beginDate').fdatepicker({
+	            language:'zh-CN',
+	            format: 'yyyy-mm-dd hh:ii:ss',
+				onRender: function (date) {
+					return date.valueOf() > now.valueOf() ? 'disabled' : '';
+				}
+	        }).on('changeDate', function (ev) {
+				if (ev.date.valueOf() > checkout.date.valueOf()) {
+					var newDate = new Date(ev.date)
+					newDate.setDate(newDate.getDate() + 1);
+					checkout.update(newDate);
+				}
+				checkin.hide();
+				$('#endDate')[0].focus();
+			}).data('datepicker');
+			var checkout = $('#endDate').fdatepicker({
+	            language:'zh-CN',
+	            format: 'yyyy-mm-dd hh:ii:ss',
+				onRender: function (date) {
+					return date.valueOf() > now.valueOf() ? 'disabled' : '';
+				}
+			}).on('changeDate', function (ev) {
+				checkout.hide();
+			}).data('datepicker');
+			$('#beginDate').val(GetDateStr(-1)+' 00:00:00');
+			$('#endDate').val(GetDateStr(0)+' 00:00:00');
+	  });
+    $(function () {     	  
+    	  //设置表格参数
+    	  window.gridParms = {
+            url: D2V.RptURL.queryOperationRecords,
+            onSuccess : function(data) {
+            	if(data.success==true){
+            		var list=data.datas.list;
+            		for(var k=0;k<list.length;k++){
+            			if(list[k]['stamp']!=null){
+            				var stamp=new Date(list[k]['stamp']);
+            				var strstamp=stamp.Format("yyyy-MM-dd hh:mm:ss");
+            			    list[k]['stamp']=strstamp;
+            			}else{
+            				list[k]['stamp']="";
+            			}
+            		}            	
+            		data.list=data.datas.list;
+            		data.count=data.datas.count;
+            	}else{
+            		$.ligerDialog.warn(data.message);
+            	}
+    		    },            
+            delayLoad:true,
+            width: '100%',
+            parms: [],
+            height: '100%',
+            pageSizeOptions: [5,10,15,20],
+            checkbox: false,
+            rownumbers : false,
+            whenRClickToSelect:false,
+						onLoaded:function(){
+							$('.btn').removeAttr('disabled');
+							$("#main-grid .l-grid-loading").css("display","none");
+						}
+         };
+         window.mainGrid = initMainGrid('main-grid', gridParms,D2V.operationRecordsGrid);
+      });
+    
+      function queryOperationRecords(){    	  
+    	  var formParam = getFormDataAll('operationRecordsform');
+  	      for ( var k in formParam) {
+  		   var newdata;
+  		   newdata = $.trim(formParam[k]);
+  		   if (newdata != '') {
+  			 mainGrid.setParm(k, newdata);
+  		   } else {
+  			 mainGrid.removeParm(k);
+  			 delete formParam[k];
+  		   }
+  		 }
+  		 formParam.page = 1;
+  		var rp_value = $("select[name='rp']").val();
+  	     formParam.pagesize = rp_value;
+  		 mainGrid.changePage('first');	
+  		 $("#main-grid").ligerGetGridManager().loadServerData(formParam);
+			 $('.btn').attr('disabled','true');
+      }
+      
+     function exportOperationRecords(){
+  	    exportExcel(D2V.RptURL.exportOperationRecords,"operationRecordsform","POST",null);	   	    
+     }
+  	 function exportExcel(url,formId,method,params){
+  		if(params!=null){
+  		   for(var k=0;k<params.length;k++){
+  			 var field=params[k]['name'];
+  				var fieldValue=params[k]['value'];
+  				 if(k==0){
+  					url=url+"?"+field+"="+fieldValue;
+  				 }else{
+  					url=url+"&"+field+"="+fieldValue;
+  				 }
+  			 }
+  		 }
+  		 $('#'+formId).attr("action",url).attr('method',method.toUpperCase()).submit();
+  	  }
+			
+    </script>
+    
+</head>
+<body>
+    <a class="tree-toggle-button"></a>
+    <div class="tree-layout">
+        <div id="tree" class="l-tree-custom">
+        </div>
+    </div>
+    <div class="data-list">
+        <form class="form-inline data-list-search" id="operationRecordsform">
+         <input type="hidden" name="attributesPath">
+         <input type="hidden" name="agencyId">
+            <div class="form-group has-feedback" style="margin-top:3px">
+                <label>时间:</label>
+                <input type="text" class="form-control sjss" id="beginDate" name="beginDate" value="2016-08-05 00:00:00" style="width:195px">
+                <span class="glyphicon glyphicon-calendar form-control-feedback" aria-hidden="true"></span>
+            </div>
+            <div class="form-group has-feedback" style="margin-top:3px">
+                <label>-&nbsp;</label>
+                <input type="text" class="form-control sjss" id="endDate" name="endDate" style="width:195px">
+                <span class="glyphicon glyphicon-calendar form-control-feedback" aria-hidden="true"></span>
+            </div>
+            <div class="form-group" style="margin-top:3px">
+                <label for="description">描述:</label>
+                <input type="text" class="form-control" id="desc" name="desc" style="width:140px">
+            </div> 
+            <div class="form-group" style="margin-top:3px">
+                <button type="button" class="btn btn-search"  onclick="queryOperationRecords();return false;"><i class="icon icon-search"></i>查询</button>
+            </div>
+            <div class="form-group" style="margin-top:3px">
+                <button type="button" class="btn btn-search" onclick="exportOperationRecords()" style="background-color:#3d8cd1;"><i class="icon icon-search"></i>导出</button>
+            </div>
+        </form>
+        <div id="main-grid" class="l-grid-custom panel-bar-split"></div>
+    </div>
+</body>
+</html>

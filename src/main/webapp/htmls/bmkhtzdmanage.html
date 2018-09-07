@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<!-- 启用360浏览器的极速模式(webkit) -->
+<meta name="renderer" content="webkit">
+<!-- 避免IE使用兼容模式 -->
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>部门考核通知单管理</title>
+<link rel="stylesheet" href="../vendor/bootstrap/dist/css/bootstrap.css" />
+<link rel="stylesheet"
+	href="../vendor/ligerUI/skins/Aqua/css/ligerui-all.css" />
+<link rel="stylesheet" href="../css/public/ligerui-custom.css" />
+<link rel="stylesheet" href="../css/public/search-list-grid-tree.css" />
+<link href="../js/plugins/uploadify/uploadify.css" rel="stylesheet" />
+<script src="../vendor/jquery/dist/jquery.js"></script>
+<script src="../js/plugins/uploadify/jquery.uploadify.min.js"></script>
+<script src="../vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="../vendor/ligerUI/js/ligerui.all.js"></script>
+<script src="../js/plugins/DataToView.js"></script>
+<script src="../js/plugins/ligerui.other.js"></script>
+<script src="../js/util/dateutil.js"></script>
+<script src="../js/util/unittype.js"></script>
+<!-- 添加 foundation-datepicker 支持-->
+<link rel="stylesheet"
+	href="../vendor/foundation-datepicker/css/foundation-datepicker.min.css" />
+<link rel="stylesheet"
+	href="../vendor/font-awesome/css/font-awesome.min.css" />
+<script
+	src="../vendor/foundation-datepicker/js/foundation-datepicker.min.js"></script>
+<script
+	src="../vendor/foundation-datepicker/js/locales/foundation-datepicker.zh-CN.js"></script>
+
+<style>
+.icon-true {
+	background: #48C38B;
+	border-radius: 50%;
+	line-height: 18px;
+	color: white;
+	font-family: '微软雅黑';
+}
+div[toolbarid='item-2'] .l-icon{
+	transform:rotate(180deg);
+	-ms-transform:rotate(180deg); /* IE 9 */
+	-moz-transform:rotate(180deg); /* Firefox */
+	-webkit-transform:rotate(180deg); /* Safari and Chrome */
+	-o-transform:rotate(180deg); /* Opera */
+}
+.btn-primary,#close{
+	background-color: #40c5e1;
+	color: #fff;
+	border: 1px solid #40c5e1;
+	}
+.btn-primary:hover,#close:hover{
+    background-color: #337ab7;
+    color: #fff;
+    border: 1px solid #337ab7;
+}
+.btn-primary,.btn-default{
+	height: 32px;
+	width: 72px;
+	
+}
+/* .refresh{
+            background: url(../images/refreshBg.png) no-repeat 0 3px;
+            width: 50px;
+            height: 20px;
+            display: inline-block;
+            padding-left: 20px;
+            text-decoration: none;
+            outline: none;
+            font-size: 14px;
+            cursor: pointer;
+        }*/
+button {
+	outline: none;
+}
+.btn-primary:hover,.btn-primary:active{
+		    color: #fff;
+		    background-color: #28a0b9;
+		    border-color:#28a0b9;
+		}
+.l-grid-custom .l-grid-row.l-selected, .l-grid-custom .l-grid-row.l-selected a,.l-grid-custom .l-grid-row.l-selected div{
+			background:#1eb0da;
+			color:#fff;
+		}
+a:hover {
+	text-decoration: none;
+}
+
+.add, .update {
+	display: none;
+	font-size: 14px;
+	font-family: '微软雅黑';
+}
+/*add样式修改*/
+.l-dialog-tl {
+	height: 42px;
+}
+
+.l-dialog-tc {
+	padding-left: 15px;
+	/*border-top: 2px solid #fff;*/
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
+	background: none;
+	background-color: #efefef;
+}
+
+.l-dialog td div, #add-form label, #update-form label, #update-role-form label {
+	font-size: 14px;
+	font-family: '微软雅黑';
+	font-weight: normal;
+	color: #343f56;
+}
+
+.l-dialog-max, .l-dialog-collapse {
+	display: none;
+}
+.l-dialog-title{font-size:16px !important;}
+.l-dialog-close {
+	background: url(../images/closeHover.png) no-repeat;
+	width: 22px;
+	height: 22px;
+	position: absolute;
+	top: -2px;
+	right: 9px;
+}
+/*.l-dialog-close:hover{
+            background: url(../images/closeHover.png) no-repeat;
+        }*/
+#add-dialog .form-group .form-control, #update-dialog .form-group .form-control, #update-role-dialog .form-group .form-control
+	{
+	width: 200px;
+	height: 30px;
+	display: inline-block;
+}
+
+#add-form label, #update-form label, #update-role-form label {
+	width: 78px;
+	    text-align:right;
+    text-indent: 10px;
+}
+
+#add-dialog, #update-dialog, #update-role-dialog {
+	margin-top: 0px;
+}
+
+.form-control {
+	padding: 4px 12px;
+}
+
+#add-dialog .form-group, #update-dialog .form-group, #update-role-dialog .form-group {
+	margin-bottom: 12px;
+}
+
+.save {
+	position: absolute;
+	bottom: 0px;
+	left: 0;
+	height:45px;
+	width: 100%;
+	text-align: center;
+}
+
+.save button {
+	margin-top: 8px;
+	width: 70px;
+	height: 30px;
+	border-color: #40c5e1;
+	background-color: #40c5e1;
+	line-height: 1;
+	outline: none;
+}
+
+
+.l-dialog-cc, .l-dialog-body {
+	border-bottom-left-radius: 8px;
+	border-bottom-right-radius: 8px;
+}
+
+.l-dialog-cc {
+	border-top: none;
+}
+
+.l-dialog-win, .l-dialog {
+	border: none;
+}
+
+.l-window-mask {
+	background: none;
+	background: url(../images/Bgmask.png);
+	opacity: 1;
+}
+
+.data-list-search .btn {
+	outline: none;
+}
+
+span.btfuhao {
+	color: red;
+}
+
+.redBorder {
+	border: 1px solid red;
+}
+
+#add-form::-webkit-scrollbar {
+	width: 8px;
+	height: 4px;
+	position: absolute;
+	right: 4px;
+}
+
+#add-form::-webkit-scrollbar-track {
+	background-color: #e6e6e6;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+}
+
+#add-form::-webkit-scrollbar-thumb {
+	background-color: #b3b3b3;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+}
+
+#add-form::-webkit-scrollbar-thumb:hover {
+	background-color: #b3b3b3;
+}
+
+#add-form::-webkit-scrollbar-thumb:active {
+	background-color: #b3b3b3;
+}
+.notice_font_cls{
+	font-family: '微软雅黑';
+}
+.section_head_cls{
+	text-indent:2em;
+}
+.notic_key_word_cls{
+ 	color:red;
+}
+
+.notice_key_num{
+	font-weight:bold;
+}
+.title_cls{
+	font-size:20px;
+}
+
+#jyz_notice-dialog,#depart_notice-dialog{
+	padding-left:20px;
+	padding-right:20px;
+}
+</style>
+<!-- 机构树生成 -->
+<script>
+	$(function() {
+		var treeToggleButton = $('.tree-toggle-button');
+		var body = $('body');
+		treeToggleButton.on('click', function(e) {
+			if (treeToggleButton.hasClass('show')) {
+				treeToggleButton.removeClass('show');
+				body.removeClass('hide-tree');
+			} else {
+				treeToggleButton.addClass('show');
+				body.addClass('hide-tree');
+			}
+			setTimeout(function() {
+				$(window).trigger('resize');
+			}, 500);
+		});
+	});
+	$(function() {
+		var onOff = true;
+		window.tree = $("#tree")
+				.ligerTree(
+						{
+							url : '../company/queryTreeRootNode',
+							nodeWidth : 200,
+							checkbox : false,
+							slide : false,
+							btnClickToToggleOnly : false,
+							isExpand : false,
+							idFieldName : 'treedataindex',
+							onSelect : function(node) {
+								var data = node.data;
+								<!--市级公司权限-->
+								var strVar = "";
+							    strVar += "<option value=\"1\">未下发<\/option>\n";
+							    strVar += "<option value=\"2\">已下发县级部门,未确认<\/option>\n";
+							    strVar += "<option value=\"3\">县级部门已确认接收<\/option>\n";
+							    <!--县级部门权限-->
+							    var strVar1 = "";
+							    strVar1 += "<option value=\"2\">已下发县级部门,未确认<\/option>\n";
+							    strVar1 += "<option value=\"3\">县级部门已确认接收<\/option>\n";
+							    
+	                            var companyType = node.data.params.companyType;
+	                            
+								if (companyType == 0) {
+									$("#status").append(strVar);
+								} else if (companyType == 1 || companyType == 2 || companyType == 3 || companyType == 4) {
+									$("#status").append(strVar1);
+								}
+								//console.log(node.data);
+								//changeURL(node.data.params.companyPath);
+								$("input[name='companyPath']").prop('value',
+										node.data.params.companyPath);
+								$("input[name='companyId']").prop('value',
+										node.data.params.id);
+								$("input[name='companyType']").prop('value',
+										companyType);
+								findBmkhtzd();
+							},
+							isLeaf : function(data) {
+								return !(data.delay !== undefined || data.children !== undefined);
+							},
+							onExpand : function(e) {
+								this._parentNode = e.target;
+							},
+							onError : function(XMLHttpRequest, textStatus,
+									errorThrown) {
+								console.log(arguments);
+							},
+							onSuccess : function(newdata) {
+								var parentNode = this._parentNode;
+								var menuData = [];
+								var parent = $(parentNode);
+								// console.log(newdata)
+								$("input[name='companyPath']").prop('value',
+										newdata.datas.companyPath);
+								$("input[name='companyId']").prop('value',
+										newdata.datas.id);
+								var parentData = this.getDataByID(parent
+										.attr('treedataindex'));
+								
+								var companyType = newdata.datas.companyType;
+								var needChild;
+								if(parseInt(companyType) == 0){
+									needChild = 1;
+								}else{
+									needChild = 0;
+								}
+								
+								if (parentData === null) {
+									// 父节点为空时（即该节点为根节点时）
+									if (onOff) {
+										$(newdata.datas)
+												.each(
+														function() {
+															menuData
+																	.push({
+																		text : this.text,
+																		delay : {
+																			url : '../company/queryTreeNodeList'
+																					+ '?&nodeId='
+																					+ this.id + "&needChild=" +needChild
+																		},
+																		params : this
+																	});
+														})
+										// if(newdata.datas){
+										//     changeURL(newdata.datas.companyPath);
+										// }
+										if (menuData.length <= 0)
+											return;
+										this.append(this._parentNode, menuData);
+										if (parentData)
+											delete parentData.delay;
+										onOff = false;
+										function a() {
+											$('.l-body').trigger('click');
+										}
+										a();
+									} else {
+										$(newdata.datas.list)
+												.each(
+														function() {
+															var leaf = {
+																text : this.text,
+																delay : {
+																	url : '../company/queryTreeNodeList'
+																			+ '?&nodeId='
+																			+ this.id + "&needChild=" +needChild
+																},
+																params : this
+															};
+															if (this.isLeaf) {
+																delete leaf.delay;
+															}
+															menuData.push(leaf);
+														})
+										if (menuData.length <= 0)
+											return;
+										this.append(this._parentNode, menuData);
+										if (parentData)
+											delete parentData.delay;
+									}
+								} else {
+									//该节点有父节点，不为根节点时
+									$(newdata.datas.list)
+											.each(
+													function() {
+														var leaf = {
+															text : this.text,
+															delay : {
+																url : '../company/queryTreeNodeList'
+																		+ '?&nodeId='
+																		+ this.id
+															},
+															params : this
+														};
+														if (this.isLeaf) {
+															delete leaf.delay;
+														}
+														menuData.push(leaf);
+													})
+									if (menuData.length <= 0)
+										return;
+									this.append(this._parentNode, menuData);
+									if (parentData)
+										delete parentData.delay;
+								}
+							}
+						});
+	});
+</script>
+<script>
+	//日期格式化
+	$(function(){
+  	  	var nowTemp = new Date();
+		var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate()+1, 0, 0, 0, 0);
+		var checkin =  $('#sumaryYmSearch').fdatepicker({
+            language:'zh-CN',
+            changeMonth: true,
+            changeYear: true,
+            format: 'yyyyMM',
+			onRender: function (date) {
+				return date.valueOf() > now.valueOf() ? 'disabled' : '';
+			}
+        }).on('changeDate', function (ev) {
+			if (ev.date.valueOf() > now) {
+				var newDate = new Date(ev.date)
+				newDate.setDate(newDate.getDate() + 1);
+			}
+			checkin.hide();
+		}).data('datepicker');
+    });
+</script>
+<script>
+	$(function() {
+		$('#time').fdatepicker({
+			language : 'zh-CN',
+			format : 'yyyy-mm-dd'
+		});
+	});
+
+	var rowIndex = null;
+	$(function() {
+		//获取用户菜单按钮权限
+		$.ajax({
+			url:'../module/queryInfoManagePermissionsByUid',
+			method:"POST",
+			dataType:"json",
+			data : {
+				"infoManageType":"BMKHTZDManage"
+			},
+			async: false,
+			success:function(data){
+				grid(data);
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+				console.log(XMLHttpRequest.status);
+			}
+		});
+		
+		var menu = $.ligerMenu({
+		});
+		
+		function grid(data){
+			//设置表格参数
+			window.gridParms = {
+				url : D2V.BmkhtzdManageURL.queryBmkhtzd,
+				onLoaded : function(grid) {
+					setTimeout(function() {
+						$('.l-grid-loading').hide();
+						$(".l-grid-row-cell-inner").each(function() {
+							var that = $(this);
+							that.attr('title', that.text());
+						})
+					}, 200);
+				},
+				onSuccess : function(data) {
+					if (data.success == true) {
+						var bmkhtzdList = data.datas.list;
+						for (var k = 0; k < bmkhtzdList.length; k++) {
+// 							var status = bmkhtzdList[k]['status'];
+// 							switch (status) {
+// 							case 1:
+// 								bmkhtzdList[k]['status'] = "未下发";
+// 								break;
+// 							case 2:
+// 								bmkhtzdList[k]['status'] = "已下发县级部门,未确认";
+// 								break;
+// 							case 3:
+// 								bmkhtzdList[k]['status'] = "县级部门已确认接收";
+// 								break;
+// 							default:
+// 								bmkhtzdList[k]['status'] = "未下发";
+// 							}
+						}
+						data.list = data.datas.list;
+						data.count = data.datas.count;
+					} else {
+						$.ligerDialog.warn(data.message);
+					}
+				},
+				//工具栏            
+				toolbar : {
+					items: (function(){
+						var buttonArr = data.datas.buttonItems;
+						var obj=[];
+						var clk;
+						$.each(buttonArr,function(i,item){
+							if(item.description=="下发通知单(市级)"){
+								clk=operateBmkhtzd;
+							}else if(item.description=="县级部门接收"){
+								clk=operateBmkhtzd;
+							}else if (item.description == "修改通知单") {
+								clk = updateJyzkhtzd;
+								itemObj.click=clk;
+								itemObj.text=item.description;
+								itemObj.icon=item.iconurl;
+							}else if (item.description == "工资Excel模板下载") {
+								//clk=addbmkhtzd;
+								item.description ='<a href="../template/salary_module.xls" style="text-decoration: none">excel模板下载.xls</a>';
+								clk='';
+							}else if (item.description == "导入工资明细") {
+								clk='';
+							}
+							obj.push({text:item.description,click:clk,icon:item.iconurl});
+						});
+						return obj;
+					})()					
+				},
+				delayLoad : true,
+				onError : function(XMLHttpRequest, textStatus, errorThrown) {
+					//console.log(status, err);
+				},
+				width : '100%',
+				parms : [],
+				height : '100%',
+				pageSizeOptions : [ 5, 10, 15, 20 ],
+				checkbox : true,
+				rownumbers : true,
+				onDblClickRow : function(data, rowindex, rowobj) {
+					updateBmkhtzd(rowindex, true);
+				},
+				//sortName: 'loginName',
+				onRClickToSelect : false,
+//	 			onContextmenu : function(parm, e) {//param是个对象包含三个参数 {data,rowindex,row}
+//	 				menu.show({
+//	 					top : e.pageY,
+//	 					left : e.pageX
+//	 				});
+//	 				rowIndex = parm.rowindex;
+//	 				return false;
+//	 			},
+				whenRClickToSelect : true
+			};
+			//初始化表格(根据url加载表格数据)
+			var optcol=[{show:'操作',field:'chujing',width:60,align:'center',render:'renderOpt'}];
+			window.mainGrid = initMainGrid('main-grid', gridParms,optcol.concat(D2V.BmkhtzdManageGrid));
+		}
+		
+		/*关闭通知单展示框*/
+		$("#bnNoticeCalcle").on('click',function(){
+			closeDialog('depart_notice-dialog');
+			$('.notice_key_num').html(' ');
+		});
+	});
+	
+	/*操作列*/
+	function renderOpt(rowdata, index, value) {
+		var str = '<a href="javascript:;"' + ' onclick="viewNotice(' + index + ')">预览</a>';
+		return str;
+	}
+	
+	/* 预览通知单 */
+	function viewNotice(index){
+		var dataObj = mainGrid.getRow(index);
+		$('.notice_key_num').html(' ');
+		var nowDate=new Date();
+      	var date=new Date();
+      	date.setDate(1);
+      	var todayYear=nowDate.getFullYear();
+  		var todayMonth=(nowDate.getMonth()+1)>9 ? (nowDate.getMonth()+1) :'0'+(nowDate.getMonth()+1);
+  		var todayRiqi=(nowDate.getDate())>9?nowDate.getDate():'0'+nowDate.getDate();
+  		
+    	openDialog('depart_notice-dialog',{title:'预览通知单',width:600,height:500},function dialog(){
+    		//填充页面的数据
+    		console.log(dataObj);/////////////////
+    		var companyName = '';//部门名称
+    		var yearMonthDate = '';//汇总日期
+    		var year = 2018;
+    		var month = 5;
+    		
+      		console.log('todayYear:' + todayYear + "  todayMonth:"  + todayMonth + "  todayRiqi:" + todayRiqi); /////////////
+    		companyName = dataObj.bmmc;
+    		yearMonthDate=dataObj.yearMonthDate;
+    		if(yearMonthDate.indexOf('-') != -1){//2018-06
+    			var arr = yearMonthDate.split("-");
+    			year = Number(arr[0]);
+    			month = Number(arr[1]);
+    		}else{
+    			var yearStr = yearMonthDate.substring(0,4);
+    			year = Number(yearStr);
+    			var monthStr =yearMonthDate.substring(4,6);
+    			month = Number(monthStr);
+    		}
+    		var zhdfl = dataObj.zhdfl;//总和得分率
+    		var llggxs = dataObj.llggxs;//联量挂钩系数
+    		var xcxfy = dataObj.xcxfy;//合计：薪酬性费用
+    		var jbxc = dataObj.jbxc;//基本薪酬
+    		var llxc = dataObj.llxc;//联量薪酬
+    		var jbf = dataObj.jbf;//加班费
+    		var gdbc = dataObj.gdbc;//过度补差
+    		var qtgz = dataObj.qtgz;//其他工资
+    		var zxjf = dataObj.zxjf;//专项奖罚
+    		var qtbt = dataObj.qtbt;//其他补贴
+    		var glkf = dataObj.glkf;//管理扣罚
+    		var lxxc = dataObj.lxxc;//劳效薪酬
+    		var qjrygz = dataObj.qjrygz;//请假人员工资
+    		var blc = dataObj.blc;//保留差
+    		var qt=blc+gdbc+blc+qtbt+jbf+qtgz;
+    		
+    		
+    		console.log('yearMonthDate:' + yearMonthDate + "  year:"  + year + "  month:" + month); /////////////
+    		//填充通知单预览中的内容
+    		$("#depart_head_year").html(year);
+    		$("#depart_head_month").html(month);
+    		$("#depart_content_year").html(todayYear);
+    		$("#depart_bmName").html(companyName);
+    		$("#depart_bmName1").html(companyName);
+    		$("#depart_cont_month").html(month);
+    		$('#depart_zhdfl_num').html(zhdfl);
+    		$('#depart_lgxs_num').html(llggxs);
+    		$('#depart_xc_num').html(xcxfy);
+    		$('#depart_jbxc_num').html(jbxc);
+    		$('#depart_llxc_num').html(llxc);
+    		$('#depart_jbf_num').html(jbf);
+    		$('#depart_gdbc_num').html(gdbc);
+    		$('#depart_qtgz_num').html(qtgz);
+    		$('#depart_zxjf_num').html(zxjf);
+    		$('#depart_qtbt_num').html(qtbt);
+    		$('#depart_glkf_num').html(glkf);
+    		$('#depart_lxxc_num').html(lxxc);
+    		$('#bottom_depart_year').text(todayYear);
+    		$('#bottom_depart_month').text(todayMonth);
+    		$('#bottom_depart_day').text(todayRiqi);
+    		$('#depart_qjrygz_num').text(qjrygz);
+    		$('#depart_blc_num').text(blc);
+    		$('#depart_qt_num').text(qt);
+    	});
+	}
+	
+	//修改图标，并绑定下载事件
+	$(function() {
+		var toolbatItems = $("div.l-toolbar-item");				
+		$.each(toolbatItems,function(index){
+			var tempObj = toolbatItems[index];
+// 			console.log($(tempObj).attr('toolbarid'))
+// 			console.log($(tempObj).find('span').text());
+			if($(tempObj).find('span').text() === '部门接收'){
+				var toolbarid = $(tempObj).attr('toolbarid');
+				$("div[toolbarid='"+ toolbarid +"'] .l-icon").removeClass("l-icon-add").addClass("icon-true").text('≥');
+			}else if($(tempObj).find('span').text() === 'excel模板下载.xls'){
+				var toolbarid = $(tempObj).attr('toolbarid');
+				$("div[toolbarid='"+ toolbarid +"'] .l-icon").removeClass("l-icon-add").addClass("icon-true").text('↓');
+			}
+			else if($(tempObj).find('span').text() === '导入工资明细'){
+				var toolbarid = $(tempObj).attr('toolbarid');
+				$("div[toolbarid='"+ toolbarid +"'] .l-icon").removeClass("l-icon-add").addClass("icon-true").text('☇');
+				$("div[toolbarid='"+ toolbarid +"']").attr('data-toggle', 'modal').attr('data-target', '#myModal').attr('data-backdrop', 'false');
+			}
+		});
+	})
+	
+	//上传按钮点击事件
+	function uploadFileClick(){
+		var selectData = mainGrid.getSelectedRows();
+        if(selectData.length>1){
+            $.ligerDialog.warn('一次操作只能选择一条数据!');
+            return;
+        }else if(selectData.length == 0){
+        	$.ligerDialog.warn('请选择一条通知单数据数据!');
+            return;
+        }
+        $('#file_upload').uploadify('upload', '*');	
+	}
+	$(function() {
+		//添加界面的附件管理
+		$('#file_upload').uploadify({
+			'swf' : '../js/plugins/uploadify/uploadify.swf', //FLash文件路径
+			'buttonText' : '浏  览', //按钮文本
+			'uploader' : D2V.salaryURL.uploadSalaryExcel, //处理上传的页面
+			'queueID' : 'fileQueue', //队列的ID
+			'queueSizeLimit' : 1, //队列最多可上传文件数量，默认为999
+			'auto' : false, //选择文件后是否自动上传，默认为true
+			'multi' : false, //是否为多选，默认为true
+			'removeCompleted' : true, //是否完成后移除序列，默认为true
+			'fileSizeLimit' : '10MB', //单个文件大小，0为无限制，可接受KB,MB,GB等单位的字符串值
+			'fileTypeDesc' : 'Excel Files', //文件描述
+			'fileTypeExts' : '*.xls', //上传的文件后缀过滤器
+            /* 'method':'post', */
+			'onQueueComplete' : function(event, data) { //所有队列完成后事件
+				//业务处理代码
+				//提示用户Excel格式是否正常，如果正常加载数据
+			},
+			'onUploadStart' : function(file) {
+				var selectData = mainGrid.getSelectedRows()[0];
+				//动态传参数
+				$("#file_upload").uploadify("settings","formData",{
+					"companyId":selectData.companyId,
+					"salaryType":1,
+					"noticeId":selectData.id
+				});
+			},
+			'onUploadError' : function(event, queueId, fileObj, errorObj) {
+			},
+			'onUploadSuccess':function(file, data, response){ 
+				var datas = $.parseJSON(data);
+				console.log(datas);
+				if (datas.success === true) {
+					$.ligerDialog.success(datas.message);
+					mainGrid.reload();
+				} else {
+					$.ligerDialog.error(datas.message);
+				}
+            }
+		});
+	}
+   );
+	//关闭上传面板
+	function uploadFileClose(){
+		$('#file_upload').uploadify('cancel', '*');
+		//$('#summaryYearMonth').val("");
+	}
+	
+	//下发考核通知单
+ 	function operateBmkhtzd(event){
+ 		var buttonText=event.text;
+		var selectData = mainGrid.getSelectedRows();
+		if(selectData.length == 0){
+			$.ligerDialog.warn('您没有选中任何信息!');
+			return;
+		}
+		var status = 1;
+		$(selectData).each(function() {
+			if (this.status !== undefined)
+				status=status*this.status;
+		});
+		
+		var changeStatus=0;
+		//判断执行的是哪个操作
+		//下发通知单(市级)，必须全部状态为1或者为6才能下发
+		if(buttonText=='下发通知单(市级)'){
+			if (status != 1 && status % 6 != 0) {
+				$.ligerDialog.warn('只有未下发状态通知单才能下发!');
+				return;
+			}
+			changeStatus = 2;
+		//县级部门接收，必须全部状态为2才能下发
+		}else if(buttonText=='县级部门接收'){
+			if(status%2!=0){
+				$.ligerDialog.warn('只有待接收状态的通知单才能接收!');
+				return;
+			}
+			changeStatus=3;
+		}
+		
+		if (selectData.length == 1) {
+			operateBmkhtzdOne();
+			return;
+		} else if (selectData.length > 1) {
+			operateBmkhtzdMore();
+		}
+		//过滤非法状态
+		if(changeStatus == 0){
+			$.ligerDialog.warn('更新状态为非法,下发失败!');
+			return;
+		}
+		function operateBmkhtzdOne() {
+			selectData.length > 0 ? $.ligerDialog.confirm('确定要操作所选通知单?',
+					function(yes) {
+						if (yes === false)
+							return;
+						$.ajax({
+							type : "POST",
+							url : D2V.BmkhtzdManageURL.operateBmkhtzd,
+							data : {
+								id : selectData[0].id,
+								changeStatus : changeStatus
+							},
+							error : function(xhr, status, err) {
+								$.ligerDialog.error('下发通知单失败,网络故障,请重新登录系统或稍后再试!');
+								return;
+							},
+							success : function(data) {
+								if (data.success === true) {
+									$.ligerDialog.success('操作通知单成功!');
+									mainGrid.reload();
+								} else {
+									$.ligerDialog.error(data.message);
+								}
+							},
+							dataType : 'json'
+						});
+					}) : $.ligerDialog.warn('您没有选中任何信息!');
+		}
+		
+		//批量操作考核通知单
+		function operateBmkhtzdMore() {
+			var BumenkhtzdJson = [];
+			$(selectData).each(function() {
+				if (this.id !== undefined)
+					BumenkhtzdJson.push({
+						'id' : this.id
+					});
+			});
+			selectData.length > 0 ? $.ligerDialog.confirm('确定要批量操作所选通知单?',
+					function(yes) {
+						if (yes === false)
+							return;
+						$.ajax({
+							type : "POST",
+							url : D2V.BmkhtzdManageURL.batchOperateBmkhtzd,
+							data : JSON.stringify({
+								BumenkhtzdJson : BumenkhtzdJson,
+								changeStatus : changeStatus
+							}),
+							error : function(xhr, status, err) {
+								$.ligerDialog.error('批量操作通知单失败,网络故障,请重新登录系统或稍后再试!');
+								return;
+							},
+							success : function(data) {
+								if (data.success === true) {
+									$.ligerDialog.success('批量操作通知单成功!');
+									mainGrid.reload();
+								} else {
+									$.ligerDialog.error(data.message);
+								}
+							},
+							dataType : 'json',
+							contentType : "application/json; charset=utf-8"
+						});
+					}) : $.ligerDialog.warn('您没有选中任何信息!');
+		}
+	}
+
+	//导出
+	function exportFile() {
+		var formParam = getFormDataAll('bmkhtzdmanageformid');
+		var url = D2V.BmkhtzdManageURL.exportBmkhtzdmanage;
+		var paramStr = '?';
+		if (formParam['companyPath'] != null
+				&& formParam['companyPath'].length > 0) {
+			paramStr = paramStr + "&companyPath=" + formParam['companyPath'];
+		}
+		formParam['yearMonthDate'] = encodeURIComponent(encodeURIComponent(formParam['yearMonthDate']));
+		formParam['bmmc'] = encodeURIComponent(encodeURIComponent(formParam['bmmc']));
+		paramStr = paramStr + "&yearMonthDate=" + formParam['yearMonthDate'];
+		paramStr = paramStr + "&bmmc=" + formParam['bmmc'];
+		paramStr = paramStr + "&status=" + formParam['status'];
+		console.log(paramStr);
+		url = url + paramStr;
+		window.open(url, '_self');
+	}
+	//
+	function findBmkhtzd() {
+		var formParam = getFormDataAll('bmkhtzdmanageformid');
+		for ( var k in formParam) {
+			var newdata;
+			newdata = $.trim(formParam[k]);
+			if (newdata != '') {
+				mainGrid.setParm(k, newdata);
+			} else {
+				mainGrid.removeParm(k);
+				delete formParam[k];
+			}
+		}
+		formParam.page = 1;
+		var rp_value = $("select[name='rp']").val();
+		formParam.pagesize = rp_value;
+		mainGrid.changePage('first');
+		$("#main-grid").ligerGetGridManager().loadServerData(formParam);
+	}
+
+	function closeAdd() {
+		closeDialog('add-dialog');
+	}
+	function closeUpdate() {
+		closeDialog('update-dialog');
+	}
+</script>
+</head>
+<body>
+	<a class="tree-toggle-button"></a>
+	<div class="tree-layout">
+		<div id="tree" class="l-tree-custom"></div>
+	</div>
+	<div class="data-list">
+		<form class="form-inline data-list-search" id="bmkhtzdmanageformid"
+			name="bmkhtzdmanageform">
+			<input type="hidden" name="companyPath">
+			<input type="hidden" name="companyType">
+			<div class="form-group has-feedback" style="margin-top:3px;">
+                <label>日期:</label>
+                <input type="text" class="form-control sjss" id="sumaryYmSearch" name="yearMonthDate" style="width:140px;">
+                <span class="glyphicon glyphicon-calendar form-control-feedback" aria-hidden="true"></span>
+            </div>
+			<div class="form-group">
+				<label for="exampleInputName2">部门名称:</label> <input type="text"
+					class="form-control" id="loginnameid" name="bmmc" style="width:120px">
+			</div>
+			<div class="form-group">
+				<label>状态:</label> <select class="form-control" name="status" id="status">
+<!-- 					<option value="1">未下发</option> -->
+<!-- 					<option value="2">已下发县级部门,未确认</option> -->
+<!-- 					<option value="3">县级部门已确认接收</option> -->
+				</select>
+			</div>
+			<div class="form-group">
+				<button type="button" class="btn btn-search" onclick="findBmkhtzd()">
+					<i class="icon icon-search"></i>查询
+				</button>
+			</div>
+			<div class="form-group">
+				<button type="button" class="btn btn-search"
+					onclick="exportFile();return false;"
+					style="background-color: #3d8cd1;">
+					<i class="icon icon-search"></i>导出
+				</button>
+			</div>
+		</form>
+		<div id="main-grid" class="l-grid-custom panel-bar-split"></div>
+	</div>
+	
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true" onclick="javascript: $('#file_upload').uploadify('cancel', '*')">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">工资明细导入</h4>
+				</div>
+				<div class="modal-body">
+					<input id="file_upload" name="file_upload" type="file"
+						multiple="multiple" />
+					<div id="fileQueue" class="fileQueue"></div>
+
+					<div id="div_files"></div>
+					<br/>
+				</div>
+				<div class="modal-footer">
+					<a href="javascript:;" class="btn btn-primary" id="btnUpload"
+						onclick="uploadFileClick();">上传</a>
+					<a href="javascript:;" class="btn btn-default" id="btnCancelUpload"
+						onclick="javascript: $('#file_upload').uploadify('cancel', '*')">取消</a>
+					<a href="javascript:;" class="btn btn-default" data-dismiss="modal"  id="close"
+						onclick="javascript: $('#file_upload').uploadify('cancel', '*')">关闭</a>	
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- *********部门考核通知单预览******** -->
+	<div id="depart_notice-dialog" class="add notice_font_cls">
+        <div>
+        	<p class="title_cls" align="center"><span id="depart_bmName1"></span> <span id="depart_head_year" class=""> </span>年<span id="depart_head_month"> </span>月份绩效工资通知单</p>
+        	<p><span id="depart_bmName" class="notic_key_word_cls"> </span>通知单:</p>
+        	<p class="section_head_cls">
+        		根据2018年绩效考核及薪酬分配暂行办法，经对你单位<span id="depart_cont_month" class="notice_key_num"> </span>月份综合目标完成情况进行考核，
+        		<span class="section_head_cls">绩效考核系数（联量挂钩系数）  </span><span id="depart_lgxs_num" class="notice_key_num"> </span>，现批准你单位按 <span id="depart_xc_num" class="notice_key_num"> </span> 元的薪酬进行考核分配。具体如下：
+        	</p>
+        	<p class="section_head_cls">
+        		一、<span class="notic_key_word_cls">基本薪酬 </span><span class="notice_key_num"  id="depart_jbxc_num"> </span> 元
+        	</p>
+        	<p class="section_head_cls">
+        		二、<span class="notic_key_word_cls">联量薪酬 </span><span class="notice_key_num"  id="depart_llxc_num"> </span> 元
+        	</p>
+        	<p class="section_head_cls">
+	        	三、<span class="notic_key_word_cls">其他 </span><span class="notice_key_num" id="depart_qt_num"> </span> 元。<br/>
+	        </p>
+        	<p class="section_head_cls">（一） <span class="section_head_cls">请假人员工资 </span> <span class="notice_key_num" id="depart_qjrygz_num"> </span> 元。</p>
+        	<p class="section_head_cls">（二） <span class="section_head_cls">过渡补差 </span><span class="notice_key_num" id="depart_gdbc_num"> </span> 元。</p>
+        	<p class="section_head_cls">（三） <span class="section_head_cls">保留差 </span><span class="notice_key_num" id="depart_blc_num"> </span> 元。</p>
+        	<p class="section_head_cls">（四） <span class="section_head_cls">其他补贴 </span> <span class="notice_key_num" id="depart_qtbt_num"> </span> 元。</p>
+        	<p class="section_head_cls">（五） <span class="section_head_cls">加班费 </span><span class="notice_key_num" id="depart_jbf_num"> </span> 元。</p>
+        	<p class="section_head_cls">（六） <span class="section_head_cls">其他工资 </span><span class="notice_key_num" id="depart_qtgz_num"> </span> 元。</p>
+        	<p class="section_head_cls">
+        	四、<span class="notic_key_word_cls">专项奖罚 </span><span class="notice_key_num" id="depart_zxjf_num"> </span> 元
+        	</p>
+        	<p class="section_head_cls">
+        	五、<span class="notic_key_word_cls">管理扣罚 </span><span class="notice_key_num" id="depart_glkf_num"> </span> 元
+        	</p>
+        	<p class="section_head_cls">
+        	六、<span class="notic_key_word_cls">劳效薪酬 </span><span class="notice_key_num" id="depart_lxxc_num"> </span> 元
+        	</p>
+        	<p class="notice_bottom" align="right">
+        		<span  style="padding-right:40px;">郑州石油分公司</span><br/>
+        		<span  style="padding-right:40px;">
+        			<label class="notice_key_num" id="bottom_depart_year"></label>年
+        			<label class="notice_key_num" id="bottom_depart_month"></label>月
+        			<label id="bottom_depart_day" class="notice_key_num"></label>日
+        		</span>
+        	</p>
+        </div>
+        <div class="save">
+             <button type="reset" class="btn btn-primary" id="bnNoticeCalcle">关闭</button>
+        </div>
+    </div>
+</body>
+</html>

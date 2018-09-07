@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zsh.labouCapital.dao.OperationRecordsMapper">
+    <!-- 写入日志 -->
+    <insert id="writeLog" keyColumn="log_id" keyProperty="logId" useGeneratedKeys="true" parameterType="com.zsh.labouCapital.entity.OperationLog">
+         INSERT INTO t_operation_log
+            (user_id,
+             module_id,
+             remote_ip,
+             description)
+		VALUES (#{userId},
+		        #{moduleId},
+		        #{remoteIp},
+		        #{operateDescription}
+		)        
+    </insert>
+    
+    <!-- 查询操作日志 -->
+	<resultMap type="map" id="operationRecordsInfoResult">
+		<result column="login_name" 	  property="login_name" 	  javaType="String"/>
+		<result column="user_name" 		  property="user_name" 	      javaType="String"/>
+		<result column="description" 	  property="description" 	  javaType="String"/>
+		<result column="permissionsdesc"  property="permissionsdesc"  javaType="String"/>
+		<result column="op_time" 	      property="op_time" 	      javaType="String"/>
+		<result column="remote_ip" 		  property="remote_ip" 		  javaType="String"/>
+	</resultMap>
+	
+	<select id="queryOperationRecordsInfoPage" parameterType="map" resultMap="operationRecordsInfoResult">
+		SELECT 
+		  * 
+		FROM
+		  (SELECT 
+		    * 
+		  FROM
+		    (SELECT 
+		      tu.login_name,
+		      tu.user_name,
+		      tm.description,
+		      tol.description AS permissionsdesc,
+		      tol.remote_ip,
+		      tol.op_time,
+		      ROW_NUMBER () OVER (
+		    ORDER BY tol.log_id DESC) AS ROW 
+		    FROM
+		      t_operation_log tol,
+		      t_module tm,
+		      t_user tu,
+		      t_company_path tcp 
+		      where tol.module_id = tm.module_id 
+		      AND tol.user_id = tu.user_id 
+		      AND tu.company_id = tcp.company_id
+		      <if test="beginDate!=null">
+					and tol.op_time <![CDATA[>=]]>#{beginDate}
+			  </if>
+			  <if test="endDate!=null">
+					and tol.op_time <![CDATA[<=]]>#{endDate}
+			  </if>
+			  <if test="desc!=null">
+					and tol.description like ('%'+#{desc}+'%')
+			  </if>
+			  <if test="companyPath!=null">
+					and tcp.company_path LIKE (CONVERT(VARCHAR(100),#{companyPath})+'%')
+			  </if>
+		      ) cm where row <![CDATA[<=]]> #{limit}
+			) dm where row <![CDATA[>=]]> #{start}
+		ORDER BY op_time desc  
+	</select>
+	
+	<select id="queryOperationRecordsInfoCount" parameterType="map" resultType="long">
+		SELECT 
+		  COUNT(1) 
+		FROM
+		      t_operation_log tol,
+		      t_module tm,
+		      t_user tu,
+		      t_company_path tcp 
+		    WHERE tol.module_id = tm.module_id 
+		      AND tol.user_id = tu.user_id 
+		      AND tu.company_id = tcp.company_id
+		      <if test="beginDate!=null">
+					and tol.op_time <![CDATA[>=]]>#{beginDate}
+			  </if>
+			  <if test="endDate!=null">
+					and tol.op_time <![CDATA[<=]]>#{endDate}
+			  </if>
+			  <if test="desc!=null">
+					and tol.description like ('%'+#{desc}+'%')
+			  </if>
+			  <if test="companyPath!=null">
+					and tcp.company_path LIKE (CONVERT(VARCHAR(100),#{companyPath})+'%')
+			  </if> 
+	</select>
+	
+	<!-- 不分页查询操作日志,导出用 -->
+	<select id="queryAllOperationRecordsInfo" parameterType="map" resultType="com.zsh.labouCapital.entity.OperationLog">
+		SELECT 
+	      tu.login_name,
+	      tu.user_name,
+	      tm.description,
+	      tol.description AS operate_description,
+	      tol.remote_ip, 
+	      tol.op_time
+	    FROM
+	      t_operation_log tol,
+	      t_module tm,
+	      t_user tu,
+	      t_company_path tcp 
+	      where tol.module_id = tm.module_id 
+	      AND tol.user_id = tu.user_id 
+	      AND tu.company_id = tcp.company_id
+	      <if test="beginDate!=null">
+				and tol.op_time <![CDATA[>=]]>#{beginDate}
+		  </if>
+		  <if test="endDate!=null">
+				and tol.op_time <![CDATA[<=]]>#{endDate}
+		  </if>
+		  <if test="desc!=null">
+				and tol.description like ('%'+#{desc}+'%')
+		  </if>
+		  <if test="companyPath!=null">
+				and tcp.company_path LIKE (CONVERT(VARCHAR(100),#{companyPath})+'%')
+		  </if>
+		ORDER BY tol.op_time desc 
+	</select>
+</mapper>

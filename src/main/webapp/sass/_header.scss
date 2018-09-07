@@ -1,0 +1,62 @@
+.site-header{
+  position: fixed;
+  top:0;
+  left: 0;
+  width: 100%;
+  background: map_get($SiteColors, headerBackground);
+  height: map_get($SiteHeader, siteHeaderHeight);
+  border-bottom: 1px solid map_get($SiteColors,splitBorderColor);
+  font-size: 16px;
+  &,a{
+    color: #fff;
+    text-decoration: none;
+  }
+  .logo{
+    position: absolute;
+    width: map_get($SiteMenu, width);
+    height: map_get($SiteHeader, siteHeaderHeight);
+    background: url(../../images/logo.png) no-repeat 0 center;
+    border-right: 1px solid #3071ab;
+    cursor: pointer;
+  }
+
+  .icon-user{
+    display: inline-block;
+    vertical-align: middle;
+    background: url(../../images/icons/icons_user.png) no-repeat;
+    width: 30px;
+    height: 30px;
+    margin-right: 8px;
+  }
+  .icon-close{
+    display: inline-block;
+    vertical-align: middle;
+    background: url(../../images/icons/icons_close.png) no-repeat;
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+  }
+  .icon-refresh{
+    display: inline-block;
+    vertical-align: middle;
+    background: url(../../images/icons/icons_refresh.png) no-repeat;
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+  }	
+  .infos{
+    position: absolute;
+    right: 30px;
+    margin-top: 26px;
+    white-space: nowrap;
+    margin-left: 32px;
+    color:#e8f1fb;
+    li{
+      margin-right: 20px;
+      display: inline-block;
+    }
+    .icon{
+      margin-right: 8px;
+    }
+  }
+}

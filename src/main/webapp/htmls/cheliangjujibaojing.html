@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <!-- 启用360浏览器的极速模式(webkit) -->
+    <meta name="renderer" content="webkit">
+    <!-- 避免IE使用兼容模式 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>中国石化销售有限公司河南郑州石油分公司劳资系统</title>
+    <link rel="stylesheet" href="../vendor/bootstrap/dist/css/bootstrap.css"/>
+    <link rel="stylesheet" href="../vendor/ligerUI/skins/Aqua/css/ligerui-all.css"/>
+    <link rel="stylesheet" href="../css/public/ligerui-custom.css"/>
+    <link rel="stylesheet" href="../css/public/search-list-grid-tree.css"/>
+    <script src="../vendor/jquery/dist/jquery.js"></script>
+
+    <script src="../vendor/ligerUI/js/ligerui.all.js"></script>
+    <script src="../js/plugins/DataToView.js"></script>
+    <script src="../js/plugins/ligerui.other.js"></script>
+
+    <!-- 添加 foundation-datepicker 支持-->
+    <link rel="stylesheet" href="../vendor/foundation-datepicker/css/foundation-datepicker.min.css"/>
+    <link rel="stylesheet" href="../vendor/font-awesome/css/font-awesome.min.css"/>
+    <script src="../vendor/foundation-datepicker/js/foundation-datepicker.min.js"></script>
+    <script src="../vendor/foundation-datepicker/js/locales/foundation-datepicker.zh-CN.js"></script>
+    
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=oRTEhIarHzXK52qPGuFKQGAPqKIrnmdn"></script>
+	<script type="text/javascript" src="../js/map/webmaps-min.js"></script>
+	<script type="text/javascript" src="../js/views/tools.js"></script>
+	<script type="text/javascript" src="../js/util/GPSUtil.js"></script>
+	
+    <style>
+        .refresh{
+            background: url(../images/refreshBg.png) no-repeat 0 3px;
+            width: 50px;
+            height: 20px;
+            display: inline-block;
+            padding-left: 20px;
+            text-decoration: none;
+            outline: none;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        a:hover{
+            text-decoration: none;
+        }
+				.l-grid-custom .l-grid td div{
+					font-size: 12px;
+					white-space: pre-line !important;
+					text-overflow: clip !important;
+					word-break:break-all !important;
+				}
+				.l-grid-row-cell-inner{
+					height: 100%!important;
+				}
+    </style>
+
+    <script>
+        /*$(function(){
+            $('#time').fdatepicker({
+                language:'zh-CN',
+                format: 'yyyy-mm-dd hh:ii:ss'
+            });
+        });*/
+        $(function(){
+            var treeToggleButton = $('.tree-toggle-button');
+            var body = $('body');
+            treeToggleButton.on('click',function(e){
+               if(treeToggleButton.hasClass('show')){
+                   treeToggleButton.removeClass('show');
+                   body.removeClass('hide-tree');
+               }else{
+                   treeToggleButton.addClass('show');
+                   body.addClass('hide-tree');
+               }
+                setTimeout(function(){
+                    $(window).trigger('resize');
+                },500);
+            });
+        });
+        
+        $(function (){
+            var onOff=true;
+            window.tree=$("#tree").ligerTree({
+            //url:'../twgAgency/queryTreeRootNode',
+            url:D2V.wtwsjtjURL.getTreeNode,
+            nodeWidth:200,
+            checkbox: false,
+            slide: false,
+            btnClickToToggleOnly: false,
+            isExpand: false,
+            idFieldName : 'treedataindex',
+            onSelect : function(node) {
+            	//console.log(node);
+                var data = node.data;
+                // if (data.delay !== undefined)return;
+                changeURL(node.data.params.attributesPath);
+                $("#add-dialog input[name='parentAgencyId']").prop('value',data.params.id);
+                // $("#add-dialog input[name='agencyName']").prop('value',data.params.text);
+            },
+            isLeaf: function(data) {
+                return !(data.delay !== undefined || data.children !== undefined);
+            },
+            onExpand : function(e) {
+                this._parentNode = e.target;
+            },
+            onError:function(XMLHttpRequest, textStatus, errorThrown){
+                console.log(arguments);
+            },
+            onSuccess : function(newdata) { 
+                var parentNode = this._parentNode;
+                var menuData = [];
+                var parent = $(parentNode);
+                var parentData = this.getDataByID(parent.attr('treedataindex'));
+                if(parentData === null){
+                    // 父节点为空时（即该节点为根节点时）
+                    if(onOff){
+                        $(newdata.datas).each(function() {
+                            menuData.push({
+                                text:this.text,
+                                delay:{url:'../ twgAgency/queryTreeNodeList'+'?&nodeId='+this.id},
+                                params : this
+                            });
+                        })
+                        // if(newdata.datas){
+                        //     changeURL(newdata.datas.attributesPath);
+                        // }
+                        if (menuData.length <= 0)return;
+                        this.append(this._parentNode, menuData);
+                        if(parentData) delete parentData.delay;
+                        onOff=false;
+                        function a(){
+                            $('.l-body').trigger('click');
+                        }
+                        a();
+                    }else{
+                        $(newdata.datas.list).each(function() {
+                            var leaf={text:this.text,delay:{url:'../ twgAgency/queryTreeNodeList'+'?&nodeId='+this.id},params : this};
+                            if(this.isLeaf){
+                                delete leaf.delay;
+                            }
+                            menuData.push(leaf);
+                        })
+                        if (menuData.length <= 0)return;
+                        this.append(this._parentNode, menuData);
+                        if(parentData) delete parentData.delay;
+                    }
+                }else{
+                    //该节点有父节点，不为根节点时
+                    $(newdata.datas.list).each(function() {
+                        var leaf={text:this.text,delay:{url:'../ twgAgency/queryTreeNodeList'+'?&nodeId='+this.id},params : this};
+                        if(this.isLeaf){
+                            delete leaf.delay;
+                        }
+                        menuData.push(leaf);
+                    })
+                    if (menuData.length <= 0)return;
+                    this.append(this._parentNode, menuData);
+                    if(parentData) delete parentData.delay;
+                }
+             }
+        });
+    });
+    
+        function changeURL(data){
+            var formParam={};
+            formParam.page = 1;
+            var rp_value = $("select[name='rp']").val();
+            formParam.pagesize = rp_value;
+            formParam.attributesPath=data;
+            mainGrid.setParm('attributesPath',data);
+            $('#searchForm').find('[name="attributesPath"]').val(data);
+            //$("#main-grid").ligerGetGridManager().loadServerData(formParam);
+        }
+
+    </script>
+    <script>
+        $(function () {
+            window.gridParms = {
+            	url:D2V.vehicleJuJiInfoURL.query,
+                // type:'post',
+                width: '100%',
+                parms: [],
+                height: '100%',
+                rownumbers :false,
+                delayLoad:true,
+                selectable:false,
+								pageSize:10, 
+                onLoaded:function(){
+                	$('.btn').removeAttr('disabled');
+                	$("#main-grid .l-grid-loading").css("display","none");
+                	$('.form-control').removeAttr('readonly');
+                }
+                // delayLoad:true
+            };
+            //添加操作选项
+            var optcol = [{show: '参考位置',field: 'zzz0',width: 250,align: 'center',render: 'renderOpt'}                         
+            ];
+            window.mainGrid = initMainGrid('main-grid', gridParms, D2V.vehicleJuJiInfo.concat(optcol));
+			//隐藏列            
+//             hideColumn('rlon');
+//             hideColumn('rlat');
+        });
+        //搜索
+        function saveSearch(){
+            var distance=$('#distance').val();
+            if(distance==""){
+            	distance=0;
+            }
+            if(parseInt(distance)!=distance || distance<500){
+                $.ligerDialog.warn('距离请输入大于500的正整数!');
+                return;
+            }
+            
+            var vehicleCount=$('#vehicleCount').val();
+            if(vehicleCount==""){
+            	vehicleCount=0;
+            }
+            if(parseInt(vehicleCount)!=vehicleCount || vehicleCount<5){
+                $.ligerDialog.warn('车辆数请输入大于5的正整数!');
+                return;
+            }
+            var searchData={};
+            var formParam = getFormDataAll('searchForm');
+            for(var k in formParam){
+               var newdata;
+               newdata=$.trim(formParam[k]);
+               if(newdata!=''){
+                   searchData[k]=newdata;
+                   mainGrid.setParm(k,newdata);
+               }else{
+                   mainGrid.removeParm(k);
+                   delete formParam[k];
+               }
+           }
+            formParam.page = 1;
+            var rp_value = $("select[name='rp']").val();
+            formParam.pagesize = rp_value;
+           $("#main-grid").ligerGetGridManager().loadServerData(formParam);
+           mainGrid.changePage('first');	
+           $('.btn').attr('disabled','true');
+           $('.form-control').removeAttr('readonly');
+        }
+        //导出功能
+        var count = 30;
+	   var countdown;
+        function exportFile(){
+        	var distance=$('#distance').val();
+            if(distance==""){
+            	distance=500;
+            }
+            if(parseInt(distance)!=distance || distance<500){
+                $.ligerDialog.warn('距离请输入大于500的正整数!');
+                return;
+            }
+            
+            var vehicleCount=$('#vehicleCount').val();
+            if(vehicleCount==""){
+            	vehicleCount=5;
+            }
+            if(parseInt(vehicleCount)!=vehicleCount || vehicleCount<5){
+                $.ligerDialog.warn('车辆数请输入大于5的正整数!');
+                return;
+            }
+        	var formParam = getFormDataAll('searchForm');
+        	var url = D2V.TWGCountExportURL.vehicleJuJiInfoExportExcel;
+        	var endDate = $('#distance').val();
+         	var nearDay = $("#distance").attr("nearDay");
+        	var attributesPath = $('#attributesPath').val();
+         	var nearattributesPath = $("#attributesPath").attr("attributesPath");
+         	var nearvehicleCount=$('#vehicleCount').attr("vehicleCount");
+        	if(endDate!=nearDay || attributesPath!= nearattributesPath || vehicleCount!=nearvehicleCount ){
+         		$("#distance").attr("nearDay",endDate);
+    			$("#attributesPath").attr("attributesPath",attributesPath);
+    			$('#vehicleCount').attr("vehicleCount",vehicleCount);
+    			expTime();
+    			count=30;
+    			clearInterval(countdown);
+    			countdown = setInterval(function(){
+    				console.log(count+"秒");
+    				if (count == 0) {
+    					$("#distance").attr("nearDay","endDatearr");
+    					clearInterval(countdown);
+    				}
+    				count--;
+    			}, 1000);
+    		}else if($("#distance").attr("nearDay")=="endDatearr"){//允许第一次可以导出
+    			expTime();
+    		}else{
+    			$.ligerDialog.warn('数据已经在尽快导出，请勿重复点击，否则可能导出失败！');
+    			clearInterval(countdown);
+    			countdown = setInterval(function(){
+    				console.log(count+"秒");
+    				if (count == 0) {
+    					$("#distance").attr("nearDay","endDatearr");
+    					clearInterval(countdown);
+    				}
+    				count--;
+    			}, 1000);
+    			return false;
+    		}
+    		function expTime(){
+	        	var paramStr = '?';
+	        	if(formParam['attributesPath'] != null || formParam['attributesPath'].length > 0){
+	        		paramStr = paramStr + "attributesPath=" + formParam['attributesPath'];
+	        	}
+	        	
+	        		paramStr = paramStr + "&distance=" + distance+ "&vehicleCount=" + vehicleCount;
+	        	
+	        		 url = url + paramStr;
+	             	window.open(url,'_self');
+    		}  	
+        }
+        
+       //显示参考位置文字
+       function renderOpt(rowData, index, value){
+    	   var str = '<span id="position'+index+'"><a href="javascript:;"'+' onclick="getRefPosition('+index +')">查看参考位置</a></span>';
+    	   return str;
+       }  
+     //获取参考位置
+     function getRefPosition(rowIndex){//百度api获取参考位置
+        var datas = $("#main-grid").ligerGetGridManager().getRow(rowIndex); 
+        if($.trim(datas.rlon)==''||$.trim(datas.rlat)==''){
+        	var id = '#position'+ rowIndex;
+	      	$(id).html("参考位置为空");
+	      	return;
+        }
+ 	    var ggPoint = new BMap.Point(datas.rlon,datas.rlat);
+ 	    var pointArr = [];
+ 	    pointArr.push(ggPoint);
+ 	    new BMap.Convertor().translate(pointArr, 1, 5, function(data){
+ 	      	new BMap.Geocoder().getLocation(new BMap.Point(data.points[0].lng,data.points[0].lat), function(rs){
+ 	      		/*var addComp = rs.addressComponents;
+ 	      		address = addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber;
+ 	   		    if(address == ''){
+ 	   			   address = '参考位置为空';
+ 	   		    } 	   		    
+ 	       	    var id = '#position'+ rowIndex;
+ 	      	    $(id).html(address);*/
+ 	      	    
+ 	      	   //2016-08-12 刘杰 调用参考位置采用别的方式
+ 	      		var lonlat=data.points[0].lat+','+data.points[0].lng;
+ 	      		var lonlaturl="http://api.map.baidu.com/geocoder/v2/?ak=oRTEhIarHzXK52qPGuFKQGAPqKIrnmdn&callback=renderReverse&location="+lonlat+"&output=json&pois=1";
+ 	 	    	$.ajax({
+ 	 				type:'get',
+ 	 				url:lonlaturl,
+ 	 				success:function(data){
+ 	 					address = data.result.formatted_address+','+data.result.sematic_description;
+		  	   		    if(address == ''){
+		  	   			   address = '参考位置为空';
+		  	   		    } 	   		    
+		  	       	    var id = '#position'+ rowIndex;
+		  	      	    $(id).html(address);
+ 	 				},
+ 	 				error:function(error){
+						console.log('车辆聚集报警查询参考位置出错!');
+ 	 				},
+ 	 				dataType:'jsonp'
+ 	 			});
+ 	      	})
+ 	    });
+     } 
+   	//隐藏列
+     function hideColumn(colName){
+   	  mainGrid.toggle(colName,false);
+     }
+     //显示列
+     function showColumn(colName){
+   	  mainGrid.toggle(colName,true);
+     } 
+     
+    </script>
+</head>
+<body>
+    <a class="tree-toggle-button"></a>
+    <div class="tree-layout">
+        <div id="tree" class="l-tree-custom"></div>
+    </div>
+    <div class="data-list">
+        <form class="form-inline data-list-search" id="searchForm">
+            <input type="hidden" name="attributesPath"  attributesPath=",1," id="attributesPath"/>
+            <div class="form-group">
+                <label for="time">距离:</label>
+                <input type="text" class="form-control" nearDay="endDatearr"  id="distance" name="distance" value="500" style="width:80px">
+                <label for="time">(米)之内&nbsp;&nbsp;&nbsp;&nbsp;车辆数不少于:</label>
+                <input type="text" class="form-control" id="vehicleCount" vehicleCount="5" name="vehicleCount" value="5" style="width:60px"> 台
+            </div>
+            <div class="form-group">
+                <button type="button" class="btn btn-search"  onclick="saveSearch();return false;"><i class="icon icon-search"></i>查询</button>
+            </div>
+             <div class="form-group">
+                <button type="button" class="btn btn-search" onclick="exportFile();return false;" style="background-color:#3d8cd1;"><i class="icon icon-search"></i>导出</button>
+            </div>
+            <div class="form-group">
+                <a class="refresh" onclick="mainGrid.reload();">刷新</a>
+            </div>
+        </form>
+        <div id="main-grid" class="l-grid-custom panel-bar-split"></div>
+    </div>
+</body>
+</html>

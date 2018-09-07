@@ -1,0 +1,1526 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, jyzkhtzd-scalable=no">
+<!-- 启用360浏览器的极速模式(webkit) -->
+<meta name="renderer" content="webkit">
+<!-- 避免IE使用兼容模式 -->
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>加油站考核通知单管理</title>
+<link rel="stylesheet" href="../vendor/bootstrap/dist/css/bootstrap.css" />
+<link rel="stylesheet"
+	href="../vendor/ligerUI/skins/Aqua/css/ligerui-all.css" />
+<link rel="stylesheet" href="../css/public/ligerui-custom.css" />
+<link rel="stylesheet" href="../css/public/search-list-grid-tree.css" />
+<link href="../js/plugins/uploadify/uploadify.css" rel="stylesheet" />
+<script src="../vendor/jquery/dist/jquery.js"></script>
+<script src="../js/plugins/uploadify/jquery.uploadify.min.js"></script>
+<script src="../vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="../vendor/ligerUI/js/ligerui.all.js"></script>
+<script src="../js/plugins/DataToView.js"></script>
+<script src="../js/plugins/ligerui.other.js"></script>
+<script src="../js/util/dateutil.js"></script>
+<script src="../js/util/unittype.js"></script>
+<!-- 添加 foundation-datepicker 支持-->
+<link rel="stylesheet"
+	href="../vendor/foundation-datepicker/css/foundation-datepicker.min.css" />
+<link rel="stylesheet"
+	href="../vendor/font-awesome/css/font-awesome.min.css" />
+<script
+	src="../vendor/foundation-datepicker/js/foundation-datepicker.min.js"></script>
+<script
+	src="../vendor/foundation-datepicker/js/locales/foundation-datepicker.zh-CN.js"></script>
+
+<style>
+.icon-true {
+	background: #48C38B;
+	border-radius: 50%;
+	line-height: 18px;
+	color: white;
+	font-family: '微软雅黑';
+}
+
+div[toolbarid='item-2'] .l-icon {
+	transform: rotate(180deg);
+	-ms-transform: rotate(180deg); /* IE 9 */
+	-moz-transform: rotate(180deg); /* Firefox */
+	-webkit-transform: rotate(180deg); /* Safari and Chrome */
+	-o-transform: rotate(180deg); /* Opera */
+}
+
+.btn-primary, #close {
+	background-color: #40c5e1;
+	color: #fff;
+	border: 1px solid #40c5e1;
+}
+
+.btn-primary:hover, #close:hover {
+	background-color: #337ab7;
+	color: #fff;
+	border: 1px solid #337ab7;
+}
+
+.btn-primary, .btn-default {
+	height: 32px;
+	width: 72px;
+}
+/* .refresh{
+            background: url(../images/refreshBg.png) no-repeat 0 3px;
+            width: 50px;
+            height: 20px;
+            display: inline-block;
+            padding-left: 20px;
+            text-decoration: none;
+            outline: none;
+            font-size: 14px;
+            cursor: pointer;
+        }*/
+button {
+	outline: none;
+}
+
+.btn-primary:hover, .btn-primary:active {
+	color: #fff;
+	background-color: #28a0b9;
+	border-color: #28a0b9;
+}
+
+.l-grid-custom .l-grid-row.l-selected, .l-grid-custom .l-grid-row.l-selected a,
+	.l-grid-custom .l-grid-row.l-selected div {
+	background: #1eb0da;
+	color: #fff;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+.add, .update {
+	display: none;
+	font-size: 14px;
+	font-family: '微软雅黑';
+}
+/*add样式修改*/
+.l-dialog-tl {
+	height: 42px;
+}
+
+.l-dialog-tc {
+	padding-left: 15px;
+	/*border-top: 2px solid #fff;*/
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
+	background: none;
+	background-color: #efefef;
+}
+
+.l-dialog td div, #add-form label, #update-form label, #update-role-form label
+	{
+	font-size: 14px;
+	font-family: '微软雅黑';
+	font-weight: normal;
+	color: #343f56;
+}
+
+.l-dialog-max, .l-dialog-collapse {
+	display: none;
+}
+
+.l-dialog-title {
+	font-size: 16px !important;
+}
+
+.l-dialog-close {
+	background: url(../images/closeHover.png) no-repeat;
+	width: 22px;
+	height: 22px;
+	position: absolute;
+	top: -2px;
+	right: 9px;
+}
+/*.l-dialog-close:hover{
+            background: url(../images/closeHover.png) no-repeat;
+        }*/
+#add-dialog .form-group .form-control, #update-dialog .form-group .form-control,
+	#update-role-dialog .form-group .form-control {
+	width: 150px;
+	height: 30px;
+	display: inline-block;
+}
+
+#add-form label, #update-form label, #update-role-form label {
+	width: 115px;
+	text-align: right;
+	text-indent: 10px;
+	margin-right: 5px;
+}
+
+#add-dialog, #update-dialog, #update-role-dialog {
+	margin-top: 0px;
+}
+
+.form-control {
+	padding: 4px 12px;
+}
+
+#add-dialog .form-group, #update-dialog .form-group, #update-role-dialog .form-group
+	{
+	margin-bottom: 12px;
+}
+
+.save {
+	position: absolute;
+	bottom: 0px;
+	left: 0;
+	height: 45px;
+	width: 100%;
+	text-align: center;
+}
+
+.save button {
+	margin-top: 8px;
+	width: 70px;
+	height: 30px;
+	border-color: #40c5e1;
+	background-color: #40c5e1;
+	line-height: 1;
+	outline: none;
+}
+
+.l-dialog-cc, .l-dialog-body {
+	border-bottom-left-radius: 8px;
+	border-bottom-right-radius: 8px;
+}
+
+.l-dialog-cc {
+	border-top: none;
+}
+
+.l-dialog-win, .l-dialog {
+	border: none;
+}
+
+.l-window-mask {
+	background: none;
+	background: url(../images/Bgmask.png);
+	opacity: 1;
+}
+
+.data-list-search .btn {
+	outline: none;
+}
+
+span.btfuhao {
+	color: red;
+}
+
+.redBorder {
+	border: 1px solid red;
+}
+
+#add-form::-webkit-scrollbar {
+	width: 8px;
+	height: 4px;
+	position: absolute;
+	right: 4px;
+}
+
+#add-form::-webkit-scrollbar-track {
+	background-color: #e6e6e6;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+}
+
+#add-form::-webkit-scrollbar-thumb {
+	background-color: #b3b3b3;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+}
+
+#add-form::-webkit-scrollbar-thumb:hover {
+	background-color: #b3b3b3;
+}
+
+#add-form::-webkit-scrollbar-thumb:active {
+	background-color: #b3b3b3;
+}
+
+.notice_font_cls{
+	font-family: '微软雅黑';
+}
+.section_head_cls{
+	text-indent:2em;
+}
+.notic_key_word_cls{
+ 	color:red;
+}
+
+.notice_key_num{
+	font-weight:bold;
+}
+.title_cls{
+	font-size:20px;
+}
+
+#jyz_notice-dialog,#depart_notice-dialog{
+	padding-left:20px;
+	padding-right:20px;
+}
+
+#salryDetailForm, #salary-detail-grid {
+	box-shadow: none;
+}
+
+#salary-detail-grid .l-panel-bwarp {
+	box-shadow: none;
+	border: 1px solid #e1e1e1;
+}
+
+#salary-detail-dialog .data-list {
+	padding: 0 10px;
+}
+
+#salary-detail-grid {
+	width: 100%;
+}
+
+#salary-detail-grid .l-clear {
+	height: 0px;
+}
+#salary-detail-dialog .data-list,.l-dialog-win .l-dialog-content,#public-dialog .data-list{padding:0px;}
+#salary-detail-dialog .l-panel-bar{margin:0px;}
+.l-grid-custom .l-grid-row.l-selected td div{color:#fff}
+.l-grid-custom .l-bar-group{margin-right:0px;}
+</style>
+<!-- 机构树生成 -->
+<script>
+	$(function() {
+		var treeToggleButton = $('.tree-toggle-button');
+		var body = $('body');
+		treeToggleButton.on('click', function(e) {
+			if (treeToggleButton.hasClass('show')) {
+				treeToggleButton.removeClass('show');
+				body.removeClass('hide-tree');
+			} else {
+				treeToggleButton.addClass('show');
+				body.addClass('hide-tree');
+			}
+			setTimeout(function() {
+				$(window).trigger('resize');
+			}, 500);
+		});
+	});
+	$(function() {
+		var onOff = true;
+		window.tree = $("#tree")
+				.ligerTree(
+						{
+							url : '../company/queryTreeRootNode',
+							nodeWidth : 200,
+							checkbox : false,
+							slide : false,
+							btnClickToToggleOnly : false,
+							isExpand : false,
+							idFieldName : 'treedataindex',
+							onSelect : function(node) {
+								var data = node.data;
+								$("#status").html('');
+								<!--市级公司权限-->
+								var strVar = "";
+								strVar += "<option value=\"\">--请选择--<\/option>\n";
+								strVar += "<option value=\"1\">未下发<\/option>\n";
+								strVar += "<option value=\"2\">已下发县级部门,未确认<\/option>\n";
+								strVar += "<option value=\"3\">县级部门已确认接收<\/option>\n";
+								strVar += "<option value=\"4\">已下发加油站,未确认<\/option>\n";
+								strVar += "<option value=\"5\">加油站已确认接收<\/option>\n";
+								strVar += "<option value=\"6\">部门修改后,还未下发<\/option>\n";
+								<!--县级部门权限-->
+								var strVar1 = "";
+								strVar1 += "<option value=\"\">--请选择--<\/option>\n";
+								strVar1 += "<option value=\"2\">已下发县级部门,未确认<\/option>\n";
+								strVar1 += "<option value=\"3\">县级部门已确认接收<\/option>\n";
+								strVar1 += "<option value=\"4\">已下发加油站,未确认<\/option>\n";
+								strVar1 += "<option value=\"5\">加油站已确认接收<\/option>\n";
+								strVar1 += "<option value=\"6\">部门修改后,还未下发<\/option>\n";
+								<!--加油站权限-->
+								var strVar2 = "";
+								strVar2 += "<option value=\"\">--请选择--<\/option>\n";
+								strVar2 += "<option value=\"4\">已下发加油站,未确认<\/option>\n";
+								strVar2 += "<option value=\"5\">加油站已确认接收<\/option>\n";
+								var companyType = node.data.params.companyType;
+								console.log('companyType:'+companyType);
+								if (companyType == 0) {
+									$("#status").append(strVar);
+								} else if (companyType == 1 || companyType == 2
+										|| companyType == 3 || companyType == 4) {
+									$("#status").append(strVar1);
+								} else if (companyType == 5) {
+									$("#status").append(strVar2);
+								}
+								//console.log(node.data);
+								//changeURL(node.data.params.companyPath);
+								$("input[name='companyPath']").prop('value',
+										node.data.params.companyPath);
+								$("input[name='companyId']").prop('value',
+										node.data.params.id);
+								$("input[name='companyType']").prop('value',
+										companyType);
+								findJyzkhtzd();
+							},
+							isLeaf : function(data) {
+								return !(data.delay !== undefined || data.children !== undefined);
+							},
+							onExpand : function(e) {
+								this._parentNode = e.target;
+							},
+							onError : function(XMLHttpRequest, textStatus,
+									errorThrown) {
+								console.log(arguments);
+							},
+							onSuccess : function(newdata) {
+								var parentNode = this._parentNode;
+								var menuData = [];
+								var parent = $(parentNode);
+								// console.log(newdata)
+								$("input[name='companyPath']").prop('value',
+										newdata.datas.companyPath);
+								$("input[name='companyId']").prop('value',
+										newdata.datas.id);
+								var parentData = this.getDataByID(parent
+										.attr('treedataindex'));
+								if (parentData === null) {
+									// 父节点为空时(即该节点为根节点时)
+									if (onOff) {
+										$(newdata.datas)
+												.each(
+														function() {
+															menuData
+																	.push({
+																		text : this.text,
+																		delay : {
+																			url : '../company/queryTreeNodeList'
+																					+ '?&nodeId='
+																					+ this.id
+																		},
+																		params : this
+																	});
+														})
+										// if(newdata.datas){
+										//     changeURL(newdata.datas.companyPath);
+										// }
+										if (menuData.length <= 0)
+											return;
+										this.append(this._parentNode, menuData);
+										if (parentData)
+											delete parentData.delay;
+										onOff = false;
+										function a() {
+											$('.l-body').trigger('click');
+										}
+										a();
+									} else {
+										$(newdata.datas.list)
+												.each(
+														function() {
+															var leaf = {
+																text : this.text,
+																delay : {
+																	url : '../company/queryTreeNodeList'
+																			+ '?&nodeId='
+																			+ this.id
+																},
+																params : this
+															};
+															if (this.isLeaf) {
+																delete leaf.delay;
+															}
+															menuData.push(leaf);
+														})
+										if (menuData.length <= 0)
+											return;
+										this.append(this._parentNode, menuData);
+										if (parentData)
+											delete parentData.delay;
+									}
+								} else {
+									//该节点有父节点,不为根节点时
+									$(newdata.datas.list)
+											.each(
+													function() {
+														var leaf = {
+															text : this.text,
+															delay : {
+																url : '../company/queryTreeNodeList'
+																		+ '?&nodeId='
+																		+ this.id
+															},
+															params : this
+														};
+														if (this.isLeaf) {
+															delete leaf.delay;
+														}
+														menuData.push(leaf);
+													})
+									if (menuData.length <= 0)
+										return;
+									this.append(this._parentNode, menuData);
+									if (parentData)
+										delete parentData.delay;
+								}
+							}
+						});
+	});
+</script>
+<script>
+	//日期格式化
+	$(function() {
+		var nowTemp = new Date();
+		var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp
+				.getDate() + 1, 0, 0, 0, 0);
+		var checkin = $('#sumaryYmSearch').fdatepicker({
+			language : 'zh-CN',
+			changeMonth : true,
+			changeYear : true,
+			format : 'yyyyMM',
+			onRender : function(date) {
+				return date.valueOf() > now.valueOf() ? 'disabled' : '';
+			}
+		}).on('changeDate', function(ev) {
+			if (ev.date.valueOf() > now) {
+				var newDate = new Date(ev.date)
+				newDate.setDate(newDate.getDate() + 1);
+			}
+			checkin.hide();
+		}).data('datepicker');
+	});
+</script>
+<script>
+	$(function() {
+		$('#time').fdatepicker({
+			language : 'zh-CN',
+			format : 'yyyy-mm-dd'
+		});
+	});
+
+	var rowIndex = null;
+	$(function() {
+		//获取用户菜单按钮权限
+		$.ajax({
+			url : '../module/queryInfoManagePermissionsByUid',
+			method : "POST",
+			dataType : "json",
+			data : {
+				"infoManageType" : "JYZKHTZDManage"
+			},
+			async : false,
+			success : function(data) {
+				grid(data);
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				console.log(XMLHttpRequest.status);
+			}
+		});
+
+		var menu = $.ligerMenu({});
+
+		function grid(data) {
+			//设置表格参数
+			window.gridParms = {
+				url : D2V.JyzkhtzdManageURL.queryJyzkhtzd,
+				onLoaded : function(grid) {
+					setTimeout(function() {
+						$('.l-grid-loading').hide();
+						$(".l-grid-row-cell-inner").each(function() {
+							var that = $(this);
+							that.attr('title', that.text());
+						})
+					}, 200);
+				},
+				onSuccess : function(data) {
+					if (data.success == true) {
+						var jyzkhtzdList = data.datas.list;
+						for (var k = 0; k < jyzkhtzdList.length; k++) {
+							var status = jyzkhtzdList[k]['status'];
+							// 						switch (status) {
+							// 						case 1:
+							// 							jyzkhtzdList[k]['status'] = "未下发";
+							// 							break;
+							// 						case 2:
+							// 							jyzkhtzdList[k]['status'] = "已下发县级部门,未确认";
+							// 							break;
+							// 						case 3:
+							// 							jyzkhtzdList[k]['status'] = "县级部门已确认接收";
+							// 							break;
+							// 						case 4:
+							// 							jyzkhtzdList[k]['status'] = "已下发加油站,未确认";
+							// 							break;
+							// 						case 5:
+							// 							jyzkhtzdList[k]['status'] = "加油站已确认接收";
+							// 							break;
+							// 						default:
+							// 							jyzkhtzdList[k]['status'] = "未下发";
+							// 						}
+						}
+						data.list = data.datas.list;
+						data.count = data.datas.count;
+					} else {
+						$.ligerDialog.warn(data.message);
+					}
+				},
+				//工具栏            
+				toolbar : {
+					items : (function() {
+						var buttonArr = data.datas.buttonItems;
+						var obj = [];
+						var clk;
+						var itemObj;
+						$.each(buttonArr, function(i, item) {
+							itemObj={};
+							clk='';
+							if (item.description == "下发通知单(市级)") {
+								clk = operateJyzkhtzd;
+								itemObj.click=clk;
+								itemObj.text=item.description;
+								itemObj.icon=item.iconurl;
+							} else if (item.description == "县级部门接收") {
+								clk = operateJyzkhtzd;
+								itemObj.click=clk;
+								itemObj.text=item.description;
+								itemObj.icon=item.iconurl;
+							} else if (item.description == "下发通知单(县级)") {
+								clk = operateJyzkhtzd;
+								itemObj.click=clk;
+								itemObj.text=item.description;
+								itemObj.icon=item.iconurl;
+							} else if (item.description == "修改通知单") {
+								clk = updateJyzkhtzd;
+								itemObj.click=clk;
+								itemObj.text=item.description;
+								itemObj.icon=item.iconurl;
+							} else if (item.description == "加油站接收") {
+								clk = operateJyzkhtzd;
+								itemObj.click=clk;
+								itemObj.text=item.description;
+								itemObj.icon=item.iconurl;
+							} else if (item.description == "导入工资明细") {
+								clk='';
+								itemObj.click=clk;
+								itemObj.text=item.description;
+								itemObj.icon=item.iconurl;
+							}else if (item.description == "工资Excel模板下载") {
+								//clk=addbmkhtzd;
+								item.description ='<a href="../template/salary_module.xls" style="text-decoration: none">excel模板下载.xls</a>';
+								clk='';
+								itemObj.click=clk;
+								itemObj.text=item.description;
+								itemObj.icon=item.iconurl;
+							}
+							obj.push(itemObj);
+						});
+						return obj;
+					})()
+				},
+				delayLoad : true,
+				onError : function(XMLHttpRequest, textStatus, errorThrown) {
+					//console.log(status, err);
+				},
+				width : '100%',
+				parms : [],
+				height : '100%',
+				pageSizeOptions : [ 5, 10, 15, 20 ],
+				checkbox : true,
+				rownumbers : true,
+				onRClickToSelect : false,
+				whenRClickToSelect : true
+			};
+			var optcol = [ {
+				show : '操作',
+				width : 80,
+				align : 'center',
+				render : renderOpt
+			} /* ,{
+				show : '工资单明细',
+				width : 80,
+				align : 'center',
+				render : renderOpt2
+			}  */];
+			//初始化表格(根据url加载表格数据)
+			window.mainGrid = initMainGrid('main-grid', gridParms, optcol.concat(D2V.JyzkhtzdManageGrid));
+		}
+		//修改通知单
+		$('#updateSubmit').on('click', function(e) {
+			var fypmbwcqkjc = $("#update-dialog input[name='fypmbwcqkjc']").val();
+			var canfypmbwcqkjc = $("#update-dialog input[name='canfypmbwcqkjc']").val();
+			var qyzsxc = $("#update-dialog input[name='qyzsxc']").val();
+			var canqyzsxc = $("#update-dialog input[name='canqyzsxc']").val();
+			var jykdzxc = $("#update-dialog input[name='jykdzxc']").val();
+			var canjykdzxc = $("#update-dialog input[name='canjykdzxc']").val();
+			var glkf = $("#update-dialog input[name='glkf']").val();
+			var canglkf = $("#update-dialog input[name='canglkf']").val();
+			var zxjf = $("#update-dialog input[name='zxjf']").val();
+			var canzxjf = $("#update-dialog input[name='canzxjf']").val();
+			
+			if (parseFloat(fypmbwcqkjc)>parseFloat(canfypmbwcqkjc)) {
+				$.ligerDialog.warn('非油品目标完成情况奖惩不能大于可分配金额!');
+				return;
+			}
+			if (parseFloat(qyzsxc)>parseFloat(canqyzsxc)) {
+				$.ligerDialog.warn('轻油折算薪酬不能大于可分配金额!');
+				return;
+			}
+			if (parseFloat(jykdzxc)>parseFloat(canjykdzxc)) {
+				$.ligerDialog.warn('加油卡调整薪酬不能大于可分配金额!');
+				return;
+			}
+			if (parseFloat(glkf)>parseFloat(canglkf)) {
+				$.ligerDialog.warn('管理扣罚不能大于可分配金额!');
+				return;
+			}
+			if (parseFloat(zxjf)>parseFloat(canzxjf)) {
+				$.ligerDialog.warn('专项奖罚不能大于可分配金额!');
+				return;
+			}
+			$.ligerDialog.confirm('保存后通知单将自动提交给市公司审核,您确定提交吗?', function(yes) {
+				if (yes === false)
+					return;
+				$('#update-form').trigger("submit");
+			})
+		});
+		$('#update-form').submit(function(e) {
+			e.preventDefault();
+			var jyzkhtzdObj = getFormAjaxData('update-form');
+			jyzkhtzdObj.status = "6";
+			$.ajax({
+				url : D2V.JyzkhtzdManageURL.updateJyzkhtzd,
+				type : "POST",
+				data : JSON.stringify(jyzkhtzdObj),
+				contentType : "application/json; charset=utf-8",
+				dataType : 'json',
+				success : function(rsp) {
+					if (rsp.success == true) {
+						$.ligerDialog.success(rsp.message);
+						closeDialog('update-dialog');
+						mainGrid.reload();
+					} else {
+						$.ligerDialog.warn(rsp.message);
+					}
+				},
+				error : function(xhr, status, err) {
+					console.log(status, err)
+					$.ligerDialog.warn('修改加油站考核通知单失败,网络故障!');
+					return;
+				}
+			})
+		});
+		
+		/*关闭通知单展示框*/
+		$("#jyzNoticeCalcle").on('click',function(){
+			closeDialog('jyz_notice-dialog');
+			$('.notice_key_num').html(' ');
+		});
+		
+		/***********************工资单明细表单*************************/
+		var bindDialogId = 'salary-detail-dialog';
+        var bindGridId = 'salary-detail-grid';
+        var initBindParams = [];
+        var gridParmss = {
+             url: D2V.salaryURL.query,
+             parms: initBindParams,
+             width: '100%',
+             pageSizeOptions: [5, 10, 15, 20],
+             headerRowHeight:40,
+             rowHeight:32,
+             height: 430
+        };
+        var VehicleInfo = null;
+        var bindGrid=null;
+        window.salaryDetailManage = function(rowIndex) {
+            orderInfo = mainGrid.getRow(rowIndex);
+            openDialog(bindDialogId, {
+                title: '工资单明细',
+                width: 760,
+                height: 500,
+                isResize:true,
+                showMax:false
+            },function dialog(){
+            	$("#salary-detail-grid").find(".l-bar-btnfirst").trigger("click");
+            	$("#salary-detail-dialog").parent().css("height","508px");
+            });
+            initBindParams = [
+                {name:'aa',value:11}
+            ];
+            $('#' + bindDialogId).parent().css('padding', 0);
+            if(bindGrid === null){
+                gridParmss.parms = initBindParams;
+                bindGrid = initMainGrid(bindGridId, gridParmss, D2V.JyzSalaryDetailGrid);
+            }else{
+              	 gridParmss.parms = initBindParams;
+                 bindGrid = initMainGrid(bindGridId, gridParmss, D2V.JyzSalaryDetailGrid);
+                 gridSearch();
+            }
+        };
+        
+        function gridSearch(params) {
+          	 var formParam = [];
+              bindGrid.setOptions({ newPage: 1 }); 
+              var pagesize = $("#look-order-dialog .l-panel-bar select").val();
+              if (params !== undefined) formParam = formParam.concat(params);
+              formParam.push({
+                  name: 'page',
+                  value: 1
+              });
+              formParam.push({
+                  name: 'pagesize',
+                  value: pagesize
+              });
+              bindGrid.loadServerData(initBindParams.concat(formParam));
+          }
+	});
+	
+	/*操作列*/
+	function renderOpt(rowdata, index, value) {
+		var str = '<a href="javascript:;"' + ' onclick="viewNotice(' + index + ')">预览</a>';
+		return str;
+	}
+	
+	function renderOpt2(rowdata, index, value) {
+		var str = '<a href="javascript:;"' + ' onclick="salaryDetailManage(' + index + ')">工资单明细</a>';
+		return str;
+	}
+	
+	/*  工资明细管理 */
+	/* function salaryDetailManage(rowdata, index, value){
+		var rowObj = mainGrid.getRow(rowIndex);
+		//$("#bind-vehicle-dialog input[name='noticeNo']").prop('value', rowObj.noticeNo);
+		vehicleBindGripParms.parms = [ {
+			name : "areaId",
+			value : 11
+		}];
+		
+		bindGrid = initMainGrid('bind-vehicle-grid', vehicleBindGripParms, optcol);
+		// if(vehicleBindGripParms.parms[1]){
+		// vehicleBindGripParms.parms[1]={name:"plateNo",value:''};
+		// }
+		console.log(vehicleBindGripParms.parms);
+	} */
+	
+	/* 预览通知单 */
+	function viewNotice(index){
+		var dataObj = mainGrid.getRow(index);
+		console.log(dataObj);/////////////////
+		$('.notice_key_num').html(' ');//清空值
+		openDialog('jyz_notice-dialog',{title:'预览通知单',width:600,height:800},function dialog(){});
+		var nowDate=new Date();
+      	var date=new Date();
+      	date.setDate(1);
+      	var todayYear=nowDate.getFullYear();
+  		var todayMonth=(nowDate.getMonth()+1)>9 ? (nowDate.getMonth()+1) :'0'+(nowDate.getMonth()+1);
+  		var todayRiqi=(nowDate.getDate())>9?nowDate.getDate():'0'+nowDate.getDate();
+  		
+		var yearMonthDate = '';//汇总日期
+		var year = 2018;
+		var month = 5;
+    	yearMonthDate=dataObj.yearMonthDate;
+		if(yearMonthDate.indexOf('-') != -1){//2018-06
+			var arr = yearMonthDate.split("-");
+			year = Number(arr[0]);
+			month = Number(arr[1]);
+		}else{
+			var yearStr = yearMonthDate.substring(0,4);
+			year = Number(yearStr);
+			console.log('yearMonthDate:'+yearMonthDate);
+			var monthStr =yearMonthDate.substring(4,6);
+			month = Number(monthStr);
+		}
+		
+	    var wtgs = dataObj.wtgs;//委托公司名称
+		var jyzName = dataObj.jyz;//加油站名称
+		var gasoline92 = dataObj.gasoline92; //92汽油#销量
+		var gasoline95 = dataObj.gasoline95; //95汽油#销量
+		var gasoline98 = dataObj.gasoline98; //98汽油#销量
+		var cng = dataObj.cng; //天然气
+		var cyxl0 = dataObj.cyxl0; //0#柴油销量
+		var cyxl10 = dataObj.cyxl10; //10#柴油销量
+		var rgfy = dataObj.rgfy; //人工费用
+		var qycmbxc = dataObj.qycmbxc; //轻油超目标薪酬
+		var dyrgfbz = dataObj.dyrgfbz; //吨油人工费标准
+		var sjlxj = dataObj.sjlxj; //实际量小计
+		var qyzsxc = dataObj.qyzsxc; //轻油折算薪酬
+		var jsjykxc = dataObj.jsjykxc; //计算加油卡薪酬
+		var jykdzxc = dataObj.jykdzxc; //加油卡调整薪酬
+		var xcfczkcze = dataObj.xcfczkcze; //现场非充值卡充值额
+		var czkcze = dataObj.czkcze; //充值卡充值额
+		var czkxse = dataObj.czkxse; //充值卡销售额
+		var zzfkzdcz = dataObj.zzfkzdcz; //自助发卡终端充值
+		var jykkhcze = dataObj.jykkhcze; //加油卡考核充值额
+		var fypjcxc = dataObj.fypjcxc; //非油品基础薪酬
+		var fypmbwcqkjc = dataObj.fypmbwcqkjc; //非油品目标完成情况奖惩
+		var fdzxy = dataObj.fdzxy; //非定制香烟
+		var ybsp = dataObj.ybsp; //一般商品
+		var ydczk = dataObj.ydczk; //移动充值卡
+		var zyppsxse = dataObj.zyppsxse; //自有品牌水销售额
+		var yylm = dataObj.yylm; //异业联盟
+		var qcyp = dataObj.qcyp; //汽车用品
+		var tg = dataObj.tg; //团购
+		var rybhjnjxse = dataObj.rybhjnjxse; //燃油宝和降凝剂销售额
+		var zyppblsxse = dataObj.zyppblsxse; //自有品牌玻璃水销售额
+		var olz = dataObj.olz; //欧露纸
+		var gqxlxse = dataObj.gqxlxse; //枸杞系列销售额
+		var zykzjjddrygz = dataObj.zykzjjddrygz; //整月看站及借调等人员工资
+		var jbf = dataObj.jbf; //加班费
+		var lstykzgz = dataObj.lstykzgz; //临时停业看站工资
+		var qjryxc = dataObj.qjryxc; //请假人员薪酬
+		var blc = dataObj.blc; //保留差
+		var gdbc = dataObj.gdbc; //过渡补差
+		var zxjf = dataObj.zxjf; //专项奖罚
+		var glkf = dataObj.glkf; //管理扣罚
+		var sjfj = dataObj.sjfj; //实际附加
+		var dyxcbz = dataObj.dyxcbz; //吨油薪酬标准
+		var total = dataObj.total; //合计
+
+		var jyzType = dataObj.jyzType;//加油站类型
+		
+		<!-- *********自营、他有我营按自营站******** -->
+		<!-- *********机关、委托按委托站模板******** -->
+		//机关、机关附属、委托、他有我营、自营
+		if (jyzType == '自营'||jyzType == '他有我营') {
+			console.log('他有我营、自营...'+'jyzType:'+jyzType);
+			$('#jyz_cont_title').html('加油站工资');
+			$('#jyz_cont_title1').html('根据2018年绩效考核及薪酬分配暂行办法，经对你站');
+			$('#jyz_cont_title2').html('薪酬');
+			$('#jyz_cont_qyllname').html('一、轻油联量薪酬（含加班费及在站补助）');
+			$('#jyz_cont_chaomubiao').html('元，其中超目标薪酬');
+			$('#jyz_cont_zjfy').html('因经营政策调整或降价因素调增（减）薪酬费用（ ');
+			$('#jyz_cont_jjkllfy').html('二、加油卡联量薪酬 ');
+			$('#jyz_cont_jjkfy').html('加油卡薪酬 ');
+			$('#jyz_cont_fypllfy').html('三、非油品联量薪酬 ');
+			$('#jyz_cont_fypjcfy_title').html('非油品基础薪酬 ');
+			
+			$("#bottom_name").css('display','inline');
+			$("#jyz_cont_xcxfy").css('display','inline');
+			$("#bottom_name2").css('display','inline');
+			
+			$("#bottom_name3").css('display','none'); 
+			$("#bottom_name4").css('display','none'); 
+			$("#jyz_cont_xcxfy1").css('display','none'); 
+			$("#bottom_name6").css('display','none'); 
+			$("#bottom_name7").css('display','none'); 
+			$("#bottom_name8").css('display','none'); 
+			$("#bottom_name9").css('display','none'); 
+			$("#jyz_cont_sjfj").css('display','none'); 
+		} else {//机关、机关附属、委托
+			console.log('机关、机关附属、委托...'+'jyzType:'+jyzType);
+			$('#jyz_cont_title').html('代理手续费');
+			$('#jyz_cont_title1').html('按双方合同约定，经对你单位');
+			$('#jyz_cont_title2').html('代理手续费');
+			$('#jyz_cont_qyllname').html('一、轻油联量费用');
+			$('#jyz_cont_chaomubiao').html('元，其中超目标费用');
+			$('#jyz_cont_zjfy').html('因经营政策调整或降价因素调增（减）费用（ ');
+			$('#jyz_cont_jjkllfy').html('二、加油卡联量费用 ');
+			$('#jyz_cont_jjkfy').html('加油卡费用 ');
+			$('#jyz_cont_fypllfy').html('三、非油品联量费用 ');
+			$('#jyz_cont_fypjcfy_title').html('非油品基础费用 ');
+			 
+			$("#bottom_name").css('display','none'); 
+			$("#jyz_cont_xcxfy").css('display','none'); 
+			$("#bottom_name2").css('display','none'); 
+			
+			$("#bottom_name3").css('display','inline'); 
+			$("#bottom_name4").css('display','inline');
+			$("#jyz_cont_xcxfy1").css('display','inline');
+			$("#bottom_name6").css('display','inline');
+			$("#bottom_name7").css('display','inline');
+			$("#bottom_name8").css('display','inline');
+			$("#bottom_name9").css('display','inline');
+			$("#jyz_cont_sjfj").css('display','inline'); 
+		}
+		//赋值操作     
+		$('#jyz_bottom_year').html(todayYear);
+		$('#jyz_bottom_month').html(todayMonth);
+		$('#jyz_bottom_day').html(todayRiqi);
+		$('#jyz_head_year').html(year);
+		$('#jyz_head_month').html(month);
+		$('#jyz_head_year1').html(year);
+		$('#jyz_head_month1').html(month);
+		$('#jyz_cont_jyzname').html(jyzName);
+		$('#jyz_cont_jyzname1').html(jyzName);
+		$('#jyz_cont_wtgs').html(wtgs);
+		
+        $('#jyz_cont_qy92').html(gasoline92);
+		$('#jyz_cont_qy95').html(gasoline95);
+		$('#jyz_cont_qy98').html(gasoline98);
+		$('#jyz_cont_cng').html(cng);
+		
+		$('#jyz_cont_rgfy').html(rgfy);
+		$('#jyz_cont_qycmbxc').html(qycmbxc);
+		$('#jyz_cont_dyrgfbz').html(dyrgfbz);
+		$('#jzy_cont_khxl').html(sjlxj);
+		$('#jyz_cont_cyxl').html(cyxl0+cyxl10);
+		$('#jyz_cont_qyzsxc').html(qyzsxc);
+		$('#jyz_cont_jykllfy').html(jsjykxc+jykdzxc);
+		$('#jyz_cont_xccz').html(xcfczkcze);
+		$('#jyz_cont_xckcze').html(czkcze);
+		$('#jyz_cont_czkxse').html(czkxse);
+		$('#jyz_cont_zzfkzdcz').html(zzfkzdcz);
+		$('#jyz_cont_jykkhcze').html(jykkhcze);
+		$('#jyz_cont_jykfy').html(jykdzxc);
+		$('#jyz_cont_fypllxc').html(fypjcxc+fypmbwcqkjc);
+		$('#jyz_cont_fdzxyls').html(fdzxy);
+		$('#jyz_cont_ybsp').html(ybsp);
+		$('#jyz_cont_ydczk').html(ydczk);
+		$('#jyz_cont_zyppsxse').html(zyppsxse);
+		$('#jyz_cont_yylmxse').html(yylm);
+		$('#jyz_cont_qcyhxse').html(qcyp);
+		$('#jyz_cont_tgsyspxse').html(tg);
+		$('#jyz_cont_rybhjnjxse').html(rybhjnjxse);
+		$('#jyz_cont_zyppblsxse').html(zyppblsxse);
+		$('#jyz_cont_olzxse').html(olz);
+		$('#jyz_cont_gqxlxse').html(gqxlxse);
+		$('#jyz_cont_fypjcfy').html(fypjcxc);
+		$('#jyz_cont_qt').html(zykzjjddrygz+jbf+lstykzgz+qjryxc+blc+zxjf+glkf);
+		$('#jyz_cont_zykzjjddrygz').html(zykzjjddrygz+jbf);
+		$('#jyz_cont_lstykzgz').html(lstykzgz);
+		$('#jyz_cont_qjrygz').html(qjryxc);
+		$('#jyz_cont_blc').html(blc);
+		$('#jyz_cont_gdbc').html(gdbc);
+		$('#jyz_cont_zxjf').html(zxjf);
+		$('#jyz_cont_glkf').html(glkf);
+		$('#jyz_cont_xcxfy').html(total);
+		$('#jyz_cont_xcxfy1').html(total);
+		$('#jyz_cont_sjfj').html(sjfj);
+		$('#jyz_cont_fypmbwcqkjc').html(fypmbwcqkjc);
+	}
+
+	//修改图标,并绑定下载事件
+	$(function() {
+		var toolbatItems = $("div.l-toolbar-item");
+		$.each(toolbatItems, function(index) {
+			var tempObj = toolbatItems[index];
+			// 			console.log($(tempObj).attr('toolbarid'))
+			// 			console.log($(tempObj).find('span').text());
+			if ($(tempObj).find('span').text() === '导入工资明细') {
+				var toolbarid = $(tempObj).attr('toolbarid');
+				$("div[toolbarid='" + toolbarid + "'] .l-icon").removeClass(
+						"l-icon-add").addClass("icon-true").text('☇');
+				$("div[toolbarid='" + toolbarid + "']").attr('data-toggle',
+						'modal').attr('data-target', '#myModal').attr(
+						'data-backdrop', 'false');
+			} else if ($(tempObj).find('span').text() === 'excel模板下载.xls') {
+				var toolbarid = $(tempObj).attr('toolbarid');
+				$("div[toolbarid='" + toolbarid + "'] .l-icon").removeClass(
+						"l-icon-add").addClass("icon-true").text('↓');
+			}
+		});
+	})
+
+	//上传按钮点击事件
+	$(function() {
+		//添加界面的附件管理
+		$('#file_upload').uploadify({
+			'swf' : '../js/plugins/uploadify/uploadify.swf', //FLash文件路径
+			'buttonText' : '浏  览', //按钮文本
+			'uploader' : D2V.salaryURL.uploadSalaryExcel, //处理上传的页面
+			'queueID' : 'fileQueue', //队列的ID
+			'queueSizeLimit' : 1, //队列最多可上传文件数量,默认为999
+			'auto' : false, //选择文件后是否自动上传,默认为true
+			'multi' : false, //是否为多选,默认为true
+			'removeCompleted' : true, //是否完成后移除序列,默认为true
+			'fileSizeLimit' : '10MB', //单个文件大小,0为无限制,可接受KB,MB,GB等单位的字符串值
+			'fileTypeDesc' : 'Excel Files', //文件描述
+			'fileTypeExts' : '*.xls', //上传的文件后缀过滤器
+			/* 'method':'post', */
+			'onQueueComplete' : function(event, data) { //所有队列完成后事件
+				//业务处理代码
+				//提示用户Excel格式是否正常,如果正常加载数据
+			},
+			'onUploadStart' : function(file) {
+				var selectData = mainGrid.getSelectedRows()[0];
+
+				//动态传参数
+				$("#file_upload").uploadify("settings", "formData", {
+					"companyId" : selectData.companyId,
+					"salaryType" : 0,
+					"noticeId" : selectData.id
+				});
+			},
+			'onUploadError' : function(event, queueId, fileObj, errorObj) {
+			},
+			'onUploadSuccess' : function(file, data, response) {
+				var datas = $.parseJSON(data);
+				console.log(datas);
+				if (datas.success === true) {
+					$.ligerDialog.success(datas.message);
+					mainGrid.reload();
+				} else {
+					$.ligerDialog.error(datas.message);
+				}
+			}
+		});
+	});
+	//关闭上传面板
+	function uploadFileClose() {
+		$('#file_upload').uploadify('cancel', '*');
+		//$('#summaryYearMonth').val("");
+	}
+
+	//操作考核通知单
+	function operateJyzkhtzd(event) {
+		var buttonText = event.text;
+		var selectData = mainGrid.getSelectedRows();
+		if (selectData.length == 0) {
+			$.ligerDialog.warn('您没有选中任何信息!');
+			return;
+		}
+		var status = 1;
+		$(selectData).each(function() {
+			if (this.status !== undefined)
+				status = status * this.status;
+		});
+		console.log('计算后status值:' + status);
+		var changeStatus = 0;
+		//判断执行的是哪个操作
+		//下发通知单(市级),必须全部状态为1或者为6才能下发
+		if (buttonText == '下发通知单(市级)') {
+			if (status != 1 && status % 6 != 0) {
+				$.ligerDialog.warn('只有未下发状态通知单才能下发!');
+				return;
+			}
+			changeStatus = 2;
+			//县级部门接收,必须全部状态为2才能下发
+		} else if (buttonText == '县级部门接收') {
+			if (status % 2 != 0) {
+				$.ligerDialog.warn('只有待接收状态的通知单才能接收!');
+				return;
+			}
+			changeStatus = 3;
+			//下发通知单(县级),必须全部状态为3才能下发
+		} else if (buttonText == '下发通知单(县级)') {
+			if (status % 3 != 0) {
+				$.ligerDialog.warn('只有未下发状态的通知单才能下发!');
+				return;
+			}
+			changeStatus = 4;
+			//加油站接收,必须全部状态为4才能下发
+		} else if (buttonText == '加油站接收') {
+			if (status % 4 != 0) {
+				$.ligerDialog.warn('只有待接收状态的通知单才能接收!');
+				return;
+			}
+			changeStatus = 5;
+		}
+
+		if (selectData.length == 1) {
+			operateJyzkhtzdOne();
+			return;
+		} else if (selectData.length > 1) {
+			operateJyzkhtzdMore();
+		}
+
+		function operateJyzkhtzdOne() {
+			selectData.length > 0 ? $.ligerDialog.confirm('确定要操作所选通知单?',
+					function(yes) {
+						if (yes === false)
+							return;
+						$.ajax({
+							type : "POST",
+							url : D2V.JyzkhtzdManageURL.operateJyzkhtzd,
+							data : {
+								id : selectData[0].id,
+								changeStatus : changeStatus
+							},
+							error : function(xhr, status, err) {
+								$.ligerDialog
+										.error('操作通知单失败,网络故障,请重新登录系统或稍后再试!');
+								return;
+							},
+							success : function(data) {
+								if (data.success === true) {
+									$.ligerDialog.success('操作通知单成功!');
+									mainGrid.reload();
+								} else {
+									$.ligerDialog.error(data.message);
+								}
+							},
+							dataType : 'json'
+						});
+					}) : $.ligerDialog.warn('您没有选中任何信息!');
+		}
+
+		//批量操作考核通知单
+		function operateJyzkhtzdMore() {
+			var JyzkhtzdJson = [];
+			$(selectData).each(function() {
+				if (this.id !== undefined)
+					JyzkhtzdJson.push({
+						'id' : this.id
+					});
+			});
+			selectData.length > 0 ? $.ligerDialog.confirm('确定要批量操作所选通知单?',
+					function(yes) {
+						if (yes === false)
+							return;
+						$.ajax({
+							type : "POST",
+							url : D2V.JyzkhtzdManageURL.batchOperateJyzkhtzd,
+							data : JSON.stringify({
+								JyzkhtzdJson : JyzkhtzdJson,
+								changeStatus : changeStatus
+							}),
+							error : function(xhr, status, err) {
+								$.ligerDialog
+										.error('批量操作通知单失败,网络故障,请重新登录系统或稍后再试!');
+								return;
+							},
+							success : function(data) {
+								if (data.success === true) {
+									$.ligerDialog.success('批量操作通知单成功!');
+									mainGrid.reload();
+								} else {
+									$.ligerDialog.error(data.message);
+								}
+							},
+							dataType : 'json',
+							contentType : "application/json; charset=utf-8"
+						});
+					}) : $.ligerDialog.warn('您没有选中任何信息!');
+		}
+	}
+
+	//导出
+	function exportFile() {
+		var formParam = getFormDataAll('jyzkhtzdmanageformid');
+		var url = D2V.JyzkhtzdManageURL.exportJyzkhtzdmanage;
+		var paramStr = '?';
+		if (formParam['companyPath'] != null
+				&& formParam['companyPath'].length > 0) {
+			paramStr = paramStr + "&companyPath=" + formParam['companyPath'];
+		}
+		formParam['yearMonthDate'] = encodeURIComponent(encodeURIComponent(formParam['yearMonthDate']));
+		formParam['jyz'] = encodeURIComponent(encodeURIComponent(formParam['jyz']));
+		paramStr = paramStr + "&yearMonthDate=" + formParam['yearMonthDate'];
+		paramStr = paramStr + "&jyz=" + formParam['jyz'];
+		paramStr = paramStr + "&status=" + formParam['status'];
+		console.log(paramStr);
+		url = url + paramStr;
+		window.open(url, '_self');
+	}
+	//
+	function findJyzkhtzd() {
+		var formParam = getFormDataAll('jyzkhtzdmanageformid');
+		for ( var k in formParam) {
+			var newdata;
+			newdata = $.trim(formParam[k]);
+			if (newdata != '') {
+				mainGrid.setParm(k, newdata);
+			} else {
+				mainGrid.removeParm(k);
+				delete formParam[k];
+			}
+		}
+		formParam.page = 1;
+		var rp_value = $("select[name='rp']").val();
+		formParam.pagesize = rp_value;
+		mainGrid.changePage('first');
+		$("#main-grid").ligerGetGridManager().loadServerData(formParam);
+	}
+
+	//修改考核通知单信息
+	function updateJyzkhtzd(rowIndex, getRowFromIndex) {
+		var selectData = mainGrid.getSelectedRows();
+		console.log(selectData[0].status);
+
+		if (selectData.length > 1) {
+			$.ligerDialog.warn('您选中的条数过多,一次只能选中一条信息!');
+			return;
+		}
+		if (selectData[0].status != 3) {
+			$.ligerDialog.warn('只有部门接收状态的通知单才可修改!');
+			return;
+		}
+		if (selectData.length < 1) {
+			$.ligerDialog.warn('您没有选中任何信息!');
+			return;
+		}
+		//查询五个参数可二次分配的数值
+		$.ajax({
+			url : D2V.JyzkhtzdManageURL.queryCanAllocation,
+			type : "POST",
+			data : {
+				companyId : selectData[0].companyId,
+				yearMonthDate : selectData[0].yearMonthDate
+			},
+			success : function(rsp) {
+				if (rsp.success == true) {
+					console.log(rsp.datas);
+					console.log(selectData);
+					clearForm('update-form');
+					$('#canfypmbwcqkjc').val(rsp.datas.canfypmbwcjcje);
+					$('#canqyzsxc').val(rsp.datas.canqyzsxc);
+					$('#canjykdzxc').val(rsp.datas.canjykdzxc);
+					$('#canglkf').val(rsp.datas.canglkf);
+					$('#canzxjf').val(rsp.datas.canzxjf);
+					injectDataToForm('update-form', selectData[0]);
+					openDialog('update-dialog', {
+						title : '修改加油站考核通知单信息',
+						width : 600,
+						height : 350
+					}, function dialog() {
+					});
+				} else {
+					$.ligerDialog.warn(rsp.message);
+				}
+			},
+			error : function(xhr, status, err) {
+				console.log(status, err)
+				$.ligerDialog.warn('查询可二次分配金额失败!');
+				return;
+			}
+		})
+	}
+
+	/*导入工资单明细*/
+	function uploadFileClick() {
+		var selectData = mainGrid.getSelectedRows();
+		if (selectData.length > 1) {
+			$.ligerDialog.warn('一次操作只能选择一条数据!');
+			return;
+		} else if (selectData.length == 0) {
+			$.ligerDialog.warn('请选择一条通知单数据数据!');
+			return;
+		}
+		$('#file_upload').uploadify('upload', '*');
+	}
+
+	function closeUpdate() {
+		closeDialog('update-dialog');
+	}
+</script>
+
+</head>
+<body>
+	<a class="tree-toggle-button"></a>
+	<div class="tree-layout">
+		<div id="tree" class="l-tree-custom"></div>
+	</div>
+	<div class="data-list">
+		<form class="form-inline data-list-search" id="jyzkhtzdmanageformid"
+			name="jyzkhtzdmanageform">
+			<input type="hidden" name="companyPath"> <input type="hidden"
+				name="companyType">
+			<div class="form-group has-feedback" style="margin-top: 3px;">
+				<label>日期:</label> <input type="text" class="form-control sjss"
+					id="sumaryYmSearch" name="yearMonthDate" style="width: 140px;">
+				<span class="glyphicon glyphicon-calendar form-control-feedback"
+					aria-hidden="true"></span>
+			</div>
+			<div class="form-group">
+				<label for="exampleInputName2">加油站名称:</label> <input type="text"
+					class="form-control" id="loginnameid" name="jyz"
+					style="width: 120px">
+			</div>
+			<div class="form-group">
+				<label>状态:</label> <select class="form-control" name="status" id="status">
+<!-- 					<option value="1">未下发</option> -->
+<!-- 					<option value="2">已下发部门未确认</option> -->
+<!-- 					<option value="3">部门已确认接收</option> -->
+<!-- 					<option value="4">已下发加油站,未确认</option> -->
+<!-- 					<option value="5">加油站已确认</option> -->
+<!-- 					<option value="6">部门修改后,还未下发</option> -->
+				</select>
+			</div>
+			<div class="form-group">
+				<button type="button" class="btn btn-search"
+					onclick="findJyzkhtzd()">
+					<i class="icon icon-search"></i>查询
+				</button>
+			</div>
+			<div class="form-group">
+				<button type="button" class="btn btn-search"
+					onclick="exportFile();return false;"
+					style="background-color: #3d8cd1;">
+					<i class="icon icon-search"></i>导出
+				</button>
+			</div>
+		</form>
+		<div id="main-grid" class="l-grid-custom panel-bar-split"></div>
+	</div>
+	<!-- 修改通知单 -->
+	<!-- 	<div id="update-dialog" class="update"> -->
+	<!-- 		<div style="color: red; margin-bottom: 10px; margin-left: 27px; font-weight: normal;">注:带"*"的为必填项!</div> -->
+	<!-- 	</div> -->
+	<!-- 修改 -->
+	<div id="update-dialog" class="add">
+		<form id="update-form">
+			<input type='hidden' id='id' name='id'> 
+			<input type='hidden' id='status' name='status'>
+			<input type='hidden' id='companyId' name='companyId'>
+			<input type='hidden' id='yearMonthDate' name='yearMonthDate'>
+			<div class="content1" style="margin-top:30px;">
+				<div class="contentLeft"></div>
+				<div class="contentAll">
+					<div class="form-group">
+						<label>非油品目标完成情况奖惩:</label><input type="text" class="form-control" name="fypmbwcqkjc" id="fypmbwcqkjc_update">
+						<label>可分配:</label><input type="text" class="form-control" name="canfypmbwcqkjc" id="canfypmbwcqkjc"> 
+					</div>
+					<div class="form-group">
+						<label>轻油折算薪酬:</label><input type="text" class="form-control" name="qyzsxc" id="qyzsxc_update">
+						<label>可分配:</label><input type="text" class="form-control" name="canqyzsxc" id="canqyzsxc">
+					</div>
+					<div class="form-group">
+						<label>加油卡调整薪酬:</label><input type="text" class="form-control" name="jykdzxc" id="jykdzxc_update">
+						<label>可分配:</label><input type="text" class="form-control" name="canjykdzxc" id="canjykdzxc">
+					</div>
+					<div class="form-group">
+						<label>管理扣罚:</label><input type="text" class="form-control" name="glkf" id="glkf_update">
+						<label>可分配:</label><input type="text" class="form-control" name="canglkf" id="canglkf">
+					</div>
+					<div class="form-group">
+						<label>专项奖罚:</label><input type="text" class="form-control" name="zxjf" id="zxjf_update">
+						<label>可分配:</label><input type="text" class="form-control" name="canzxjf" id="canzxjf">
+					</div>
+				</div>
+			</div>
+			<div class="save">
+				<button type="button" class="btn btn-primary " id="updateSubmit">保存</button>
+				<button type="button" class="btn btn-primary "
+					onclick="closeUpdate()">关闭</button>
+			</div>
+		</form>
+	</div>
+
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true"
+						onclick="javascript: $('#file_upload').uploadify('cancel', '*')">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">工资明细导入</h4>
+				</div>
+				<div class="modal-body">
+					<input id="file_upload" name="file_upload" type="file"
+						multiple="multiple" />
+					<div id="fileQueue" class="fileQueue"></div>
+
+					<div id="div_files"></div>
+					<br />
+				</div>
+				<div class="modal-footer">
+					<a href="javascript:;" class="btn btn-primary" id="btnUpload"
+						onclick="uploadFileClick();">上传</a>
+					<a href="javascript:;" class="btn btn-default" id="btnCancelUpload"
+						onclick="javascript: $('#file_upload').uploadify('cancel', '*')">取消</a>
+					<a href="javascript:;" class="btn btn-default" data-dismiss="modal"
+						id="close"
+						onclick="javascript: $('#file_upload').uploadify('cancel', '*')">关闭</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- *********加油站考核通知单预览******** -->
+
+	<div id="jyz_notice-dialog" class="add notice_font_cls">
+        <div>
+        	<p class="title_cls" align="center"><span id="jyz_head_year" class=""></span>年<span id="jyz_head_month"></span>月份<span id="jyz_cont_title"></span>考核通知单</p>
+        	<p><span id="jyz_cont_wtgs" class="notic_key_word_cls"></span><span id="jyz_cont_wtgs" class="notic_key_word_cls">()</span><span id="jyz_cont_jyzname" class="notic_key_word_cls"></span>加油站:</p>
+        	<p class="section_head_cls">        		
+        		<span id="jyz_cont_title1"></span> <span id="jyz_cont_jyzname1" class="notic_key_word_cls"></span> <span id="jyz_head_year1"></span>年<span id="jyz_head_month1"> </span>月份经营管理考核。核定<span id=jyz_cont_title2></span>项目具体如下：
+        	</p>
+        	<p class="section_head_cls">
+	        	<span class="section_head_cls" style="font-weight:bold" id="jyz_cont_qyllname"> </span><span class="notice_key_num" id="jyz_cont_rgfy"> </span>
+	        	<span class="section_head_cls" style="font-weight:bold" id="jyz_cont_chaomubiao"> </span><span class="notice_key_num" id="jyz_cont_qycmbxc"> </span> 元。
+	        </p>
+	        <p class="section_head_cls"><span class="section_head_cls">吨油人工费用标准 </span><span class="notice_key_num" id="jyz_cont_dyrgfbz"> </span> 元/吨。
+	        	<span class="section_head_cls">考核销量为 </span><span class="notice_key_num" id="jzy_cont_khxl"></span> 吨，其中：
+	        	<span class="section_head_cls">92#汽油</span>销量(吨) <span class="notice_key_num" id="jyz_cont_qy92"> </span>，
+	        	<span class="section_head_cls">95#汽油</span>销量(吨) <span class="notice_key_num" id="jyz_cont_qy95"> </span>，
+	        	<span class="section_head_cls">98#汽油</span>销量(吨) <span class="notice_key_num" id="jyz_cont_qy98"> </span>，
+	        	<span class="section_head_cls">CNG销量(方) </span><span class="notice_key_num" id="jyz_cont_cng"> </span>，
+	        	<span class="section_head_cls">柴油销量(除机出小额配送,吨) </span><span class="notice_key_num" id="jyz_cont_cyxl"> </span>。
+	        </p>
+	        <p class="section_head_cls">
+	        	<span class="section_head_cls" id="jyz_cont_zjfy"></span><span class="notice_key_num" id="jyz_cont_qyzsxc"> </span> ）元。
+	        </p>
+        	<p class="section_head_cls">
+	        	<span class="section_head_cls" style="font-weight:bold" id="jyz_cont_jjkllfy"></span><span class="notice_key_num" id="jyz_cont_jykllfy"> </span> 元。<br/>
+	        </p>
+        	<p class="section_head_cls">
+	        	<span class="section_head_cls">其中现场充值 </span><span class="notice_key_num" id="jyz_cont_xccz"> </span> 元，
+	        	<span class="section_head_cls">充值卡充值额 </span><span class="notice_key_num" id="jyz_cont_xckcze"> </span> 元，
+	        	<span class="section_head_cls">充值卡销售额 </span><span class="notice_key_num" id="jyz_cont_czkxse"> </span> 元，
+	        	<span class="section_head_cls">自助发卡终端充值 </span><span class="notice_key_num" id="jyz_cont_zzfkzdcz"> </span> 元，
+	        	<span class="section_head_cls">加油卡考核充值额 </span><span class="notice_key_num" id="jyz_cont_jykkhcze"> </span> 元。
+        	</p>
+        	<p class="section_head_cls">
+        		<span class="section_head_cls" id="jyz_cont_jjkfy"> </span><span class="notice_key_num" id="jyz_cont_jykfy"> </span> 元。
+        	</p>
+        	
+        	<p class="section_head_cls">
+        		<span class="section_head_cls" style="font-weight:bold" id="jyz_cont_fypllfy"> </span><span class="notice_key_num" id="jyz_cont_fypllxc"> </span> 元。
+        	</p>
+	        <p class="section_head_cls">非油品各项销售情况：
+	        	<span class="section_head_cls">非定制香烟(零售) </span><span class="notice_key_num" id="jyz_cont_fdzxyls"> </span> 元，
+	        	<span class="section_head_cls">一般商品（酒类/饮料/食品/百货/音像图书） </span><span class="notice_key_num" id="jyz_cont_ybsp"> </span> 元，
+	        	<span class="section_head_cls">移动充值卡/彩票 </span><span class="notice_key_num" id="jyz_cont_ydczk"> </span> 元，
+	        	<span class="section_head_cls">自有品牌水销售额 </span><span class="notice_key_num" id="jyz_cont_zyppsxse"> </span> 元，
+	        	<span class="section_head_cls">异业联盟(ETC)销售额 </span><span class="notice_key_num" id="jyz_cont_yylmxse"> </span> 元，
+	        	<span class="section_head_cls">汽车用品/润滑油/农资/汽车养护销售额 </span><span class="notice_key_num" id="jyz_cont_qcyhxse"> </span> 元，
+	        	<span class="section_head_cls">团购(所有商品)销售额 </span><span class="notice_key_num" id="jyz_cont_tgsyspxse"> </span> 元，
+	        	<span class="section_head_cls">燃油宝和降凝剂销售额 </span><span class="notice_key_num" id="jyz_cont_rybhjnjxse"> </span> 元，
+	        	<span class="section_head_cls">自有品牌玻璃水销售额 </span><span class="notice_key_num" id="jyz_cont_zyppblsxse"> </span> 元，
+	        	<span class="section_head_cls">欧露纸/定制香烟销售额 </span><span class="notice_key_num" id="jyz_cont_olzxse"> </span> 元，
+	        	<span class="section_head_cls">枸杞系列销售额 </span><span class="notice_key_num" id="jyz_cont_gqxlxse"> </span> 元。
+	        </p>
+	        <p class="section_head_cls"><span class="section_head_cls" id="jyz_cont_fypjcfy_title"> </span><span class="notice_key_num" id="jyz_cont_fypjcfy"> </span> 元，<span class="section_head_cls">非油品目标完成情况奖惩 </span><span class="notice_key_num" id="jyz_cont_fypmbwcqkjc"> </span> 元</p>
+        	<p class="section_head_cls">
+	        	<span class="section_head_cls" style="font-weight:bold">四、其他 </span><span class="notice_key_num" id="jyz_cont_qt"> </span> 元。<br/>
+	        </p>
+        	<p class="section_head_cls">（一） <span class="section_head_cls">整月看站及借调等人员工资</span> <span class="notice_key_num" id="jyz_cont_zykzjjddrygz"> </span> 元。</p>
+        	<p class="section_head_cls">（二） <span class="section_head_cls">临时停业看站工资 </span><span class="notice_key_num" id="jyz_cont_lstykzgz"> </span> 元。</p>
+        	<p class="section_head_cls">（三）<span class="section_head_cls">请假人员工资 </span><span class="notice_key_num" id="jyz_cont_qjrygz"> </span> 元。</p>
+        	<p class="section_head_cls">（四） <span class="section_head_cls">保留差</span> <span class="notice_key_num" id="jyz_cont_blc"> </span> 元。</p>
+        	<p class="section_head_cls">（五）<span class="section_head_cls">过渡补差 </span><span class="notice_key_num" id="jyz_cont_gdbc"> </span> 元。</p>
+        	<p class="section_head_cls">（六）<span class="section_head_cls">专项奖罚  </span><span class="notice_key_num" id="jyz_cont_zxjf"> </span> 元。</p>
+        	<p class="section_head_cls">（七）<span class="section_head_cls">管理扣罚 </span><span class="notice_key_num" id="jyz_cont_glkf"> </span> 元。</p>
+        	
+        	<p class="section_head_cls" >
+        		<span class="section_head_cls" style="font-weight:bold" id="bottom_name">五、以上薪酬共计 </span><span class="notice_key_num" id="jyz_cont_xcxfy" >&nbsp; </span><span id="bottom_name2">元。请严格按照该额度进行考核分配。</span>
+        	</p>
+        	
+        	<p class="section_head_cls" >
+        		<span class="section_head_cls" style="font-weight:bold" id="bottom_name3">五、代理费手续费项目分类 </span>
+        	</p>
+        	<p class="section_head_cls" >
+	        	<span class="section_head_cls" id="bottom_name4">（一）可用于考核分配的薪酬性费用为：  </span><span class="notice_key_num" id="jyz_cont_xcxfy1" >&nbsp; </span><span id="bottom_name6"> 元（包含剔除附加的轻油联量费用、加油卡联量费用、非油品联量费用、其他费用、用餐补助）。</span>
+	        </p>
+	        <p class="section_head_cls" >
+	        	<span class="section_head_cls" id="bottom_name7">（二）实际产生的附加费用合计：  </span><span class="notice_key_num" id="jyz_cont_sjfj">&nbsp; </span><span id="bottom_name9"> 元（包含单位社保、人事代理机构管理费、节日福利、日常劳保等。不得用于薪酬性分配）。</span>
+        	</p>
+        	<p class="notice_bottom" align="right">
+        		<span  style="padding-right:50px;">郑州石油分公司</span><br/>
+        		<span  style="padding-right:40px;"><label class="notice_key_num" id="jyz_bottom_year"></label>年<label class="notice_key_num" id="jyz_bottom_month"> </label>月<label id="jyz_bottom_day" class="notice_key_num"> </label>日</span>
+        	</p>
+        </div>
+        <div class="save">             
+             <button type="reset" class="btn btn-primary" id="jyzNoticeCalcle">关闭</button>
+         </div>
+    </div>
+    
+     <!-- 工资明细管理 -->
+    <div id="salary-detail-dialog" style="display:none;">
+        <div class="data-list" >
+            <form id="salryDetailForm" class="form-inline data-list-search">
+                <div  class="form-group">
+                    <button type="button" class="btn btn-search paiFaButton" onclick=""><i class="icon icon-search"></i>提交</button>
+            	</div>            	
+            </form>
+                
+            <div id="salary-detail-grid" class="l-grid-custom panel-bar-split" style="width:100%;"></div>
+        </div>
+    </div>
+</body>
+</html>

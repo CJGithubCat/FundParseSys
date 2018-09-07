@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zsh.labouCapital.dao.ModuleMapper">
+	<!-- *********** 根据用户id以及权限种类查询权限信息 *************** -->
+	<select id="queryModulesByUid" parameterType="map" resultType="com.zsh.labouCapital.entity.Module">
+		SELECT tm.*
+		FROM  t_user tu,
+			  t_role tr,
+			  t_module tm,
+			  t_role_module trm 
+		where tu.role_id = tr.role_id
+		and tr.role_id = trm.role_id
+		and trm.module_id = tm.module_id
+		and tu.user_id = #{userid}
+		AND tm.categoryid = #{categoryid}
+	</select>
+	
+	<!-- *********** 根据roleid查询权限信息 *************** -->
+	<select id="queryModulesByRoleid" parameterType="int" resultType="com.zsh.labouCapital.entity.Module">
+		SELECT tm.*
+		FROM   t_role_module trm,
+		       t_role tr,
+		       t_module tm
+		WHERE  tr.role_id = trm.role_id
+		AND    trm.module_id = tm.module_id
+		AND    tr.role_id = #{roleid}
+	</select>
+	<!-- ************* 删除roleid对应的所有权限  [只保留首页的权限]************** -->
+	<delete id="deleteModulesByRoleid" parameterType="int">
+		delete from t_role_module
+		where role_id = #{roleid}
+	</delete>
+	<!-- ************* 为角色添加权限 ************** -->
+	<insert id="addRoleModules" parameterType="map">
+		insert into t_role_module(role_id,module_id)
+		values(#{roleid},#{permissionid});
+	</insert>
+	
+	<!-- 根据用户id和当前模块的id，也就是子模块的父id，查询当前模块的按钮权限 -->
+	<select id="queryInfoManageModulesByUid" parameterType="map" resultType="TWgPermission">
+		select tm.* 
+			from 
+			t_user tu,
+			t_role tr,
+			t_module tm,
+			t_role_module trm
+			where tu.role_id = tr.role_id
+			and tr.role_id = trm.role_id
+			and tm.module_id = trm.module_id			
+			and tu.user_id = #{userid}
+			and tm.parentid = #{permissionsParentID}
+		ORDER BY tm.orderid
+	</select>
+</mapper>

@@ -1,0 +1,115 @@
+[
+    {
+        "name": "数据统计", 
+        "id": "52ccfc7d310e48a0b8a2fe16762b0a74", 
+        "type": "nw", 
+        "items": [
+            {
+                "name": "警情", 
+                "id": "f260ad1bc8874339b0ad1f1ac51f369d", 
+                "type": "null",
+                "url": "htmls/alarm.html", 
+                "parentId": "52ccfc7d310e48a0b8a2fe16762b0a74"
+            }, 
+            {
+                "name": "进出关键点", 
+                "id": "6769f8926dd74196af6df032b72cb15c", 
+                "type": "null", 
+                "url": "htmls/alarmJcgjd.html", 
+                "parentId": "52ccfc7d310e48a0b8a2fe16762b0a74"
+            }, 
+            {
+                "name": "最近未上报", 
+                "id": "620f522979654536ae04071ed8e009c9", 
+                "type": "null",  
+                "url": "htmls/lastLocation.html", 
+                "parentId": "52ccfc7d310e48a0b8a2fe16762b0a74"
+            }, 
+            {
+                "name": "指令信息", 
+                "id": "967578765f1244deaa342bf3cc33b6b3", 
+                "type": "null", 
+                "url": "htmls/sendCmd.html", 
+                "parentId": "52ccfc7d310e48a0b8a2fe16762b0a74"
+            }
+        ], 
+        "url": "null", 
+        "parentId": null
+    }, 
+    {
+        "name": "信息管理", 
+        "id": "2f3fc90c531f463491941af4ccef3213", 
+        "type": "fc", 
+        "items": [
+            {
+                "name": "机构管理", 
+                "id": "b2fb9d4bd21846efbeca41b5657f060f", 
+                "type": "null", 
+                "url": "htmls/orgManager.html", 
+                "parentId": "2f3fc90c531f463491941af4ccef3213"
+            }, 
+            {
+                "name": "操作员管理", 
+                "id": "998d56e154414fa9a574c6e6c3d389e2", 
+                "type": "null", 
+                "url": "htmls/operatorManager.html", 
+                "parentId": "2f3fc90c531f463491941af4ccef3213"
+            }, 
+            {
+                "name": "车辆管理", 
+                "id": "7c781a77acee44b8986ad13d8741afab", 
+                "type": "null", 
+                "url": "htmls/vehicleLoanManager.html", 
+                "parentId": "2f3fc90c531f463491941af4ccef3213"
+            },
+            {
+                "name": "区域管理", 
+                "id": "7d781a77acee44b8986ad13d8741afab", 
+                "type": "null", 
+                "url": "htmls/areaPoint.html", 
+                "items": [
+                    {
+                        "name": "区域信息管理", 
+                        "id": "0c0d6eb8b5a742a89f8622269ee8ba2a", 
+                        "type": "null", 
+                        "url": "htmls/areaPoint.html", 
+                        "parentId": "7d781a77acee44b8986ad13d8741afab"
+                    }, 
+                    {
+                        "name": "区域规则管理", 
+                        "id": "b03f597e678043b1b1c74a60b1bf5f5a", 
+                        "type": "null", 
+                        "url": "htmls/areaRule.html", 
+                        "parentId": "7d781a77acee44b8986ad13d8741afab"
+                    },
+                    {
+                        "name": "区域监控车辆管理", 
+                        "id": "b03f597e678043b1b1c74a60b1bf5f5b", 
+                        "type": "null", 
+                        "url": "htmls/areaVehicle.html", 
+                        "parentId": "7d781a77acee44b8986ad13d8741afab"
+                    }
+                ],
+                "parentId": "2f3fc90c531f463491941af4ccef3213"
+            }
+        ], 
+        "url": "null", 
+        "parentId": null
+    }, 
+    {
+        "name": "系统设置", 
+        "id": "51c9240feecf410b8a2cf51dde30ba53", 
+        "type": "fee", 
+        "items": [
+            {
+                "name": "警情提醒规则", 
+                "id": "0c0d6eb8b5a742a89f8622269ee8ba2a", 
+                "type": "null", 
+                "url": "htmls/alarmRemindRules.html", 
+                "parentId": "51c9240feecf410b8a2cf51dde30ba53"
+            }
+        ], 
+        "url": "null", 
+        "parentId": null
+    }
+]

@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zsh.labouCapital.dao.JyzkhtzdMapper">
+	<sql id="queryParams">
+		<where>
+			<trim prefixOverrides="and|or">
+				<if test="jyz!=null">
+					and td.jyz =#{jyz}
+				</if>
+				<if test="yearMonthDate!=null">
+					and td.year_month_date =#{yearMonthDate}
+				</if>
+				<if test="status!=null">
+					and td.status = #{status}
+				</if>
+				<if test="salaryStatus!=null">
+					and td.salary_status = #{salaryStatus}
+				</if>
+				<if test="companyPath!=null">
+					and tcp.company_path LIKE (CONVERT(VARCHAR(100),#{companyPath})+'%')
+				</if>
+			</trim>
+		</where>
+	</sql>
+
+	
+	<select id="findJyzkhtzdPage" parameterType="map" resultType="com.zsh.labouCapital.entity.StationExamNoticeResult">
+		SELECT * FROM
+		  (SELECT 
+		    * 
+		  FROM
+		    (SELECT 
+		      td.*,
+		      CASE
+		        td.status 
+		        WHEN 1 
+		        THEN '未下发' 
+		        WHEN 2 
+		        THEN '已下发县级部门,未确认' 
+		        WHEN 3 
+		        THEN '县级部门已确认接收' 
+				WHEN 4 
+		        THEN '已下发加油站,未确认'
+				WHEN 5 
+		        THEN '加油站已确认接收'
+				WHEN 6 
+		        THEN '部门修改后,还未下发'
+		      END statusStr,
+		      ROW_NUMBER () OVER (
+		    ORDER BY td.id DESC) AS ROW 
+		    FROM
+		      t_station_exam_notice_result td 
+		      INNER JOIN t_company_path tcp 
+		        ON td.company_id = tcp.company_id   	
+				<include refid="queryParams"/>
+				) cm where row <![CDATA[<=]]> #{limit}
+			) dm where row <![CDATA[>=]]> #{start}
+			ORDER BY jyz ASC
+	</select>
+	
+	
+	<select id="findJyzkhtzdPageCount" parameterType="map" resultType="long">
+		SELECT 
+		  COUNT(1) 
+		From t_station_exam_notice_result td INNER JOIN t_company_path tcp 
+		    ON td.company_id = tcp.company_id  
+		<include refid="queryParams"/>
+	</select>
+
+    <!-- 导出加油站考核通知单 -->
+	<select id="exportJyzkhtzd" parameterType="map" resultType="com.zsh.labouCapital.entity.StationExamNoticeResult">
+		SELECT 
+			td.*,
+			CASE
+			  td.status 
+			  WHEN 1 
+			  THEN '未下发' 
+			  WHEN 2 
+			  THEN '已下发县级部门,未确认' 
+			  WHEN 3 
+			  THEN '县级部门已确认接收' 
+			  WHEN 4 
+			  THEN '已下发加油站,未确认'
+			  WHEN 5 
+			  THEN '加油站已确认接收'
+			  WHEN 6 
+			  THEN '部门修改后,还未下发'
+			END statusStr
+        from t_station_exam_notice_result td INNER JOIN t_company_path tcp 
+		    ON td.company_id = tcp.company_id 
+		WHERE  tcp.company_path LIKE (CONVERT(VARCHAR(100),#{companyPath})+'%')
+        <if test="jyz!=null and jyz!=''">
+			AND td.jyz =#{jyz}
+		</if>
+        <if test="yearMonthDate!=null and yearMonthDate!=''">
+			AND td.yearMonthDate LIKE =#{yearMonthDate}
+		</if>
+		<if test="status!=null and status!=''">
+			AND td.status=#{status}
+		</if>
+	</select>
+	
+	<!-- 单条操作加油站考核通知单 -->
+	<update id="operateJyzkhtzd" parameterType="map">
+		update t_station_exam_notice_result set status=#{changeStatus}
+		    where id = #{id}
+	</update>
+	
+	<!-- 单条操作加油站考核通知单 -->
+	<update id="opJyzNoticeSalaryStatus" parameterType="map">
+		update t_station_exam_notice_result set salary_status=#{changeStatus}
+		    where id = #{id}
+	</update>
+	
+	<!-- 批量操作加油站考核通知单 -->
+	<update id="batchOperateJyzkhtzd" parameterType="map">
+		update t_station_exam_notice_result set status=#{changeStatus}
+		    where id in
+		<foreach collection ="list" item="item" open="(" separator="," close=")">
+		   #{item}
+		</foreach>
+	</update>
+	<!-- 批量操作工资通知单状态 -->
+	<update id="batchOpJyzNoticeSalaryStatus"  parameterType="map">
+		update t_station_exam_notice_result set salary_status=#{changeStatus}
+		    where id in
+		<foreach collection ="list" item="item" open="(" separator="," close=")">
+		   #{item}
+		</foreach>
+	</update>
+	
+	<!--<update id="edit" parameterType="com.zsh.labouCapital.entity.StationExamNoticeResult">
+		update t_station_exam_notice_result 
+		<set>
+			<if test="xc != null">
+				xc = #{xc},
+			</if>
+			<if test="fj != null">
+				fj = #{fj},
+			</if>
+			<if test="gasoline92 != null">
+				gasoline92 = #{gasoline92},
+			</if>
+			<if test="gasoline95 != null">
+				gasoline95 = #{gasoline95},
+			</if>
+			<if test="gasoline98 != null">
+				gasoline98 = #{gasoline98},
+			</if>
+			<if test="dylldxfy != null">
+				dylldxfy = #{dylldxfy},
+			</if>
+			<if test="dyrgfybz != null">
+				dyrgfybz = #{dyrgfybz},
+			</if>
+			<if test="khxl != null">
+				khxl = #{khxl},
+			</if>
+			<if test="CNG != null">
+				CNG = #{CNG},
+			</if>
+			<if test="cyxl != null">
+				cyxl = #{cyxl},
+			</if>
+			<if test="qydlsxfhj != null">
+				qydlsxfhj = #{qydlsxfhj},
+			</if>
+			<if test="bqjjysdzjxcfy != null">
+				bqjjysdzjxcfy = #{bqjjysdzjxcfy},
+			</if>
+			<if test="sjcsdyfj != null">
+				sjcsdyfj = #{sjcsdyfj},
+			</if>
+			<if test="ygsbdwbf != null">
+				ygsbdwbf = #{ygsbdwbf},
+			</if>
+			<if test="rsdljgglf != null">
+				rsdljgglf = #{rsdljgglf},
+			</if>
+			<if test="jrfl != null">
+				jrfl = #{jrfl},
+				</if>
+			<if test="rclb != null">
+				rclb = #{rclb},
+				</if>
+			<if test="ycbz != null">
+				ycbz = #{ycbz},
+				</if>
+			<if test="sbjy != null">
+				sbjy = #{sbjy},
+				</if>
+			<if test="sjcsxcxfy != null">
+				sjcsxcxfy = #{sjcsxcxfy},
+			</if>
+			<if test="jykllxc != null">
+				jykllxc = #{jykllxc},
+			</if>
+			<if test="xccz != null">
+				xccz = #{xccz},
+			</if>
+			<if test="czkcze != null">
+				czkcze = #{czkcze},
+			</if>
+			<if test="czkxse != null">
+				czkxse = #{czkxse},
+			</if>
+			<if test="wtcze != null">
+				wtcze = #{wtcze},
+			</if>
+			<if test="zzfkzdcz != null">
+				zzfkzdcz = #{zzfkzdcz},
+			</if>
+			<if test="jykkhcze != null">
+				jykkhcze = #{jykkhcze},
+			</if>
+			<if test="jykdzxc != null">
+				jykdzxc = #{jykdzxc},
+			</if>
+			<if test="fypllxc != null">
+				fypllxc = #{fypllxc},
+			</if>
+			<if test="fdzxyls != null">
+				fdzxyls = #{fdzxyls},
+			</if>
+			<if test="ybsp != null">
+				ybsp = #{ybsp},
+			</if>
+			<if test="cpxse != null">
+				cpxse = #{cpxse},
+			</if>
+			<if test="yylmETCxse != null">
+				yylmETCxse = #{yylmETCxse},
+			</if>
+			<if test="qcyhxse != null">
+				qcyhxse = #{qcyhxse},
+			</if>
+			<if test="tgsyspxse != null">
+				tgsyspxse = #{tgsyspxse},
+			</if>
+			<if test="rybhjnjxse != null">
+				rybhjnjxse = #{rybhjnjxse},
+			</if>
+			<if test="zyppblsxse != null">
+				zyppblsxse = #{zyppblsxse},
+			</if>
+			<if test="olzxse != null">
+				olzxse = #{olzxse},
+			</if>
+			<if test="gqxlxse != null">
+				gqxlxse = #{gqxlxse},
+			</if>
+			<if test="fypmbwcjcje != null">
+				fypmbwcjcje = #{fypmbwcjcje},
+			</if>
+			<if test="qtxc != null">
+				qtxc = #{qtxc},
+			</if>
+			<if test="qtfy != null">
+				qtfy=#{qtfy},
+			</if>
+			<if test="status != null and status > 0">
+				status=#{status},
+			</if>
+			<if test="salaryStatus != null and salaryStatus > 0">
+				salary_status = #{salaryStatus}
+			</if>
+		</set>
+		<where>
+		    	id = #{id}
+		</where>
+	</update>
+	-->
+	<update id="edit" parameterType="com.zsh.labouCapital.entity.StationExamNoticeResult">
+		update t_station_exam_notice_result 
+		<set>
+			<if test="fypmbwcqkjc != null">
+				fypmbwcqkjc = #{fypmbwcqkjc},
+			</if>
+			<if test="qyzsxc != null">
+				qyzsxc = #{qyzsxc},
+			</if>
+			<if test="jykdzxc != null">
+				jykdzxc = #{jykdzxc},
+			</if>
+			<if test="zxjf != null">
+				zxjf = #{zxjf},
+			</if>
+			<if test="glkf != null">
+				glkf = #{glkf},
+			</if>
+			<if test="status != null and status > 0">
+				status=#{status}
+			</if>
+		</set>
+		<where>
+		    	id = #{id}
+		</where>
+	</update>
+	
+	<!-- 根据id获取通知单信息 -->
+	<select id="findById" parameterType="String" resultType="com.zsh.labouCapital.entity.StationExamNoticeResult">
+		select * from t_station_exam_notice_result tsenr 
+		where tsenr.id = #{noticeId}
+	</select>
+	
+	<!-- 根据id查询几个可二次分配的参数值分别是多少(非油品目标完成情况奖惩+轻油折算薪酬+加油卡调整薪酬+管理扣罚+专项奖罚) -->
+	<select id="queryCanAllocation" parameterType="map" resultType="map">
+		SELECT 
+		  a.beginfypmbwcjcje-b.sumfypmbwcjcje as canfypmbwcjcje,
+		  a.beginqyzsxc-b.sumqyzsxc as canqyzsxc,
+		  a.beginjykdzxc-b.sumqyzsxc as canjykdzxc,
+		  a.beginglkf-b.sumglkf as canglkf,
+		  a.beginzxjf-b.sumzxjf as canzxjf
+		FROM
+		  (SELECT 
+		    row_number () over (
+		  ORDER BY tt.fypmbwcjcje) AS num,
+		  tt.beginfypmbwcjcje,
+		  tt.beginqyzsxc,
+		  tt.beginjykdzxc,
+		  tt.beginglkf,
+		  tt.beginzxjf 
+		  FROM
+		    dbo.t_exam_summary tt 
+		  WHERE tt.company_id = 
+		    (SELECT 
+		      t.parent_company_id 
+		    FROM
+		      t_company t 
+		    WHERE t.company_id=#{companyId}) and tt.year_month_date=#{yearMonthDate}) AS a 
+		  LEFT JOIN 
+		    (SELECT 
+		      row_number () over (
+		    ORDER BY SUM(tes.fypmbwcqkjc)) AS num,
+		    SUM(tes.fypmbwcqkjc) AS sumfypmbwcjcje,
+		    SUM(tes.qyzsxc) AS sumqyzsxc,
+		    SUM(tes.jykdzxc) AS sumjykdzxc,
+		    SUM(tes.glkf) AS sumglkf,
+		    SUM(tes.zxjf) AS sumzxjf 
+		    FROM
+		      t_station_exam_notice_result tes 
+		    WHERE tes.company_id IN 
+		      (SELECT 
+		        tc.company_id 
+		      FROM
+		        t_company tc 
+		      WHERE tc.parent_company_id = 
+		        (SELECT 
+		          t.parent_company_id 
+		        FROM
+		          t_company t 
+		        WHERE t.company_id=#{companyId})) and tes.year_month_date=#{yearMonthDate}) AS b 
+		    ON a.num = b.num
+	</select>
+
+	<!-- 修改部门考核结果值 -->
+	<update id="updateBMExamSummary" parameterType="map">
+		update t_exam_summary
+		<set>
+			<if test="canfypmbwcjcje != null">
+				fypmbwcjcje = #{canfypmbwcjcje},
+			</if>
+			<if test="canqyzsxc != null">
+				qyzsxc = #{canqyzsxc},
+			</if>
+			<if test="canjykdzxc != null">
+				jykdzxc = #{canjykdzxc},
+			</if>
+			<if test="canglkf != null">
+				glkf = #{canglkf},
+			</if>
+			<if test="canzxjf != null">
+				zxjf = #{canzxjf}
+			</if>
+		</set>
+		where company_id = (SELECT 
+		    parent_company_id 
+		        FROM
+		          t_company  
+		        WHERE company_id=#{companyId}) and year_month_date=#{yearMonthDate}
+	</update>
+	
+	<!-- 修改部门考核通知单管理扣罚和专项奖罚 -->
+	<update id="updateDepartmentExamNotice" parameterType="map">
+		update t_department_exam_notice_result
+		<set>
+			<if test="canglkf != null">
+				glkf = #{canglkf},
+			</if>
+			<if test="canzxjf != null">
+				zxjf = #{canzxjf},
+			</if>
+		</set>
+		where company_id = (SELECT 
+		    	parent_company_id 
+		        FROM t_company  
+		        WHERE company_id=#{companyId}) and year_month_date=#{yearMonthDate}
+	</update>
+</mapper>

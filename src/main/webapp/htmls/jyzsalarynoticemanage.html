@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, jyzkhtzd-scalable=no">
+<!-- 启用360浏览器的极速模式(webkit) -->
+<meta name="renderer" content="webkit">
+<!-- 避免IE使用兼容模式 -->
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>加油站考核通知单管理</title>
+<link rel="stylesheet" href="../vendor/bootstrap/dist/css/bootstrap.css" />
+<link rel="stylesheet"
+	href="../vendor/ligerUI/skins/Aqua/css/ligerui-all.css" />
+<link rel="stylesheet" href="../css/public/ligerui-custom.css" />
+<link rel="stylesheet" href="../css/public/search-list-grid-tree.css" />
+<link href="../js/plugins/uploadify/uploadify.css" rel="stylesheet" />
+<script src="../vendor/jquery/dist/jquery.js"></script>
+<script src="../js/plugins/uploadify/jquery.uploadify.min.js"></script>
+<script src="../vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="../vendor/ligerUI/js/ligerui.all.js"></script>
+<script src="../js/plugins/DataToView.js"></script>
+<script src="../js/plugins/ligerui.other.js"></script>
+<script src="../js/util/dateutil.js"></script>
+<script src="../js/util/unittype.js"></script>
+<!-- 添加 foundation-datepicker 支持-->
+<link rel="stylesheet"
+	href="../vendor/foundation-datepicker/css/foundation-datepicker.min.css" />
+<link rel="stylesheet"
+	href="../vendor/font-awesome/css/font-awesome.min.css" />
+<script
+	src="../vendor/foundation-datepicker/js/foundation-datepicker.min.js"></script>
+<script
+	src="../vendor/foundation-datepicker/js/locales/foundation-datepicker.zh-CN.js"></script>
+
+<style>
+.icon-true {
+	background: #48C38B;
+	border-radius: 50%;
+	line-height: 18px;
+	color: white;
+	font-family: '微软雅黑';
+}
+
+div[toolbarid='item-2'] .l-icon {
+	transform: rotate(180deg);
+	-ms-transform: rotate(180deg); /* IE 9 */
+	-moz-transform: rotate(180deg); /* Firefox */
+	-webkit-transform: rotate(180deg); /* Safari and Chrome */
+	-o-transform: rotate(180deg); /* Opera */
+}
+
+.btn-primary, #close {
+	background-color: #40c5e1;
+	color: #fff;
+	border: 1px solid #40c5e1;
+}
+
+.btn-primary:hover, #close:hover {
+	background-color: #337ab7;
+	color: #fff;
+	border: 1px solid #337ab7;
+}
+
+.btn-primary, .btn-default {
+	height: 32px;
+	width: 72px;
+}
+/* .refresh{
+            background: url(../images/refreshBg.png) no-repeat 0 3px;
+            width: 50px;
+            height: 20px;
+            display: inline-block;
+            padding-left: 20px;
+            text-decoration: none;
+            outline: none;
+            font-size: 14px;
+            cursor: pointer;
+        }*/
+button {
+	outline: none;
+}
+
+.btn-primary:hover, .btn-primary:active {
+	color: #fff;
+	background-color: #28a0b9;
+	border-color: #28a0b9;
+}
+
+.l-grid-custom .l-grid-row.l-selected, .l-grid-custom .l-grid-row.l-selected a,
+	.l-grid-custom .l-grid-row.l-selected div {
+	background: #1eb0da;
+	color: #fff;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+.add, .update {
+	display: none;
+	font-size: 14px;
+	font-family: '微软雅黑';
+}
+/*add样式修改*/
+.l-dialog-tl {
+	height: 42px;
+}
+
+.l-dialog-tc {
+	padding-left: 15px;
+	/*border-top: 2px solid #fff;*/
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
+	background: none;
+	background-color: #efefef;
+}
+
+.l-dialog td div, #add-form label, #update-form label, #update-role-form label
+	{
+	font-size: 14px;
+	font-family: '微软雅黑';
+	font-weight: normal;
+	color: #343f56;
+}
+
+.l-dialog-max, .l-dialog-collapse {
+	display: none;
+}
+
+.l-dialog-title {
+	font-size: 16px !important;
+}
+
+.l-dialog-close {
+	background: url(../images/closeHover.png) no-repeat;
+	width: 22px;
+	height: 22px;
+	position: absolute;
+	top: -2px;
+	right: 9px;
+}
+/*.l-dialog-close:hover{
+            background: url(../images/closeHover.png) no-repeat;
+        }*/
+#add-dialog .form-group .form-control, #update-dialog .form-group .form-control,
+	#update-role-dialog .form-group .form-control {
+	width: 120px;
+	height: 30px;
+	display: inline-block;
+}
+
+#add-form label, #update-form label, #update-role-form label {
+	width: 165px;
+	text-align: right;
+	text-indent: 10px;
+	margin-right: 5px;
+}
+
+#add-dialog, #update-dialog, #update-role-dialog {
+	margin-top: 0px;
+}
+
+.form-control {
+	padding: 4px 12px;
+}
+
+#add-dialog .form-group, #update-dialog .form-group, #update-role-dialog .form-group
+	{
+	margin-bottom: 12px;
+}
+
+.save {
+	position: absolute;
+	bottom: 0px;
+	left: 0;
+	height: 45px;
+	width: 100%;
+	text-align: center;
+}
+
+.save button {
+	margin-top: 8px;
+	width: 70px;
+	height: 30px;
+	border-color: #40c5e1;
+	background-color: #40c5e1;
+	line-height: 1;
+	outline: none;
+}
+
+.l-dialog-cc, .l-dialog-body {
+	border-bottom-left-radius: 8px;
+	border-bottom-right-radius: 8px;
+}
+
+.l-dialog-cc {
+	border-top: none;
+}
+
+.l-dialog-win, .l-dialog {
+	border: none;
+}
+
+.l-window-mask {
+	background: none;
+	background: url(../images/Bgmask.png);
+	opacity: 1;
+}
+
+.data-list-search .btn {
+	outline: none;
+}
+
+span.btfuhao {
+	color: red;
+}
+
+.redBorder {
+	border: 1px solid red;
+}
+
+#add-form::-webkit-scrollbar {
+	width: 8px;
+	height: 4px;
+	position: absolute;
+	right: 4px;
+}
+
+#add-form::-webkit-scrollbar-track {
+	background-color: #e6e6e6;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+}
+
+#add-form::-webkit-scrollbar-thumb {
+	background-color: #b3b3b3;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+}
+
+#add-form::-webkit-scrollbar-thumb:hover {
+	background-color: #b3b3b3;
+}
+
+#add-form::-webkit-scrollbar-thumb:active {
+	background-color: #b3b3b3;
+}
+
+.notice_font_cls{
+	font-family: '微软雅黑';
+}
+.section_head_cls{
+	text-indent:2em;
+}
+.notic_key_word_cls{
+ 	color:red;
+}
+
+.notice_key_num{
+	font-weight:bold;
+}
+.title_cls{
+	font-size:20px;
+}
+
+#jyz_notice-dialog,#depart_notice-dialog{
+	padding-left:20px;
+	padding-right:20px;
+}
+
+#salryDetailForm, #salary-detail-grid {
+	box-shadow: none;
+}
+
+#salary-detail-grid .l-panel-bwarp {
+	box-shadow: none;
+	border: 1px solid #e1e1e1;
+}
+
+#salary-detail-dialog .data-list {
+	padding: 0 10px;
+}
+
+#salary-detail-grid {
+	width: 100%;
+}
+
+#salary-detail-grid .l-clear {
+	height: 0px;
+}
+#salary-detail-dialog .data-list,.l-dialog-win .l-dialog-content,#public-dialog .data-list{padding:0px;}
+#salary-detail-dialog .l-panel-bar{margin:0px;}
+.l-grid-custom .l-grid-row.l-selected td div{color:#fff}
+.l-grid-custom .l-bar-group{margin-right:0px;}
+</style>
+<!-- 机构树生成 -->
+<script>
+	$(function() {
+		var treeToggleButton = $('.tree-toggle-button');
+		var body = $('body');
+		treeToggleButton.on('click', function(e) {
+			if (treeToggleButton.hasClass('show')) {
+				treeToggleButton.removeClass('show');
+				body.removeClass('hide-tree');
+			} else {
+				treeToggleButton.addClass('show');
+				body.addClass('hide-tree');
+			}
+			setTimeout(function() {
+				$(window).trigger('resize');
+			}, 500);
+		});
+	});
+	$(function() {
+		var onOff = true;
+		window.tree = $("#tree")
+				.ligerTree(
+						{
+							url : '../company/queryTreeRootNode',
+							nodeWidth : 200,
+							checkbox : false,
+							slide : false,
+							btnClickToToggleOnly : false,
+							isExpand : false,
+							idFieldName : 'treedataindex',
+							onSelect : function(node) {
+								var data = node.data;
+								$("#status").html('');
+								<!--市级公司权限-->
+								var strVar = "";
+								strVar += "<option value=\"\">--请选择--<\/option>\n";
+								strVar += "<option value=\"4\">县级部门提交,未审核<\/option>\n";
+								strVar += "<option value=\"5\">审核已通过<\/option>\n";
+								strVar += "<option value=\"-1\">审核未通过<\/option>\n";
+								<!--县级部门权限-->
+								var strVar1 = "";
+								strVar1 += "<option value=\"\">--请选择--<\/option>\n";
+								strVar1 += "<option value=\"2\">加油站已提交,部门未审核<\/option>\n";
+								strVar1 += "<option value=\"3\">县级部门已审核,未提交<\/option>\n";
+								strVar1 += "<option value=\"4\">县级部门已提交,未审核<\/option>\n";
+								strVar1 += "<option value=\"5\">审核已通过<\/option>\n";
+								strVar1 += "<option value=\"-1\">审核未通过<\/option>\n";
+								<!--加油站权限-->
+								var strVar2 = "";
+								strVar2 += "<option value=\"\">--请选择--<\/option>\n";
+								strVar2 += "<option value=\"1\">未提交<\/option>\n";
+								strVar2 += "<option value=\"2\">加油站已提交,部门未审核<\/option>\n";
+								strVar2 += "<option value=\"3\">县级部门已审核,未提交<\/option>\n";
+								strVar2 += "<option value=\"4\">县级部门已提交,未审核<\/option>\n";
+								strVar2 += "<option value=\"5\">审核已通过<\/option>\n";
+								strVar2 += "<option value=\"-1\">审核未通过<\/option>\n";
+								var companyType = node.data.params.companyType;
+								console.log('companyType:'+companyType);
+								if (companyType == 0) {
+									$("#status").append(strVar);
+								} else if (companyType == 1 || companyType == 2
+										|| companyType == 3 || companyType == 4) {
+									$("#status").append(strVar1);
+								} else if (companyType == 5) {
+									$("#status").append(strVar2);
+								}
+								//console.log(node.data);
+								//changeURL(node.data.params.companyPath);
+								$("input[name='companyPath']").prop('value',node.data.params.companyPath);
+								$("input[name='companyId']").prop('value',node.data.params.id);
+								$("input[name='companyType']").prop('value',companyType);
+								findJyzkhtzd();
+							},
+							isLeaf : function(data) {
+								return !(data.delay !== undefined || data.children !== undefined);
+							},
+							onExpand : function(e) {
+								this._parentNode = e.target;
+							},
+							onError : function(XMLHttpRequest, textStatus,
+									errorThrown) {
+								console.log(arguments);
+							},
+							onSuccess : function(newdata) {
+								var parentNode = this._parentNode;
+								var menuData = [];
+								var parent = $(parentNode);
+								// console.log(newdata)
+								$("input[name='companyPath']").prop('value',
+										newdata.datas.companyPath);
+								$("input[name='companyId']").prop('value',
+										newdata.datas.id);
+								var parentData = this.getDataByID(parent
+										.attr('treedataindex'));
+								if (parentData === null) {
+									// 父节点为空时（即该节点为根节点时）
+									if (onOff) {
+										$(newdata.datas)
+												.each(
+														function() {
+															menuData
+																	.push({
+																		text : this.text,
+																		delay : {
+																			url : '../company/queryTreeNodeList'
+																					+ '?&nodeId='
+																					+ this.id
+																		},
+																		params : this
+																	});
+														})
+										// if(newdata.datas){
+										//     changeURL(newdata.datas.companyPath);
+										// }
+										if (menuData.length <= 0)
+											return;
+										this.append(this._parentNode, menuData);
+										if (parentData)
+											delete parentData.delay;
+										onOff = false;
+										function a() {
+											$('.l-body').trigger('click');
+										}
+										a();
+									} else {
+										$(newdata.datas.list)
+												.each(
+														function() {
+															var leaf = {
+																text : this.text,
+																delay : {
+																	url : '../company/queryTreeNodeList'
+																			+ '?&nodeId='
+																			+ this.id
+																},
+																params : this
+															};
+															if (this.isLeaf) {
+																delete leaf.delay;
+															}
+															menuData.push(leaf);
+														})
+										if (menuData.length <= 0)
+											return;
+										this.append(this._parentNode, menuData);
+										if (parentData)
+											delete parentData.delay;
+									}
+								} else {
+									//该节点有父节点，不为根节点时
+									$(newdata.datas.list)
+											.each(
+													function() {
+														var leaf = {
+															text : this.text,
+															delay : {
+																url : '../company/queryTreeNodeList'
+																		+ '?&nodeId='
+																		+ this.id
+															},
+															params : this
+														};
+														if (this.isLeaf) {
+															delete leaf.delay;
+														}
+														menuData.push(leaf);
+													})
+									if (menuData.length <= 0)
+										return;
+									this.append(this._parentNode, menuData);
+									if (parentData)
+										delete parentData.delay;
+								}
+							}
+						});
+	});
+</script>
+<script>
+	//日期格式化
+	$(function() {
+		var nowTemp = new Date();
+		var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp
+				.getDate() + 1, 0, 0, 0, 0);
+		var checkin = $('#sumaryYmSearch').fdatepicker({
+			language : 'zh-CN',
+			changeMonth : true,
+			changeYear : true,
+			format : 'yyyyMM',
+			onRender : function(date) {
+				return date.valueOf() > now.valueOf() ? 'disabled' : '';
+			}
+		}).on('changeDate', function(ev) {
+			if (ev.date.valueOf() > now) {
+				var newDate = new Date(ev.date)
+				newDate.setDate(newDate.getDate() + 1);
+			}
+			checkin.hide();
+		}).data('datepicker');
+	});
+</script>
+<script>
+	$(function() {
+		$('#time').fdatepicker({
+			language : 'zh-CN',
+			format : 'yyyy-mm-dd'
+		});
+	});
+
+	var rowIndex = null;
+	$(function() {
+		//获取用户菜单按钮权限
+		$.ajax({
+			url : '../module/queryInfoManagePermissionsByUid',
+			method : "POST",
+			dataType : "json",
+			data : {
+				"infoManageType" : "JYZGzNoticeManaage"
+			},
+			async : false,
+			success : function(data) {
+				grid(data);
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				console.log(XMLHttpRequest.status);
+			}
+		});
+
+		var menu = $.ligerMenu({});
+
+		function grid(data) {
+			//设置表格参数
+			window.gridParms = {
+				url : D2V.JyzkhtzdManageURL.queryJyzGzNoticePage,
+				onLoaded : function(grid) {
+					setTimeout(function() {
+						$('.l-grid-loading').hide();
+						$(".l-grid-row-cell-inner").each(function() {
+							var that = $(this);
+							that.attr('title', that.text());
+						})
+					}, 200);
+				},
+				onSuccess : function(data) {
+					if (data.success == true) {
+						var jyzkhtzdList = data.datas.list;
+						for (var k = 0; k < jyzkhtzdList.length; k++) {
+							var status = jyzkhtzdList[k]['status'];
+							// 						switch (status) {
+							// 						case 1:
+							// 							jyzkhtzdList[k]['status'] = "未下发";
+							// 							break;
+							// 						case 2:
+							// 							jyzkhtzdList[k]['status'] = "已下发县级部门,未确认";
+							// 							break;
+							// 						case 3:
+							// 							jyzkhtzdList[k]['status'] = "县级部门已确认接收";
+							// 							break;
+							// 						case 4:
+							// 							jyzkhtzdList[k]['status'] = "已下发加油站,未确认";
+							// 							break;
+							// 						case 5:
+							// 							jyzkhtzdList[k]['status'] = "加油站已确认接收";
+							// 							break;
+							// 						default:
+							// 							jyzkhtzdList[k]['status'] = "未下发";
+							// 						}
+						}
+						data.list = data.datas.list;
+						data.count = data.datas.count;
+					} else {
+						$.ligerDialog.warn(data.message);
+					}
+				},
+				//工具栏            
+				toolbar : {
+					items : (function() {
+						var buttonArr = data.datas.buttonItems;
+						var obj = [];
+						var clk;
+						var itemObj;
+						$.each(buttonArr, function(i, item) {
+							itemObj={};
+							clk='';
+							if (item.description == "提交") {
+								clk = operateJyzkhtzd;//提交
+								itemObj.click=clk;
+								itemObj.text=item.description;
+								itemObj.icon=item.iconurl;
+							} else if (item.description == "审核通过") {
+								clk = operateJyzkhtzd;
+								itemObj.click=clk;
+								itemObj.text=item.description;
+								itemObj.icon=item.iconurl;
+							} else if (item.description == "审核不通过") {
+								clk = operateJyzkhtzd;
+								itemObj.click=clk;
+								itemObj.text=item.description;
+								itemObj.icon=item.iconurl;
+							}else if (item.description == "导入工资明细") {
+								clk='';
+								itemObj.click=clk;
+								itemObj.text=item.description;
+								itemObj.icon=item.iconurl;
+							}else if (item.description == "工资Excel模板下载") {
+								item.description ='<a href="../template/salary_module.xlsx" style="text-decoration: none">excel模板下载.xls</a>';
+								clk='';
+								itemObj.click=clk;
+								itemObj.text=item.description;
+								itemObj.icon=item.iconurl;
+							}
+							obj.push(itemObj);
+						});
+						return obj;
+					})()
+				},
+				delayLoad : true,
+				onError : function(XMLHttpRequest, textStatus, errorThrown) {
+					//console.log(status, err);
+				},
+				width : '100%',
+				parms : [],
+				height : '100%',
+				pageSizeOptions : [ 5, 10, 15, 20 ],
+				checkbox : true,
+				rownumbers : true,
+				onRClickToSelect : false,
+				whenRClickToSelect : true
+			};
+			var optcol = [ /* {
+				show : '操作',
+				width : 60,
+				align : 'center',
+				render : renderOpt
+			} , */{
+				show : '工资单明细',
+				width : 120,
+				align : 'center',
+				render : renderOpt2
+			} ];
+			//初始化表格(根据url加载表格数据)
+			window.mainGrid = initMainGrid('main-grid', gridParms, optcol.concat(D2V.salaryNoticeGird));
+		}
+		//修改通知单
+		$('#updateSubmit').on('click', function(e) {
+			var xc = $("#update-dialog input[name='xc']").val();
+			if (xc == '' || xc == null) {
+				$.ligerDialog.warn('薪酬费用为必填项!');
+				return;
+			}
+			var fj = $("#update-dialog input[name='fj']").val();
+			if (fj == '' || fj == null) {
+				$.ligerDialog.warn('附加费用为必填项!');
+				return;
+			}
+			$.ligerDialog.confirm('保存后通知单将自动提交给市公司审核,您确定提交吗?', function(yes) {
+				if (yes === false)
+					return;
+				$('#update-form').trigger("submit");
+			})
+		});
+		$('#update-form').submit(function(e) {
+			e.preventDefault();
+			var jyzkhtzdObj = getFormAjaxData('update-form');
+			jyzkhtzdObj.status = "6";
+			$.ajax({
+				url : D2V.JyzkhtzdManageURL.updateJyzkhtzd,
+				type : "POST",
+				data : JSON.stringify(jyzkhtzdObj),
+				contentType : "application/json; charset=utf-8",
+				dataType : 'json',
+				success : function(rsp) {
+					if (rsp.success == true) {
+						$.ligerDialog.success(rsp.message);
+						closeDialog('update-dialog');
+						mainGrid.reload();
+					} else {
+						$.ligerDialog.warn(rsp.message);
+					}
+				},
+				error : function(xhr, status, err) {
+					console.log(status, err)
+					$.ligerDialog.warn('修改加油站考核通知单失败,网络故障!');
+					return;
+				}
+			})
+		});
+		
+		/*关闭通知单展示框*/
+		$("#jyzNoticeCalcle").on('click',function(){
+			closeDialog('jyz_notice-dialog');
+			$('.notice_key_num').html(' ');
+		});
+		
+		/***********************工资单明细表单*************************/
+		var bindDialogId = 'salary-detail-dialog';
+        var bindGridId = 'salary-detail-grid';
+        var initBindParams = [];
+        var gridParmss = {
+             url: D2V.salaryURL.query,
+             parms: initBindParams,
+             width: '100%',
+             pageSizeOptions: [5, 10, 15, 20],
+             headerRowHeight:40,
+             rowHeight:32,
+             height: 430
+        };
+        var VehicleInfo = null;
+        var bindGrid=null;
+        window.salaryDetailManage = function(rowIndex) {
+            orderInfo = mainGrid.getRow(rowIndex);
+            openDialog(bindDialogId, {
+                title: '工资单明细',
+                width: 760,
+                height: 460,
+                isResize:true,
+                showMax:false
+            },function dialog(){
+            	$("#salary-detail-grid").find(".l-bar-btnfirst").trigger("click");
+            	$("#salary-detail-dialog").parent().css("height","460px");
+            });
+            initBindParams = [
+            	{name:'noticeId',value:orderInfo.id}
+            ];
+            $('#' + bindDialogId).parent().css('padding', 0);
+            if(bindGrid === null){
+                gridParmss.parms = initBindParams;
+                bindGrid = initMainGrid(bindGridId, gridParmss, D2V.JyzSalaryDetailGrid);
+            }else{
+              	 gridParmss.parms = initBindParams;
+                 bindGrid = initMainGrid(bindGridId, gridParmss, D2V.JyzSalaryDetailGrid);
+                 gridSearch();
+            }
+        };
+        
+        function gridSearch(params) {
+          	 var formParam = [];
+              bindGrid.setOptions({ newPage: 1 }); 
+              var pagesize = $("#look-order-dialog .l-panel-bar select").val();
+              if (params !== undefined) formParam = formParam.concat(params);
+              formParam.push({
+                  name: 'page',
+                  value: 1
+              });
+              formParam.push({
+                  name: 'pagesize',
+                  value: pagesize
+              });
+              bindGrid.loadServerData(initBindParams.concat(formParam));
+          }
+	});
+	
+	/*操作列*/
+	function renderOpt(rowdata, index, value) {
+		var str = '<a href="javascript:;"' + ' onclick="viewNotice(' + index + ')">预览</a>';
+		return str;
+	}
+	
+	function renderOpt2(rowdata, index, value) {
+		var str = '<a href="javascript:;"' + ' onclick="salaryDetailManage(' + index + ')">工资单明细</a>';
+		return str;
+	}
+	
+	/*  工资明细管理 */
+	/* function salaryDetailManage(rowdata, index, value){
+		var rowObj = mainGrid.getRow(rowIndex);
+		//$("#bind-vehicle-dialog input[name='noticeNo']").prop('value', rowObj.noticeNo);
+		vehicleBindGripParms.parms = [ {
+			name : "areaId",
+			value : 11
+		}];
+		
+		bindGrid = initMainGrid('bind-vehicle-grid', vehicleBindGripParms, optcol);
+		// if(vehicleBindGripParms.parms[1]){
+		// vehicleBindGripParms.parms[1]={name:"plateNo",value:''};
+		// }
+		console.log(vehicleBindGripParms.parms);
+	} */
+	
+	/* 预览通知单 */
+	function viewNotice(index){
+		var dataObj = mainGrid.getRow(index);
+		console.log(dataObj);/////////////////
+		$('.notice_key_num').html(' ');//清空值
+		openDialog('jyz_notice-dialog',{title:'预览通知单',width:600,height:800},function dialog(){});
+		var nowDate=new Date();
+      	var date=new Date();
+      	date.setDate(1);
+      	var todayYear=nowDate.getFullYear();
+  		var todayMonth=(nowDate.getMonth()+1)>9 ? (nowDate.getMonth()+1) :'0'+(nowDate.getMonth()+1);
+  		var todayRiqi=(nowDate.getDate())>9?nowDate.getDate():'0'+nowDate.getDate();
+  		
+		var yearMonthDate = '';//汇总日期
+		var year = 2018;
+		var month = 5;
+    	yearMonthDate=dataObj.yearMonthDate;
+		if(yearMonthDate.indexOf('-') != -1){//2018-06
+			var arr = yearMonthDate.split("-");
+			year = Number(arr[0]);
+			month = Number(arr[1]);
+		}else{
+			var yearStr = yearMonthDate.substring(0,4);
+			year = Number(yearStr);
+			var monthStr =yearMonthDate.substring(3);
+			month = Number(monthStr);
+		}
+		
+    	var jyzName = dataObj.jyz;//加油站名称
+    	var rgfy = dataObj.rgfy;//人工费用
+    	var dyrgfbz = dataObj.dyrgfbz;//吨有人工费标准
+    	var  sjlxj= dataObj.sjlxj;//实际量小计
+    	var  gasoline92= dataObj.gasoline92;//92汽油
+    	var  gasoline95= dataObj.gasoline95;//95汽油
+    	var  gasoline98= dataObj.gasoline98;//98汽油
+    	var  cng= dataObj.trq;//cng
+    	var   dieselTotal= Number(dataObj.diesel0) + Number(dataObj.diesel10);//0号 + 10号柴油
+    	var   qydlsxf= dataObj.rgfy;//人工费用
+    	var   xc= dataObj.xc;//薪酬
+    	var   fj = dataObj.fj;//附加
+    	var   qyzsxc= dataObj.qyzsxc;//轻油折算薪酬
+    	var   sjfj= dataObj.sjfj;//实际附加
+    	var   dwsb= dataObj.dwsb;//单位社保
+    	var   rsdljgglf= dataObj.rsdljgglf;//人事代理机构管理费
+    	var   jrfl= dataObj.jrfl;//节日福利
+    	var   rclb= dataObj.rclb;//日常劳保
+    	var   ycbz= dataObj.ycbz;//用餐补助
+    	var   sbjy= Number(fj) - Number(sjfj);//社保结余
+    	var   xcxfy = Number(xc) + Number(qyzsxc) + Number(fj) + Number(sjfj);//薪酬性费用
+    	var   jykllxc = Number(dataObj.jykkhcze) + Number(dataObj.jykdzxc);//加油卡联量薪酬
+    	var   xcfczkcze = dataObj.xcfczkcze;//现场非充值卡充值额
+    	var   czkcze= dataObj.czkcze;//充值卡充值额
+    	var   czkxse= dataObj.czkxse;// 充值卡销售额
+    	var   zzfkzdcz= dataObj.zzfkzdcz;//自助发卡终端充值
+    	var   jykkhcze = dataObj.jykkhcze;//加油卡考核充值额
+    	var   jykdzxc= dataObj.jykdzxc;//加油卡调整薪酬
+    	var   wtcze = dataObj.wtcze;//网厅充值额
+    	var   fypllxc= Number(dataObj.fypjcxc) + Number(dataObj.fypmbwcjcje);//非油品联量薪酬
+    	var   fdzxy= dataObj.fdzxy;//非定制香烟 
+    	var   ybspxse = dataObj.ybspxse;//一般商品
+    	var   ydczk = dataObj.czkxse;//充值卡销售额
+    	var   cpxse= dataObj.cpxse;//彩票销售额
+    	var   yylmxse = dataObj.yylmxse;///异业联盟销售额
+    	var   qcyhxse = dataObj.qcyhxse;//汽车养护销售额
+    	var   tgxse= dataObj.tgxse;//团购（所有商品）销售额
+    	var   rybhjnjxse= dataObj.rybhjnjxse;//燃油宝和降凝剂销售额
+    	var   zyppblsxse= dataObj.zyppblsxse;//自有品牌玻璃水销售额
+    	var   olzxse= dataObj.olzxse;//欧露纸销售额
+    	var   gqxlxse= dataObj.gqxlxse;//枸杞系列销售额
+    	var   fypmbwcjcje = dataObj.fypmbwcjcje;//非油品目标完成奖惩金额
+    	var   blc = dataObj.blc;//保留差
+    	var   gdbc = dataObj.gdbc;//过度补差
+    	var   lstykzgz = dataObj.lstykzgz;//临时停业看站工资
+    	var   qjryxc= dataObj.qjryxc;//请假人员薪酬
+    	var  qtxcTotal = Number(blc) + Number(gdbc) + Number(lstykzgz) +Number(qjryxc);//其他薪酬(total)
+    	var  zxjf = dataObj.zxjf   ;//专项奖罚
+    	var   glkf= dataObj. glkf  ;//管理扣罚
+    	var   qtfyTotal = Number(zxjf) + Number(glkf);//其他费用
+    	/////////////////////
+    	var hjxcxfy = dataObj.hj;//合计：薪酬性费用
+    	var jyzType = dataObj.jyzType;//加油站类型
+    	if(jyzType == '自营'){
+    		console.log('自营............');
+    		$('#sixItem_info').html('薪酬');
+    		$('#sixItem_info_2').html('');
+    		$('#jyz_cont_sjfj').html('');
+    	}else{//委托 和 他他有我营
+    		console.log('委托............');
+    		$('#sixItem_info').html('代理手续费');
+    		$('#sixItem_info_2').html('实际附加费');
+    		var sjfj = dataObj.sjfj;//实际附加
+    		$('#jyz_cont_sjfj').html(sjfj);
+    	}
+		//赋值操作        	
+		$('#jyz_head_year').html(year);
+		$('#jyz_head_month').html(month);
+		$('#jyz_cont_jyzname').html(jyzName);
+		$('#jyz_cont_month').html(month);
+		$('#jyz_cont_dylldxfy').html(rgfy);
+		$('#jyz_cont_dyrgfybz').html(dyrgfbz);
+		$('#jzy_cont_khxl').html(sjlxj);
+		$('#jyz_cont_qy92').html(gasoline92);
+		$('#jyz_cont_qy95').html(gasoline95);
+		$('#jyz_cont_qy98').html(gasoline98);
+		$('#jyz_cont_trq').html(cng);
+		$('#jyz_cont_cyxlcxeps').html(dieselTotal);
+		$('#jyz_cont_qydlsxfhj').html(qydlsxf);
+		$('#jyz_cont_xc').html(xc);
+		$('#jyz_cont_fj').html(fj);
+		$('#jyz_cont_qyzsxc').html(qyzsxc);
+		$('#jyz_cont_sjcsdyfj').html(sjfj);
+		$('#jyz_cont_ygsb').html(dwsb);
+		$('#jyz_cont_rsdlglf').html(rsdljgglf);
+		$('#jyz_cont_jrfl').html(jrfl);
+		$('#jyz_cont_rclb').html(rclb);
+		$('#jyz_cont_ycbz').html(ycbz);
+		$('#jyz_cont_sjcsxcfy').html(xcxfy);
+		$('#jyz_cont_xc').html(xc);
+		$('#jyz_cont_sbjy').html(sbjy);
+		$('#jyz_cont_jykllxc').html(jykllxc);
+		$('#jyz_cont_xccz').html(xcfczkcze);
+		$('#jyz_cont_xckcze').html(czkcze);
+		$('#jyz_cont_czkxse').html(czkxse);
+		$('#jyz_cont_wtcze').html(wtcze);
+		$('#jyz_cont_zzfkzdcz').html(zzfkzdcz);
+		$('#jyz_cont_jykkhcze').html(jykkhcze);
+		$('#jyz_cont_jyktzxc').html(jykdzxc);
+		$('#jyz_cont_fypllxc').html(fypllxc);
+		$('#jyz_cont_fdzxy').html(fdzxy);
+		$('#jyz_cont_ybsp').html(ybspxse);
+		$('#jyz_cont_ydczk').html(ydczk);
+		$('#jyz_cont_cpxse').html(cpxse);
+		$('#jyz_cont_yylmxse').html(yylmxse);
+		$('#jyz_cont_qcyhxse').html(qcyhxse);
+		$('#jyz_cont_tgxse').html(tgxse);
+		$('#jyz_cont_rybhjnjxse').html(rybhjnjxse);
+		$('#jyz_cont_zzppblsxse').html(zyppblsxse);
+		$('#jyz_cont_elzxse').html(olzxse);
+		$('#jyz_cont_gqxlxse').html(gqxlxse);
+		$('#jyz_cont_fypmbwcjfje').html();
+		$('#jyz_cont_qtxc').html(fypmbwcjcje);
+		$('#jyz_cont_zykzjdrygzblc').html(blc);
+		$('#jyz_cont_gdbc').html(gdbc);
+		$('#jyz_cont_lstykzgz').html(lstykzgz);
+		$('#jyz_cont_qjryxc').html(qjryxc);
+		$('#jyz_cont_zxjf').html(zxjf);
+		$('#jyz_cont_glkf').html(glkf);
+/* 			$('#jyz_cont_xcfyhj').html();
+		$('#jyz_cont_sjfj').html(); */
+		//$('#jyz_cont_hj').html();
+		$('#jyz_bottom_year').html(todayYear);
+		$('#jyz_bottom_month').html(todayMonth);
+		$('#jyz_bottom_day').html(todayRiqi);
+	}
+	
+	//修改图标，并绑定下载事件
+	$(function() {
+		var toolbatItems = $("div.l-toolbar-item");				
+		$.each(toolbatItems,function(index){
+			var tempObj = toolbatItems[index];
+// 			console.log($(tempObj).attr('toolbarid'))
+// 			console.log($(tempObj).find('span').text());
+			if($(tempObj).find('span').text() === '导入工资明细'){
+				var toolbarid = $(tempObj).attr('toolbarid');
+				$("div[toolbarid='"+ toolbarid +"'] .l-icon").removeClass("l-icon-add").addClass("icon-true").text('☇');
+				$("div[toolbarid='"+ toolbarid +"']").attr('data-toggle', 'modal').attr('data-target', '#myModal').attr('data-backdrop', 'false');
+			}
+		});
+	})
+
+	//上传按钮点击事件
+	$(function() {
+		//添加界面的附件管理
+		$('#file_upload').uploadify({
+			'swf' : '../js/plugins/uploadify/uploadify.swf', //FLash文件路径
+			'buttonText' : '浏  览', //按钮文本
+			'uploader' : D2V.salaryURL.uploadSalaryExcel, //处理上传的页面
+			'queueID' : 'fileQueue', //队列的ID
+			'queueSizeLimit' : 1, //队列最多可上传文件数量，默认为999
+			'auto' : false, //选择文件后是否自动上传，默认为true
+			'multi' : false, //是否为多选，默认为true
+			'removeCompleted' : true, //是否完成后移除序列，默认为true
+			'fileSizeLimit' : '10MB', //单个文件大小，0为无限制，可接受KB,MB,GB等单位的字符串值
+			'fileTypeDesc' : 'Excel Files', //文件描述
+			'fileTypeExts' : '*.xls;*.xlsx', //上传的文件后缀过滤器
+			/* 'method':'post', */
+			'onQueueComplete' : function(event, data) { //所有队列完成后事件
+				//业务处理代码
+				//提示用户Excel格式是否正常，如果正常加载数据
+			},
+			'onUploadStart' : function(file) {
+				var selectData = mainGrid.getSelectedRows()[0];
+				
+				//动态传参数
+				$("#file_upload").uploadify("settings","formData",{
+					"companyId":selectData.companyId,
+					"noticeId":selectData.id,
+					"salaryType":0
+				});
+			},
+			'onUploadError' : function(event, queueId, fileObj, errorObj) {
+			},
+			'onUploadSuccess' : function(file, data, response) {
+				var datas = $.parseJSON(data);
+				console.log(datas);
+				if (datas.success === true) {
+					$.ligerDialog.success(datas.message);
+					mainGrid.reload();
+				} else {
+					$.ligerDialog.error(datas.message);
+				}
+			}
+		});
+	});
+	//关闭上传面板
+	function uploadFileClose() {
+		$('#file_upload').uploadify('cancel', '*');
+		//$('#summaryYearMonth').val("");
+	}
+
+	//操作考核通知单
+	function operateJyzkhtzd(event) {
+		var buttonText = event.text;
+		var selectData = mainGrid.getSelectedRows();
+		if (selectData.length == 0) {
+			$.ligerDialog.warn('您没有选中任何信息!');
+			return;
+		}
+		var status = 1;
+		$(selectData).each(function() {
+			if (this.status !== undefined)
+				status = status * this.salaryStatus;//校验工资单状态
+		});
+		console.log('计算后status值:' + status);
+
+		var changeStatus = 0;
+		//判断执行的是哪个操作
+		var companyType = $("input[name='companyType']").val();
+		//下发通知单(市级)，必须全部状态为1或者为-1才能下发
+		if(companyType == 1 || companyType == 2 || companyType == 3||companyType == 4){//县级部门审核
+			if (buttonText == '审核通过') {
+				if (status % 2 != 0) {
+					$.ligerDialog.warn('只有县部门未审核的工资通知单才可以进行审核!');
+					return;
+				}
+				changeStatus = 3;
+				//下发通知单(县级)，必须全部状态为3才能下发
+			} else if (buttonText == '审核不通过') {
+				if (status % 2 != 0) {
+					$.ligerDialog.warn('只有县部门未审核的工资通知单才可以进行审核!');
+					return;
+				}
+				changeStatus = -1;
+				//加油站接收，必须全部状态为4才能下发
+			}if (buttonText == '提交') {
+				if (status % 3 != 0) {
+					$.ligerDialog.warn('只有县部门审核通过的工资通知单才可以提交!');
+					return;
+				}
+				changeStatus = 4;
+				//县级部门接收，必须全部状态为2才能下发
+			}
+		}else if(companyType == 0){//市级部门审核
+			if (buttonText == '审核通过') {
+				if (status % 4 != 0) {
+					$.ligerDialog.warn('只有市部门未审核的工资通知单才可以进行审核!');
+					return;
+				}
+				changeStatus = 5;
+			}else if (buttonText == '审核不通过') {
+				if (status % 4 != 0) {
+					$.ligerDialog.warn('只有市部门未审核的工资通知单才可以进行审核!');
+					return;
+				}
+				changeStatus = -1;
+			}
+		}else if(companyType == 5){//加油站
+			if (buttonText == '提交') {
+				if (status != 1 && status != -1) {
+					$.ligerDialog.warn('只有未提交的和审核未通过的工资通知单才可以提交!');
+					return;
+				}
+				changeStatus = 2;
+				//县级部门接收，必须全部状态为2才能下发
+			}
+		}
+
+		if (selectData.length == 1) {
+			opJyzNoticeSlaryStatusOne(changeStatus,selectData);
+			return;
+		} else if (selectData.length > 1) {
+			operateJyzkhtzdMore();
+		}
+	}
+
+	/**
+	*更新jyz的工资单状态
+	*/
+	function opJyzNoticeSlaryStatusOne(changeStatus,selectData) {		
+		selectData.length > 0 ? $.ligerDialog.confirm('确定要操作所选通知单?',
+				function(yes) {
+					if (yes === false)
+						return;
+					$.ajax({
+						type : "POST",
+						url : D2V.JyzkhtzdManageURL.opJyzNoticeSalaryStatus,
+						data : {
+							id : selectData[0].id,
+							changeStatus : changeStatus
+						},
+						error : function(xhr, status, err) {
+							$.ligerDialog
+									.error('操作通知单失败,网络故障,请重新登录系统或稍后再试!');
+							return;
+						},
+						success : function(data) {
+							if (data.success === true) {
+								$.ligerDialog.success('操作通知单成功!');
+								mainGrid.reload();
+							} else {
+								$.ligerDialog.error(data.message);
+							}
+						},
+						dataType : 'json'
+					});
+				}) : $.ligerDialog.warn('您没有选中任何信息!');
+	}
+
+	//批量操作考核通知单
+	function operateJyzkhtzdMore() {
+		var JyzkhtzdJson = [];
+		$(selectData).each(function() {
+			if (this.id !== undefined)
+				JyzkhtzdJson.push({
+					'id' : this.id
+				});
+		});
+		selectData.length > 0 ? $.ligerDialog.confirm('确定要批量操作所选通知单?',
+				function(yes) {
+					if (yes === false)
+						return;
+					$.ajax({
+						type : "POST",
+						url : D2V.JyzkhtzdManageURL.batchOpJyzNoticeSalaryStatus,
+						data : JSON.stringify({
+							jyzGzNoticeJson : JyzkhtzdJson,
+							changeStatus : changeStatus
+						}),
+						error : function(xhr, status, err) {
+							$.ligerDialog
+									.error('批量操作通知单失败,网络故障,请重新登录系统或稍后再试!');
+							return;
+						},
+						success : function(data) {
+							if (data.success === true) {
+								$.ligerDialog.success('批量操作通知单成功!');
+								mainGrid.reload();
+							} else {
+								$.ligerDialog.error(data.message);
+							}
+						},
+						dataType : 'json',
+						contentType : "application/json; charset=utf-8"
+					});
+				}) : $.ligerDialog.warn('您没有选中任何信息!');
+	}
+	
+	//导出
+	function exportFile() {
+		var formParam = getFormDataAll('jyzkhtzdmanageformid');
+		var url = D2V.JyzkhtzdManageURL.exportJyzkhtzdmanage;
+		var paramStr = '?';
+		if (formParam['companyPath'] != null
+				&& formParam['companyPath'].length > 0) {
+			paramStr = paramStr + "&companyPath=" + formParam['companyPath'];
+		}
+		formParam['yearMonthDate'] = encodeURIComponent(encodeURIComponent(formParam['yearMonthDate']));
+		formParam['jyz'] = encodeURIComponent(encodeURIComponent(formParam['jyz']));
+		paramStr = paramStr + "&yearMonthDate=" + formParam['yearMonthDate'];
+		paramStr = paramStr + "&jyz=" + formParam['jyz'];
+		paramStr = paramStr + "&status=" + formParam['status'];
+		console.log(paramStr);
+		url = url + paramStr;
+		window.open(url, '_self');
+	}
+	//
+	function findJyzkhtzd() {
+		var formParam = getFormDataAll('jyzkhtzdmanageformid');
+		for ( var k in formParam) {
+			var newdata;
+			newdata = $.trim(formParam[k]);
+			if (newdata != '') {
+				mainGrid.setParm(k, newdata);
+			} else {
+				mainGrid.removeParm(k);
+				delete formParam[k];
+			}
+		}
+		formParam.page = 1;
+		var rp_value = $("select[name='rp']").val();
+		formParam.pagesize = rp_value;
+		mainGrid.changePage('first');		
+		$("#main-grid").ligerGetGridManager().loadServerData(formParam);
+	}
+
+	//修改考核通知单信息
+	function updateJyzkhtzd(rowIndex, getRowFromIndex) {
+		var selectData = mainGrid.getSelectedRows();
+		console.log(selectData[0].status);
+
+		if (selectData.length > 1) {
+			$.ligerDialog.warn('您选中的条数过多,一次只能选中一条信息!');
+			return;
+		}
+		if (selectData[0].status != 3) {
+			$.ligerDialog.warn('只有部门接收状态的通知单才可修改!');
+			return;
+		}
+		if (selectData.length < 1) {
+			$.ligerDialog.warn('您没有选中任何信息!');
+			return;
+		}
+		clearForm('update-form');
+		injectDataToForm('update-form', selectData[0]);
+		console.log(selectData);
+		openDialog('update-dialog', {
+			title : '修改加油站考核通知单信息',
+			width : 950,
+			height : 550
+		}, function dialog() {
+		});
+	}
+	
+	/*导入工资单明细*/
+	function uploadFileClick(){
+		var selectData = mainGrid.getSelectedRows();
+        if(selectData.length>1){
+            $.ligerDialog.warn('一次操作只能选择一条数据!');
+            return;
+        }else if(selectData.length == 0){
+        	$.ligerDialog.warn('请选择一条通知单数据数据!');
+            return;
+        }
+        $('#file_upload').uploadify('upload', '*');
+	}
+
+	
+	function closeUpdate() {
+		closeDialog('update-dialog');
+	}
+</script>
+
+</head>
+<body>
+	<a class="tree-toggle-button"></a>
+	<div class="tree-layout">
+		<div id="tree" class="l-tree-custom"></div>
+	</div>
+	<div class="data-list">
+		<form class="form-inline data-list-search" id="jyzkhtzdmanageformid"
+			name="jyzkhtzdmanageform">
+			<input type="hidden" name="companyPath"> 
+			<input type="hidden" name="companyType">
+			<input type="hidden" name="status" value="5"> 			
+			<div class="form-group has-feedback" style="margin-top: 3px;">
+				<label>日期:</label> <input type="text" class="form-control sjss"
+					id="sumaryYmSearch" name="yearMonthDate" style="width: 140px;">
+				<span class="glyphicon glyphicon-calendar form-control-feedback"
+					aria-hidden="true"></span>
+			</div>
+			<div class="form-group">
+				<label for="exampleInputName2">加油站名称:</label> 
+				<input type="text" class="form-control" id="jyzNameId" name="jyz" style="width: 120px">
+			</div>
+			<div class="form-group">
+				<label>状态:</label> 
+				<select class="form-control" name="salaryStatus" id="status"></select>
+			</div>
+			<div class="form-group">
+				<button type="button" class="btn btn-search"
+					onclick="findJyzkhtzd()">
+					<i class="icon icon-search"></i>查询
+				</button>
+			</div>
+			<div class="form-group">
+				<button type="button" class="btn btn-search"
+					onclick="exportFile();return false;"
+					style="background-color: #3d8cd1;">
+					<i class="icon icon-search"></i>导出
+				</button>
+			</div>
+		</form>
+		<div id="main-grid" class="l-grid-custom panel-bar-split"></div>
+	</div>
+	<!-- 修改通知单 -->
+	<!-- 	<div id="update-dialog" class="update"> -->
+	<!-- 		<div style="color: red; margin-bottom: 10px; margin-left: 27px; font-weight: normal;">注:带"*"的为必填项!</div> -->
+	<!-- 	</div> -->
+	<!-- 修改 -->
+	<div id="update-dialog" class="add">
+		<form id="update-form">
+			<input type='hidden' id='id' name='id'> <input type='hidden'
+				id='status' name='status'>
+			<div class="content1">
+				<div class="contentLeft"></div>
+				<div class="contentAll">
+					<div class="form-group">
+						<label style="color: red;">合计:</label><input type="text"
+							class="form-control" name="total" id="total_update" readonly><label
+							style="color: red; width: 17%;">薪酬+附加,此项不可变</label>
+					</div>
+					<div class="form-group">
+						<label>薪酬费用:</label><input type="text" class="form-control"
+							name="xc" id="xc_update"><span class="btfuhao">*</span> <label>其他费用:</label><input
+							type="text" class="form-control" name="qtfy" id="qtfy_update">
+						<label>吨油联量兑现费用:</label><input type="text" class="form-control"
+							name="dylldxfy" id="dylldxfy_update">
+					</div>
+					<div class="form-group">
+						<label>附加费用:</label><input type="text" class="form-control"
+							name="fj" id="fj_update"><span class="btfuhao">*</span> <label>现场充值:</label><input
+							type="text" class="form-control" name="xccz" id="xccz_update">
+						<label>吨油人工费用标准:</label><input type="text" class="form-control"
+							name="dyrgfybz" id="dyrgfybz_update">
+					</div>
+					<div class="form-group">
+						<label>天然气:</label><input type="text" class="form-control"
+							name="cng" id="cng_update"> <label>移动充值卡:</label><input
+							type="text" class="form-control" name="ydczk" id="ydczk_update">
+						<label>实际产生吨油附加:</label><input type="text" class="form-control"
+							name="sjcsdyfj" id="sjcsdyfj_update">
+					</div>
+					<div class="form-group">
+						<label>92汽油:</label><input type="text" class="form-control"
+							name="gasoline92" id="gasoline92_update"> <label>彩票销售额:</label><input
+							type="text" class="form-control" name="cpxse" id="cpxse_update">
+						<label>员工社保单位部分:</label><input type="text" class="form-control"
+							name="ygsbdwbf" id="ygsbdwbf_update">
+					</div>
+					<div class="form-group">
+						<label>95汽油:</label><input type="text" class="form-control"
+							name="gasoline95" id="gasoline95_update"> <label>网厅充值额:</label><input
+							type="text" class="form-control" name="wtcze" id="wtcze_update">
+						<label>自助发卡终端充值:</label><input type="text" class="form-control"
+							name="zzfkzdcz" id="zzfkzdcz_update">
+					</div>
+					<div class="form-group">
+						<label>98汽油:</label><input type="text" class="form-control"
+							name="gasoline98" id="gasoline98_update"> <label>充值卡充值额:</label><input
+							type="text" class="form-control" name="czkcze" id="czkcze_update">
+						<label>加油卡考核充值额:</label><input type="text" class="form-control"
+							name="jykkhcze" id="jykkhcze_update">
+					</div>
+					<div class="form-group">
+						<label>考核销量:</label><input type="text" class="form-control"
+							name="khxl" id="khxl_update"> <label>充值卡销售额:</label><input
+							type="text" class="form-control" name="czkxse" id="czkxse_update">
+						<label>团购所有商品销售额:</label><input type="text" class="form-control"
+							name="tgsyspxse" id="tgsyspxse_update">
+					</div>
+					<div class="form-group">
+						<label>柴油销量:</label><input type="text" class="form-control"
+							name="cyxl" id="cyxl_update"> <label>欧露纸销售额:</label><input
+							type="text" class="form-control" name="olzxse" id="olzxse_update">
+						<label>异业联盟ETC销售额:</label><input type="text" class="form-control"
+							name="yylmETCxse" id="yylmETCxse_update">
+					</div>
+					<div class="form-group">
+						<label>节日福利:</label><input type="text" class="form-control"
+							name="jrfl" id="jrfl_update"> <label>加油卡调整薪酬:</label><input
+							type="text" class="form-control" name="jykdzxc"
+							id="jykdzxc_update"> <label>人事代理机构管理费:</label><input
+							type="text" class="form-control" name="rsdljgglf"
+							id="rsdljgglf_update">
+					</div>
+					<div class="form-group">
+						<label>日常劳保:</label><input type="text" class="form-control"
+							name="rclb" id="rclb_update"> <label>加油卡联量薪酬:</label><input
+							type="text" class="form-control" name="jykllxc"
+							id="jykllxc_update"> <label>实际产生薪酬性费用:</label><input
+							type="text" class="form-control" name="sjcsxcxfy"
+							id="sjcsxcxfy_update">
+					</div>
+					<div class="form-group">
+						<label>用餐补助:</label><input type="text" class="form-control"
+							name="ycbz" id="ycbz_update"> <label>非油品联量薪酬:</label><input
+							type="text" class="form-control" name="fypllxc"
+							id="fypllxc_update"> <label>轻油代理手续费合计:</label><input
+							type="text" class="form-control" name="qydlsxfhj"
+							id="qydlsxfhj_update">
+					</div>
+					<div class="form-group">
+						<label>社保结余:</label><input type="text" class="form-control"
+							name="sbjy" id="sbjy_update"> <label>非定制香烟零售:</label><input
+							type="text" class="form-control" name="fdzxyls"
+							id="fdzxyls_update"> <label>燃油宝和降凝剂销售额:</label><input
+							type="text" class="form-control" name="rybhjnjxse"
+							id="rybhjnjxse_update">
+					</div>
+					<div class="form-group">
+						<label>一般商品:</label><input type="text" class="form-control"
+							name="ybsp" id="ybsp_update"> <label>汽车养护销售额:</label><input
+							type="text" class="form-control" name="qcyhxse"
+							id="qcyhxse_update"> <label>自有品牌玻璃水销售额:</label><input
+							type="text" class="form-control" name="zyppblsxse"
+							id="zyppblsxse_update">
+					</div>
+					<div class="form-group">
+						<label>其他薪酬:</label><input type="text" class="form-control"
+							name="qtxc" id="qtxc_update"> <label>枸杞系列销售额:</label><input
+							type="text" class="form-control" name="gqxlxse"
+							id="gqxlxse_update"> <label>非油品目标完成奖惩金额:</label><input
+							type="text" class="form-control" name="fypmbwcjcje"
+							id="fypmbwcjcje_update">
+					</div>
+					<div class="form-group">
+						<label>本区降价因素调增减薪酬费用:</label><input type="text"
+							class="form-control" name="bqjjysdzjxcfy"
+							id="bqjjysdzjxcfy_update">
+					</div>
+				</div>
+			</div>
+			<div class="save">
+				<button type="button" class="btn btn-primary " id="updateSubmit">保存</button>
+				<button type="button" class="btn btn-primary "
+					onclick="closeUpdate()">关闭</button>
+			</div>
+		</form>
+	</div>
+
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true"
+						onclick="javascript: $('#file_upload').uploadify('cancel', '*')">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">工资明细导入</h4>
+				</div>
+				<div class="modal-body">
+					<input id="file_upload" name="file_upload" type="file"
+						multiple="multiple" />
+					<div id="fileQueue" class="fileQueue"></div>
+
+					<div id="div_files"></div>
+					<br />
+				</div>
+				<div class="modal-footer">
+					<a href="javascript:;" class="btn btn-primary" id="btnUpload"
+						onclick="uploadFileClick();">上传</a>
+					<a href="javascript:;" class="btn btn-default" id="btnCancelUpload"
+						onclick="javascript: $('#file_upload').uploadify('cancel', '*')">取消</a>
+					<a href="javascript:;" class="btn btn-default" data-dismiss="modal"
+						id="close"
+						onclick="javascript: $('#file_upload').uploadify('cancel', '*')">关闭</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- *********加油站考核通知单预览******** -->
+	<div id="jyz_notice-dialog" class="add notice_font_cls">
+        <div>
+        	<p class="title_cls" align="center"><span id="jyz_head_year" class="">2018</span>年<span id="jyz_head_month">5</span>月份代理手续费通知单</p>
+        	<p><span id="jyz_cont_jyzname" class="notic_key_word_cls">委托公司</span>:</p>
+        	<p class="section_head_cls">        		
+        		按双方合同约定，经对你单位二环路<span id="jyz_cont_month" class="notice_key_num">5</span>月份经营管理数据进行考核。各项薪酬（费用）具体如下：
+        	</p>
+        	<p class="section_head_cls">
+	        	一.<span class="notic_key_word_cls">吨油联量兑现费用:</span><span class="notice_key_num" id="jyz_cont_dylldxfy">28935.41</span>元<br/>
+	        	<span class="notic_key_word_cls section_head_cls">1.吨油人工费用标准:</span><span class="notice_key_num" id="jyz_cont_dyrgfybz">115.08</span>(元/吨)
+	        	<span class="notic_key_word_cls"> 考核销量为:</span><span class="notice_key_num" id="jzy_cont_khxl">251.0924</span>吨，其中：
+	        	<span class="notic_key_word_cls">92#汽油</span>销量（吨）:<span class="notice_key_num" id="jyz_cont_qy92">167.2580</span>,
+	        	<span class="notic_key_word_cls">95#汽油</span>销量（吨）:<span class="notice_key_num" id="jyz_cont_qy95">0.0000</span>,
+	        	<span class="notic_key_word_cls">98#汽油</span>销量（吨）:<span class="notice_key_num" id="jyz_cont_qy98">0.0000</span>,
+	        	<span class="notic_key_word_cls">CNG销量（方）:</span><span class="notice_key_num" id="jyz_cont_trq">0.0000</span>,
+	        	<span class="notic_key_word_cls">柴油销量（除机出小额配送，吨）:</span><span class="notice_key_num" id="jyz_cont_cyxlcxeps">0.0000</span>,
+	        	<span class="notic_key_word_cls">轻油代理手续费合计:</span><span class="notice_key_num" id="jyz_cont_qydlsxfhj">28935.41</span>元,
+	        	<span class="notic_key_word_cls">其中薪酬:</span><span class="notice_key_num" id="jyz_cont_xc">0.00</span>元，
+	        	<span class="notic_key_word_cls">附加:</span><span class="notice_key_num" id="jyz_cont_fj">0.00</span>元。
+	        	<span class="section_head_cls">本区降价因素调增（减）薪酬费用</span><span class="notice_key_num" id="jyz_cont_qyzsxc">0.00</span>元。<br/>
+	        	<span class="section_head_cls">2. 实际产生吨油附加</span><span class="notice_key_num" id="jyz_cont_sjcsdyfj">9611.10</span>元:
+	        	包含员工社保单位部分<span class="notice_key_num" id="jyz_cont_ygsb">***</span>元,
+	        	<span class="notic_key_word_cls">人事代理机构管理费</span> <span class="notice_key_num" id="jyz_cont_rsdlglf">***</span>元；
+	        	<span class="notic_key_word_cls">节日福利</span><span class="notice_key_num" id="jyz_cont_jrfl">133.00</span>元；
+	        	<span class="notic_key_word_cls">日常劳保</span><span class="notice_key_num" id="jyz_cont_rclb">75.00</span>元，
+	        	<span class="notic_key_word_cls">用餐补助</span><span class="notice_key_num" id="jyz_cont_ycbz">500.00</span>元。
+	        	<span class="notic_key_word_cls"> 社保结余</span><span class="notice_key_num" id="jyz_cont_sbjy">0.00</span>元。（自营站不含此项内容）
+	        	3.实际产生薪酬性费用<span class="notice_key_num" id="jyz_cont_sjcsxcfy">19324.31</span>元，包含：<br/>
+	        	薪酬<span class="notice_key_num" id="jyz_cont_xc">0.00</span>元，
+	        	社保结余<span class="notice_key_num" id="jyz_cont_sbjy">**</span>月
+        	</p>
+        	<p class="section_head_cls">
+	        	二.<span class="notic_key_word_cls">加油卡联量薪酬:</span><span class="notice_key_num" id="jyz_cont_jykllxc">0</span>元<br/>
+	        	其中<span class="notic_key_word_cls">现场充值:</span><span class="notice_key_num" id="jyz_cont_xccz">0.00</span>元,
+	        	<span class="notic_key_word_cls">充值卡充值额:</span><span class="notice_key_num" id="jyz_cont_xckcze">0.00</span>元,
+	        	<span class="notic_key_word_cls">充值卡销售额</span><span class="notice_key_num" id="jyz_cont_czkxse">0.00</span>元,
+	        	<span class="notic_key_word_cls">网厅充值额</span><span class="notice_key_num" id="jyz_cont_wtcze">0.00</span>元,元
+	        	<span class="notic_key_word_cls">自助发卡终端充值</span><span class="notice_key_num" id="jyz_cont_zzfkzdcz">0.00</span>元,
+	        	<span class="notic_key_word_cls">加油卡考核充值额</span><span class="notice_key_num" id="jyz_cont_jykkhcze">0.00</span>元,
+	        	<span class="notic_key_word_cls">加油卡调整薪酬</span><span class="notice_key_num" id="jyz_cont_jyktzxc">0.00</span>元,
+        	</p>
+        	<p class="section_head_cls">
+        	三.<span class="notic_key_word_cls">非油品联量薪酬:</span><span class="notice_key_num" id="jyz_cont_fypllxc">1503.87</span>元<br/>
+	        	非油品各项销售情况：
+	        	<span class="notic_key_word_cls">非定制香烟（零售）</span><span class="notice_key_num" id="jyz_cont_fdzxy">0.00</span>元,
+	        	<span class="notic_key_word_cls">一般商品</span><span class="notice_key_num" id="jyz_cont_ybsp">0.00</span>元,
+	        	<span class="notic_key_word_cls">移动充值卡</span><span class="notice_key_num" id="jyz_cont_ydczk">0.00</span>元,
+	        	<span class="notic_key_word_cls">彩票销售额</span><span class="notice_key_num" id="jyz_cont_cpxse">0.00</span>元,
+	        	<span class="notic_key_word_cls">异业联盟（ETC)销售额</span><span class="notice_key_num" id="jyz_cont_yylmxse">0.00</span>元,
+	        	<span class="notic_key_word_cls">汽车养护销售额</span><span class="notice_key_num" id="jyz_cont_qcyhxse">0.00</span>元,
+	        	<span class="notic_key_word_cls">团购（所有商品）销售额</span><span class="notice_key_num" id="jyz_cont_tgxse">0.00</span>元,
+	        	<span class="notic_key_word_cls">燃油宝和降凝剂销售额</span><span class="notice_key_num" id="jyz_cont_rybhjnjxse">0.00</span>元,
+	        	<span class="notic_key_word_cls">自有品牌玻璃水销售额</span><span class="notice_key_num" id="jyz_cont_zzppblsxse">0.00</span>元,
+	        	<span class="notic_key_word_cls">欧露纸销售额</span><span class="notice_key_num" id="jyz_cont_elzxse">0.00</span>元,
+	        	<span class="notic_key_word_cls">枸杞系列销售额</span><span class="notice_key_num" id="jyz_cont_gqxlxse">0.00</span>元,
+	        	<span class="notic_key_word_cls">非油品目标完成奖惩金额</span><span class="notice_key_num" id="jyz_cont_fypmbwcjfje">0.00</span>元,
+        	</p>
+        	<p class="section_head_cls">
+	        	四.<span class="notic_key_word_cls">其他薪酬:</span>金额<span class="notice_key_num" id="jyz_cont_qtxc">107826.54</span>元<br/>
+	        	1.<span class="notic_key_word_cls">整月看站及借调等人员工资，保留差</span><span class="notice_key_num" id="jyz_cont_zykzjdrygzblc">0.00</span>元<br/>
+	        	<span class="notic_key_word_cls">过渡补差</span><span class="notice_key_num" id="jyz_cont_gdbc">0.00</span>元。<br/>
+	        	2.<span class="notic_key_word_cls">临时停业看站工资:</span><span class="notice_key_num" id="jyz_cont_lstykzgz">0.00</span>元<br/>
+	        	3.<span class="notic_key_word_cls">请假人员薪酬</span><span class="notice_key_num" id="jyz_cont_qjryxc">0.00</span>元<br/>
+        	</p>
+        	<p class="section_head_cls">
+        	五.<span class="notic_key_word_cls">其他费用</span><br/>
+	        	1.<span class="notic_key_word_cls">专项奖罚 </span><span class="notice_key_num" id="jyz_cont_zxjf">1.50</span>元<br/>
+	        	2.<span class="notic_key_word_cls">管理扣罚</span><span class="notice_key_num" id="jyz_cont_glkf">0.00</span>元<br/>
+        	</p>
+        	<p class="section_head_cls">
+	        	六.<span class="notic_key_word_cls">代理费手续费项目分类</span><br/>
+	        	1.<span class="notic_key_word_cls">合计：薪酬性费用</span><span class="notice_key_num" id="jyz_cont_xcfyhj">20829.68</span>元<br/>
+	        	2.<span class="notic_key_word_cls">实际附加:</span><span class="notice_key_num" id="jyz_cont_sjfj">10170.35</span>元<br/>
+        	</p>
+        	<p class="section_head_cls">
+        		<span class="notic_key_word_cls">合计</span><span class="notice_key_num" id="jyz_cont_hj">0.00</span>元
+        	</p>
+        	<p class="notice_bottom" align="right">
+        		<!-- <span  style="padding-right:50px;">郑州石油分公司</span><br/> -->
+        		<span  style="padding-right:40px;"><label id="bottom_year" class="notice_key_num" id="jyz_bottom_year">2018</label>年<label class="notice_key_num" id="jyz_bottom_month">05</label>月<label id="jyz_bottom_day" class="notice_key_num">16</label>日</span>
+        	</p>
+        </div>
+        <div class="save">             
+             <button type="reset" class="btn btn-primary" id="jyzNoticeCalcle">关闭</button>
+         </div>
+    </div>
+    
+     <!-- 工资明细管理 -->
+    <div id="salary-detail-dialog" style="display:none;">
+        <div class="data-list" >
+            <div id="salary-detail-grid" class="l-grid-custom panel-bar-split" style="width:100%;"></div>
+        </div>
+    </div>
+</body>
+</html>

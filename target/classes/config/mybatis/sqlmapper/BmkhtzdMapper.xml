@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zsh.labouCapital.dao.BmkhtzdMapper">
+	<sql id="queryParams">
+		<where>
+			<trim prefixOverrides="and|or">
+				<if test="bmmc!=null">
+					and td.bmmc =#{bmmc}
+				</if>
+				<if test="yearMonthDate!=null">
+					and td.year_month_date =#{yearMonthDate}
+				</if>
+				<if test="status!=null">
+					and td.status = #{status}
+				</if>
+				<if test="salaryStatus!=null">
+					and td.salary_status = #{salaryStatus}
+				</if>
+				<if test="companyPath!=null">
+					and tcp.company_path LIKE (CONVERT(VARCHAR(100),#{companyPath})+'%')
+				</if>
+			</trim>
+		</where>
+	</sql>
+
+	<!-- 分页查询考核通知单 -->
+	<select id="findBmkhtzdPage" parameterType="map" resultType="com.zsh.labouCapital.entity.DepartmentExamNoticeResult">
+		SELECT * FROM
+		  (SELECT 
+		    * 
+		  FROM
+		    (SELECT 
+		      td.*,
+		      CASE
+		        td.status 
+		        WHEN 1 
+		        THEN '未下发' 
+		        WHEN 2 
+		        THEN '已下发县级部门,未确认' 
+		        WHEN 3 
+		        THEN '县级部门已确认接收' 
+		      END statusStr,
+		      ROW_NUMBER () OVER (
+		    ORDER BY td.id DESC) AS ROW 
+		    FROM
+		      t_department_exam_notice_result td 
+		      INNER JOIN t_company_path tcp 
+		        ON td.company_id = tcp.company_id   	
+				<include refid="queryParams"/>
+				) cm where row <![CDATA[<=]]> #{limit}
+			) dm where row <![CDATA[>=]]> #{start}
+			ORDER BY bmmc ASC
+	</select>
+	
+	
+	<select id="findBmkhtzdPageCount" parameterType="map" resultType="long">
+		SELECT 
+		  COUNT(1) 
+		From t_department_exam_notice_result td INNER JOIN t_company_path tcp 
+		    ON td.company_id = tcp.company_id  
+		<include refid="queryParams"/>
+	</select>
+
+    <!-- 导出考核通知单 -->
+	<select id="exportBmkhtzd" parameterType="map" resultType="com.zsh.labouCapital.entity.DepartmentExamNoticeResult">
+		SELECT 
+			td.notice_no,
+			td.year_month_date,
+			td.bmmc,
+			td.xcxfy,
+			td.zxjf,
+			<!-- td.zhdfl, -->
+			td.llggxs,
+			td.jbxc,
+			td.llxc,
+			td.jbf,
+			td.gdbc,
+			td.qtbt,
+			td.glkf,
+			td.lxxc,
+			CASE
+			  td.status 
+			  WHEN 1 
+			  THEN '未下发' 
+			  WHEN 2 
+			  THEN '已下发县级部门,未确认' 
+			  WHEN 3 
+			  THEN '县级部门已确认接收' 
+			END statusStr
+        from t_department_exam_notice_result td INNER JOIN t_company_path tcp 
+		    ON td.company_id = tcp.company_id 
+		WHERE  tcp.company_path LIKE (CONVERT(VARCHAR(100),#{companyPath})+'%')
+        <if test="bmmc!=null and bmmc!=''">
+			AND td.bmmc =#{bmmc}
+		</if>
+        <if test="yearMonthDate!=null and yearMonthDate!=''">
+			AND td.yearMonthDate LIKE =#{yearMonthDate}
+		</if>
+		<if test="status!=null and status!=''">
+			AND td.status=#{status}
+		</if>
+	</select>
+	
+	<!-- 单条操作部门考核通知单 -->
+	<update id="operateBmkhtzd" parameterType="map">
+		update t_department_exam_notice_result set status=#{changeStatus}
+		    where id = #{id}
+	</update>
+	
+	<!-- 单条操作部门工资通知单 -->
+	<update id="opBmNoticeSalaryStatus" parameterType="map">
+		update t_department_exam_notice_result set salary_status=#{changeStatus}
+		    where id = #{id}
+	</update>
+	
+	<!-- 批量操作部门考核通知单 -->
+	<update id="batchOperateBmkhtzd" parameterType="map">
+		update t_department_exam_notice_result set status=#{changeStatus}
+		    where id in
+		<foreach collection ="list" item="item" open="(" separator="," close=")">
+		   #{item}
+		</foreach>
+	</update>
+	<!-- 批量操作部门考核通知单 -->
+	<update id="batchopBmNoticeSalaryStatus" parameterType="map">
+		update t_department_exam_notice_result set salary_status=#{changeStatus}
+		    where id in
+		<foreach collection ="list" item="item" open="(" separator="," close=")">
+		   #{item}
+		</foreach>
+	</update>
+	
+	<!-- 根据id获取记录 -->
+	<select id="findById" parameterType="String" resultType="com.zsh.labouCapital.entity.DepartmentExamNoticeResult">
+		select * from t_department_exam_notice_result tdenr 
+		where tdenr.id = #{noticeId}
+	</select>
+	
+	<!-- 更新部门通知单的数据 -->
+	<update id="edit" parameterType="com.zsh.labouCapital.entity.DepartmentExamNoticeResult">
+		update t_department_exam_notice_result
+		<set>
+			<if test="noticeNo!= null and noticeNo != ''">
+				notice_no = #{noticeNo!=},
+			</if>           			
+			<if test="yearMonthDate!= null and yearMonthDate != ''">
+				year_month_date = #{yearMonthDate},
+			</if>			
+			<if test="bmmc != null and bmmc != '' ">
+				bmmc = #{bmmc},
+			</if>
+			<!-- <if test="zhdfl != null and zhdfl >0">
+				zhdfl = #{zhdfl},
+			</if> -->
+			<if test="llggxs != null and llggxs >0">
+				llggxs = #{llggxs},
+			</if>
+			<if test="xcxfy != null and xcxfy >0">
+				xcxfy=#{xcxfy},
+			</if>
+			<if test="jbxc != null and jbxc >0">
+				jbxc=#{jbxc},
+			</if>
+			<if test="llxc != null and llxc >0">
+				llxc=#{llxc},
+			</if>
+			<if test="jbf != null and jbf >0">
+				jbf=#{jbf},
+			</if>
+			<if test="gdbc != null and gdbc >0">
+				gdbc=#{gdbc},
+			</if>
+			<if test="qtgz != null and qtgz >0">
+				qtqz=#{qtqz},
+			</if>
+			<if test="zxjf != null and zxjf >0">
+				zxjf = #{zxjf},
+			</if>
+			<if test="qtbt != null and qtbt >0">
+				qtbt = #{qtbt},
+			</if>
+			<if test="glkf  != null and glkf >0">
+				glkf=#{glkf},
+			</if>
+			<if test="lxxc  != null and lxxc >0">
+				lxxc=#{lxxc},
+			</if>
+			<if test="status != null and status>0">
+				status = #{status},
+			</if>
+			<if test="salaryStatus != null and salaryStatus > 0">
+				salary_status = #{salaryStatus}
+			</if>
+		</set>
+		<where>
+			id = #{id}	
+		</where>
+	</update>
+</mapper>

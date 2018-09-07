@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <!-- 启用360浏览器的极速模式(webkit) -->
+    <meta name="renderer" content="webkit">
+    <!-- 避免IE使用兼容模式 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>角色管理</title>
+    <link rel="stylesheet" href="../vendor/bootstrap/dist/css/bootstrap.css"/>
+    <link rel="stylesheet" href="../vendor/ligerUI/skins/Aqua/css/ligerui-all.css"/>
+    <link rel="stylesheet" href="../css/public/ligerui-custom.css"/>
+    <link rel="stylesheet" href="../css/public/search-list-grid-tree.css"/>
+    <script src="../vendor/jquery/dist/jquery.js"></script>
+
+    <script src="../vendor/ligerUI/js/ligerui.all.js"></script>
+    <script src="../js/plugins/DataToView.js"></script>
+    <script src="../js/plugins/ligerui.other.js"></script>
+    <script src="../js/util/md5.js"></script>
+
+    <!-- 添加 foundation-datepicker 支持-->
+    <link rel="stylesheet" href="../vendor/foundation-datepicker/css/foundation-datepicker.min.css"/>
+    <link rel="stylesheet" href="../vendor/font-awesome/css/font-awesome.min.css"/>
+    <script src="../vendor/foundation-datepicker/js/foundation-datepicker.min.js"></script>
+    <script src="../vendor/foundation-datepicker/js/locales/foundation-datepicker.zh-CN.js"></script>
+	<style>
+        button{
+            outline: none;
+        }
+        a:hover{
+            text-decoration: none;
+        }
+        .add,.update,.permission{
+            display: none;
+            font-size: 14px;
+            font-family: '微软雅黑';
+        }
+        /*add样式修改*/
+        .l-dialog-tl{
+            height:42px;
+        }
+        .l-dialog-tc{
+            padding-left: 59px;
+            /*border-top: 2px solid #fff;*/
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            background: none;
+            background-color: #efefef;
+        }
+        .l-dialog td div,#add-form label,#update-form label{
+            font-size: 14px;
+            font-family: '微软雅黑';
+            font-weight: normal;
+            color:#343f56;
+        }
+        .l-dialog-max,.l-dialog-collapse{
+            display: none;
+        }
+        .l-grid-custom .l-grid-row.l-selected, .l-grid-custom .l-grid-row.l-selected a,.l-grid-custom .l-grid-row.l-selected div{
+			background:#1eb0da;
+			color:#fff;
+		}
+		.btn-primary:hover,.btn-primary:active{
+		    color: #fff;
+		    background-color: #28a0b9;
+		    border-color:#28a0b9;
+		}
+        .l-dialog-close{
+            background: url(../images/closeHover.png) no-repeat;
+            width: 22px;
+            height: 22px;
+            position: absolute;
+            top: -2px;
+            right: 9px;
+        }
+        /*.l-dialog-close:hover{
+            background: url(../images/closeHover.png) no-repeat;
+        }*/
+        #add-dialog .form-group .form-control,#update-dialog .form-group .form-control{
+            width: 185px;
+            height: 30px;
+            display: inline-block;
+        }
+        #add-form label,#update-form label{
+            width: 70px;
+            text-align: right;
+        }
+        #add-dialog,#update-dialog{
+            margin-top: 12px;
+        }
+        .form-control{
+          padding: 4px 12px;
+        }
+        #add-dialog .form-group,#update-dialog .form-group{
+            margin-bottom: 8px;
+        }
+        .save{
+            position: absolute;
+            bottom: 0px;
+            left: 0;
+            height: 62px;
+            width: 100%;
+            text-align: center;
+        }
+        #permission-dialog .save{background:#fff}
+        .save button{
+            margin-top: 15px;
+            width: 70px;
+            height: 30px;
+            border-color: #40c5e1;
+            background-color: #40c5e1;
+            line-height: 1;
+            outline: none;
+        }
+        .l-dialog-cc,.l-dialog-body{
+            border-bottom-left-radius:8px;
+            border-bottom-right-radius:8px;
+        }
+        .l-dialog-cc{
+            border-top: none;
+        }
+        .l-dialog-win,.l-dialog{
+            border: none;
+        }
+        .l-window-mask{
+            background: none;
+            background: url(../images/Bgmask.png);
+            opacity: 1;
+        }
+        .data-list-search .btn{
+            outline: none;
+        }
+        .data-list{
+        	padding:20px;
+        }
+        .l-tree{
+        	width:340px !important;
+        }
+        .l-dialog-title{
+        	margin-left:-50px;
+        }
+        #add-form::-webkit-scrollbar{width:8px;height: 4px;position: absolute;right: 4px;}
+        #add-form::-webkit-scrollbar-track{background-color:#e6e6e6;-webkit-border-radius: 4px;border-radius: 4px;}
+        #add-form::-webkit-scrollbar-thumb{background-color:#b3b3b3;-webkit-border-radius: 4px;border-radius: 4px;}
+        #add-form::-webkit-scrollbar-thumb:hover {background-color:#b3b3b3;}
+        #add-form::-webkit-scrollbar-thumb:active {background-color:#b3b3b3;}
+        .well{padding:0px;border:0 none;}
+        .white-block{width:18px;height:11px;background:#fff;position:absolute;top:10px;left:0;z-index:3;}
+    </style>
+<script>
+      var rowIndex=null;
+      $(function (){
+    	  //设置表格参数
+    	  window.gridParms = {
+          url: D2V.RoleMangeURL.queryRoles,
+          //工具栏
+          toolbar: {
+            items: [
+							{ text:'增加', click: addRole, icon: 'add'},
+							{ text:'修改', click: updateRole, icon: 'xiugai'},
+							{ text:'删除', id:'excel',click: deleteRole, icon: 'delete'},
+							{ text:'分配权限', click: distPermission, icon: 'add'}
+            ]
+          },
+          width: '100%',
+          parms: [],
+          height: '100%',
+          pageSizeOptions: [5, 10, 15, 20],
+          rownumbers : true,
+          delayLoad:false
+        };
+    	  //添加操作选项
+         // var optcol = [
+         //     {show: '操作', field: 'zzz0', width: 180, align: 'center',render:'renderOpt'}
+         //  ]; 
+        window.mainGrid = initMainGrid('main-grid', gridParms, D2V.RoleMangeGird); 
+
+        //添加角色
+        $('#addSubmit').on('click',function(e){
+        	var descObj=$("#add-dialog input[name='roleName']");
+        	var remarksObj=$("#add-dialog input[name='remark']"); 
+        	var roleName=$.trim(descObj.val());
+        	var remark=$.trim(remarksObj.val());
+        	if(roleName.length>20){
+				$.ligerDialog.warn("登录名过长,请重新输入");
+				return;
+			}
+        	if(remark.length>20){
+				$.ligerDialog.warn("备注过长,请重新输入");
+				return;
+			}
+        	if(roleName==null||roleName==''){
+        		//descObj.val(roleName);
+        		descObj.focus();
+        		$.ligerDialog.warn('角色名不能为空!');
+            	return; 
+        	}
+        	$('#add-form').trigger("submit");
+        });
+        $('#add-form').submit(function(e){
+        	e.preventDefault();
+        	var userObj=getFormAjaxData('add-form');
+        	$.ajax({
+        		url:D2V.RoleMangeURL.addRoles,
+        		type:"POST",
+        		data:userObj,
+        		dataType:'json',
+        		success:function(rsp){
+        			if(rsp.success==true){ 
+        			  $.ligerDialog.success(rsp.message);
+						closeDialog('add-dialog');
+						mainGrid.reload();
+        			}else{
+        				 if(rsp.errorCode===1){//更改登录名了,但更改的登录名已经存在
+         					  $.ligerDialog.warn(rsp.message+",登录名已经存在!"); 
+         				 }else{
+                    $.ligerDialog.warn(rsp.message);
+         				 }
+              }
+        		},
+        		error:function(xhr,status,err){
+        			  console.log(status,err)
+								$.ligerDialog.warn('添加用户失败,网络故障!');
+								return; 
+        		}
+        	});
+        }); 
+        //修改用户
+        $('#updateSubmit').on('click',function(e){
+         	var loginNameObj=$("#update-dialog input[name='roleName']");
+        	var loginName=$.trim(loginNameObj.val());
+        	if(loginName==null||loginName==''){
+        	   loginNameObj.val(loginName);
+        	   loginNameObj.focus();
+        	   $.ligerDialog.warn("角色名不能为空!"); 
+               return; 
+        	}
+        	if(loginName.length>32){
+				$.ligerDialog.warn("登录名过长,请重新输入");
+				return;
+			}
+        	
+        	$('#update-form').trigger("submit");
+        });
+        $('#update-form').submit(function (e){
+         	e.preventDefault();
+         	var selectData = mainGrid.getSelectedRows()[0];
+         	var roleObj=getFormAjaxData('update-form');
+         	roleObj.roleId = selectData.roleId;
+         	 console.log(roleObj);
+        	$.ajax({
+        	    url:D2V.RoleMangeURL.updateRoles,
+        	    type:"POST",
+        	    data:roleObj,  
+           		dataType:'json',
+        	    success:function (rsp){
+        	    	if(rsp.success==true){        	    		 
+         			     $.ligerDialog.success(rsp.message);
+                         closeDialog('update-dialog');
+                         mainGrid.reload();
+         			  }else{      				 
+         				  if(rsp.errorCode===1){//更改登录名了,但更改的登录名已经存在
+         					  $.ligerDialog.warn(rsp.message+"\n 登录名已经存在!"); 
+         				  }else{
+		                    $.ligerDialog.warn(rsp.message);
+		         		  }
+                	}
+        	    },
+        	    error:function(xhr,status,err){
+        			  console.log(status,err)
+                $.ligerDialog.warn('修改用户失败,网络故障!');
+                return; 
+        		  }       	    	
+        	});
+        });
+                  
+         //删除用户
+        function deleteRole(rowIndex,getRowFromIndex){
+          var selectRow=null;
+        	if(getRowFromIndex===true){
+        		selectRow=mainGrid.getRow(rowIndex);
+        	}else{
+        		selectRow = mainGrid.getSelectedRow();	 
+        	}
+        	if(selectRow==null){
+        		$.ligerDialog.warn('请选中要删除的用户!'); 
+        		return;
+        	}
+        	var selectDatas = mainGrid.getSelectedRows();
+	   		if(selectDatas.length>1){
+	   			 $.ligerDialog.warn('请选择一条数据删除!'); 
+	   			 return;
+	   		}
+        	if(selectRow.status=="删除"){
+        		$.ligerDialog.warn('账户已经删除'); 
+        		return;
+        	}       
+          var roleObj ={};
+          roleObj.roleId=selectRow.roleId;
+          roleObj.issystem = selectRow.issystem;
+          roleObj.roleName = selectRow.roleName;
+					console.log(roleObj);
+          $.ligerDialog.confirm('确定要删除所选记录?', function(event){
+						 if(event==false) {
+							 return;
+						 }else{
+							  $.ajax({
+								  url:D2V.RoleMangeURL.deleteRoles,
+								  type:"POST", 
+								  dataType:'json',
+								  data:roleObj,
+								  success:function(data){
+											if(data.success===true){
+												$.ligerDialog.success('删除成功!');
+												mainGrid.reload();
+										  }else{
+												$.ligerDialog.warn(data.message);
+										  }
+									},
+								  error:function(xhr,status,err){
+											$.ligerDialog.warn('保存失败,网络故障!');
+											return;
+									}   			 
+							  })
+						 }
+					});
+        }
+      });
+      //搜索
+      function saveSearch(){
+    	//修改显示页码不正常
+      	$("#main-grid").find(".l-bar-btnfirst").trigger("click");
+    	  var searchData={};
+				var formParam = getFormDataAll('searchForm');
+				for(var k in formParam){
+					var newdata;
+					newdata=$.trim(formParam[k]);
+					if(newdata!=''){
+							searchData[k]=newdata;
+							mainGrid.setParm(k,newdata);
+					}else{
+							mainGrid.removeParm(k);
+							delete formParam[k];
+					}
+			  }
+        formParam.page = 1;
+        var rp_value = $("select[name='rp']").val();
+        formParam.pagesize = rp_value;
+        mainGrid.changePage('first');
+        $("#main-grid").ligerGetGridManager().loadServerData(formParam);
+      }
+      //新增角色
+ 	    function addRole(){
+        clearForm('add-form',{companyId:true});
+        openDialog('add-dialog',{title:'新增角色',width:300,height:200},function dialog(){});	
+      }
+ 	    //分配权限
+ 	    function distPermission(rowIndex,getRowFromIndex){
+    	  var selectRow=null;
+	      if(getRowFromIndex==true){
+					selectRow = mainGrid.getRow(rowIndex);
+				}else{
+					selectRow = mainGrid.getSelectedRow();
+				} 	
+		 if(selectRow==null){
+		  	$.ligerDialog.warn('请选中要修改的角色!'); 
+		  	return;
+		 }
+		 var selectDatas = mainGrid.getSelectedRows();
+		 if(selectDatas.length>1){
+			 $.ligerDialog.warn('请选择一条数据分配权限!'); 
+			  	return;
+		 }
+  	     var param = {};
+  	     param.roleid = selectRow.roleId;
+    	  //请求分配权限
+	   	 $.ajax({
+	         type : 'post',
+	         url:'../module/queryModulsByRoleid',
+	         data:param,
+	         success : function(data) {
+	        	 var obj = data.datas;
+	              if(data.success===true){
+	           	  	  $('#jglbUl').ligerTree({
+	             	       data:obj,
+	             	       idFieldName:'id',
+	             	       nodeWidth:400,
+	             	       checkbox: true,
+	             	       enabledCompleteCheckbox:true,
+	             	       parentIDFieldName:'parentNodeId',
+	          	           onCheck:function(param,checked){
+	          	        	   console.log(param,checked);
+	          	        	   var data = param.data;
+	          	        	   if(checked){
+	          	        		 data.ischecked = true;
+	          	        		 //设置父节点被选中,则所有子节点都被选中
+	          	        		 if(data.isRoot == true){
+	          	        			var children = data.children;
+	          	        			if(children != null){
+	          	        				$.each(children,function(i,n){
+	          	        					console.log('children[i]:' + children[i].id);
+	          	        					children[i].ischecked=true;
+	          	        					if(children[i].children != undefined){
+	          	        							console.log(children[i].children)
+	          	        						    for(var j=0,len=children[i].children.length;j<len;j++){
+	          	        						    	console.log("id"+children[i].children[j].id)
+	          	        						    	children[i].children[j].ischecked=true;
+	          	        						    }       					
+	          	        					}
+	          	        				});
+	          	        			}
+	          	        		 }
+	          	        	   }else{
+	          	        		 data.ischecked = false;
+	          	        		//设置父节点被选取消,则所有子节点都取消
+	          	        		if(data.isRoot == true){
+	          	        			var children = data.children;
+	          	        			if(children != null){
+	          	        				$.each(children,function(i,n){
+	          	        					children[i].ischecked=false;
+	          	        					if(children[i].children != undefined){
+          	        							console.log(children[i].children)
+          	        						    for(var j=0,len=children[i].children.length;j<len;j++){
+          	        						    	console.log("id"+children[i].children[j].id)
+          	        						    	children[i].children[j].ischecked=false;
+          	        						    }       					
+          	        						}
+	          	        				});
+	          	        			}
+	          	        		}
+	          	        		if(data.isLeaf == true){
+	          	        			var pnode = treeManager.getDataByID(data.parentNodeId);
+	          	        			var children = pnode.children;
+	          	        			if(children != null){
+	          	        				var count = 0;
+	          	        				$.each(children,function(i,n){
+	          	        					if(children[i].ischecked == true){
+	          	        						count++;
+	          	        						console.log(children[i] +" is checked!");
+	          	        					}
+	          	        				});
+	          	        				console.log(pnode.ischecked+"  " + count);
+	          	        				if(count == 0){
+	          	        					pnode.ischecked = false;
+	          	        				}
+	          	        				if(count > 0){
+	          	        					pnode.ischecked = true;
+	          	        				}
+	          	        				console.log(pnode.ischecked+"  " + count);
+	          	        			} 
+	          	        		}
+	          	        	   }
+	          	           },
+	          	          onCancelselect:function(param){
+	          	        	console.log(param);
+          	        		param.data.ischecked = false;
+          	        		console.log(param);
+	          	         }
+	             	   });
+	           	  	treeManager = $('#jglbUl').ligerGetTreeManager();
+	           	  	console.log(treeManager.getChecked());
+	             }
+	         },
+	         error : function(xhr,status,err) {
+	             console.log(status,err)
+	             return;
+	         }
+	     }); 
+          openDialog('permission-dialog',{title:'分配权限用户',width:300,height:646},function dialog(){});
+ 	    }
+      
+ 	    //修改用户信息
+ 	    function updateRole(rowIndex,getRowFromIndex){
+		    var selectRow=null;
+	      if(getRowFromIndex==true){
+					selectRow = mainGrid.getRow(rowIndex);
+				}else{
+					selectRow = mainGrid.getSelectedRow();
+				} 	
+  	    if(selectRow==null){
+  		    $.ligerDialog.warn('请选中要修改的角色!'); 
+  	      return;
+  	    }    	  
+  	    console.log(selectRow);
+   	    clearForm('update-form');
+
+   	    $("#update-dialog input[name='roleName']").prop('value',selectRow.roleName); 	  
+    	$("#update-dialog input[name='remark']").prop('value',selectRow.remark);
+		var selectDatas = mainGrid.getSelectedRows();
+   	    selectDatas.length === 1 ?openDialog('update-dialog',{title:'修改角色信息',width:300,height:230},function dialog(){}): $.ligerDialog.warn('请选择一条数据修改!');
+   	  }
+</script>
+
+<script type="text/javascript">
+	//去除数组中重复元素
+	function uniqueArray(data){  
+	   data = data || [];  
+	   var a = {};  
+	   for (var i=0; i<data.length; i++) {  
+	       var v = data[i];  
+	       if (typeof(a[v]) == 'undefined'){  
+	            a[v] = 1;  
+	       }  
+	   };  
+	   data.length=0;  
+	   for (var i in a){  
+	        data[data.length] = i;  
+	   }  
+	   return data;  
+	} 
+
+	//关闭权限分配的窗口
+	function closeDiaperm(){
+		closeDialog('permission-dialog');
+	}
+	
+	function searchChildren (treeNode,perList){
+		//节点被选中
+		if(treeNode.isRoot == true){
+			//查找选中的子节点
+			//var childCount = 0;
+			if(treeNode.ischecked == true){
+				perList.push(treeNode.id);
+			}
+			if(treeManager.hasChildren(treeNode)){
+				var children = treeNode.children;
+				if(children != null){
+					$.each(children,function(k,j){
+						if(j.ischecked == true){
+						perList.push(j.id);
+						searchChildren (j,perList);
+						}
+					});
+				}
+			} 
+		}
+	}
+	$(function(){
+		$('#disPerSubmit').on('click',function(){
+			var selectedRow = mainGrid.getSelectedRows()[0];
+			var rolePermission = {};
+			var perList=[];
+			//获取树中所有的节点数据
+			var perDatas = treeManager.getData();
+			//遍历这些节点，找到checked;
+			 $.each(perDatas,function(i,n){
+				var treeNode = n;
+				 //递归循环
+				 searchChildren(treeNode,perList);
+			}); 
+			console.log(perList);
+			var ulist = uniqueArray(perList);
+			var permisionids = '';
+			$.each(ulist,function(i,n){
+				permisionids +=","+ulist[i];
+			});
+			//组装需要发送的数据:roleId,[pid1,pid2.....]
+			rolePermission.roleid = selectedRow.roleId;
+			rolePermission.permissionids = permisionids;
+			console.log(rolePermission);
+			//发送请求
+			//先删除原来的权限记录，之后将选择的加进表里面
+			$.ajax({
+        		url:D2V.PermissionMangeURL.distRolePermissions,
+        		type:"POST",
+        		data:rolePermission,
+        		dataType:'json',
+        		success:function(rsp){
+        			if(rsp.success == true){
+        				 $.ligerDialog.success(rsp.message);
+        			}
+        			closeDialog('permission-dialog');
+        		},
+        		error:function(xhr,status,err){
+       			  console.log(status,err)
+				  $.ligerDialog.warn('分配用户角色失败,网络故障!');
+       			  closeDialog('permission-dialog');
+				  return; 
+        		}
+        	});
+		});
+	});
+	 function closeAdd(){
+         closeDialog('add-dialog');
+     }
+     function closeUpdate(){
+         closeDialog('update-dialog');
+     }
+	
+</script>
+
+</head>
+<body>
+    <div class="data-list">
+        <form class="form-inline data-list-search" id="searchForm" name="usermanageform">
+        	<input type="hidden" name="isRoot"><!-- 当前机构是否是根节点 -->
+	        <input type="hidden" name="isLeaf">
+        	<input type="hidden" name="id"> <!-- 当前用户的id -->
+            <div class="form-group">
+                <label for="exampleInputName2">角色名:</label>
+                <input type="text" class="form-control" id="roleame" name="roleName" style="width:140px">
+            </div>
+            <div class="form-group">
+                <button type="button" class="btn btn-search" onclick="saveSearch();return false;"><i class="icon icon-search"></i>查询</button>
+            </div>           
+        </form>
+        <div id="main-grid" class="l-grid-custom panel-bar-split"></div>
+    </div>
+    <!-- 新增角色 -->
+    <div id="add-dialog" class="add">
+        <form id="add-form">
+	        	<input type="hidden" name="companyId">
+           		<div class="form-group">
+	                <label>角色名:</label>
+	                <input type="text" maxlength="20" class="form-control" name="roleName">
+	            </div>
+	            <!-- <div class="form-group">
+	                <label>角色等级:</label>
+	                <select class="form-control" name="level"> 
+	                    <option value="0">--请选择--</option> 
+	                    <option value="1">超级管理员</option> 
+	                    <option value="2">企业管理员</option>
+	                    <option value="3">企业操作员</option>
+	                </select>
+	            </div> -->
+	            <div class="form-group">
+	                <label for="exampleInputName2">备注:</label>
+	                <input type="text" maxlength="100"  class="form-control" id="loginnameid" name="remark">
+	            </div>
+         	<div class="save">
+               <button type="button" class="btn btn-primary " id="addSubmit">保存</button>
+               <button type="reset" class="btn btn-primary">重置</button>
+               <button type="button" class="btn btn-primary " onclick="closeAdd()">关闭</button>
+           	</div>
+         </form>
+    </div>
+   <!-- 修改角色 -->  
+    <div id="update-dialog" class="update">
+        <form id="update-form">
+        	<input type="hidden" name="id">
+           		<div class="form-group">
+	                <label>角色名:</label>
+	                <input type="text" maxlength="20" class="form-control" name="roleName">
+	            </div>
+	            <div class="form-group">
+	                <label>角色状态:</label>
+	                <select class="form-control" name="isdeleted"> 
+	                    <option value="">--请选择--</option> 
+	                    <option value="0">未删除</option>
+	                </select>
+           		</div>
+	            <div class="form-group">
+	                <label for="exampleInputName2">备注:</label>
+	                <input type="text" class="form-control" maxlength="100"  id="loginnameid" name="remark">
+	            </div>
+            <div class="save">
+	            <button type="button" class="btn btn-primary " id="updateSubmit">保存</button>
+	            <button type="reset" class="btn btn-primary">重置</button>
+	            <button type="button" class="btn btn-primary " onclick="closeUpdate()">关闭</button>
+	        </div>
+         </form>
+    </div>
+    <!-- 分配权限 -->
+    <div id="permission-dialog" class="permission">
+    	 <!-- <div class="jglb" style="font-size:14px;font-family: '微软雅黑';">权限列表</div>   -->
+    	 <div class="white-block"></div>
+         <div class="tree well mask" style="margin-bottom:40px;">
+             <ul class="jglbUl" id="jglbUl"></ul>
+         </div>
+         <div class="save">
+               <button type="button" class="btn btn-primary " id="disPerSubmit">保存</button>
+               <button type="reset" class="btn btn-primary" onclick="closeDiaperm();return false;">关闭</button>
+         </div>
+    </div>
+</body>
+</html>

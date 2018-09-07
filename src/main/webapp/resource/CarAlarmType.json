@@ -1,0 +1,51 @@
+{
+    "success":true,
+    "datas": [
+                {
+                    "name": "机构名称1", 
+                    "subID":"1001",
+                    "data": [
+                        {
+                            "RuleNum":"2549654854120",
+                            "numberPlate": "粤B.58888", 
+                            "callLetter": "15824495539", 
+                            "unitId": 124511, 
+                            "crossBorderMark": 0, 
+                            "outageMark": 0
+                        }, 
+                        {
+                            "RuleNum":"2549654854120",
+                            "numberPlate": "粤D.50528", 
+                            "callLetter": "15824495539", 
+                            "unitId": 124511, 
+                            "crossBorderMark": 1, 
+                            "outageMark": 1
+                        }
+                    ]
+                },{
+                    "name": "机构名称2", 
+                    "subID":"1002",
+                    "data": [
+                        {
+                            "RuleNum":"2549654854120",
+                            "numberPlate": "湘A.251854", 
+                            "callLetter": "15824495539", 
+                            "unitId": 124511, 
+                            "crossBorderMark": 1, 
+                            "outageMark": 0
+                        }, 
+                        {
+                            "RuleNum":"2549654854120",
+                            "numberPlate": "湘B.554888", 
+                            "callLetter": "15824495539", 
+                            "unitId": 124511, 
+                            "crossBorderMark": 0, 
+                            "outageMark": 1
+                        }
+                    ]
+                }
+
+            ],
+    "message":"操作成功!"
+}
+            

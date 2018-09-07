@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>首页</title>
+        <link rel="stylesheet" href="../vendor/bootstrap/dist/css/bootstrap.css"/>
+        <style>
+            /*下级机构列表树状*/
+            .tree {
+                min-height:20px;
+                /*background-color:#fbfbfb;
+                border:1px solid #999;
+                -webkit-border-radius:4px;
+                -moz-border-radius:4px;
+                border-radius:4px;*/
+                -webkit-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05);
+                -moz-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05);
+                box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05) 
+            }
+            .tree li {
+                list-style-type:none;
+                margin:0;
+                padding:10px 5px 0 30px;
+                position:relative
+
+            }
+            .tree li::before, .tree li::after {
+                content:'';
+                left:6px;
+                position:absolute;
+                right:auto
+            }
+            .tree li::before {
+                border-left:1px dotted #99c8f0;
+                height:100%;
+                top:0;
+                width:1px
+            }
+            .tree li::after {
+                border-top:1px dotted #99c8f0;
+                height:20px;
+                top:25px;
+                width:25px
+            }
+            .tree li span {
+                -moz-border-radius:5px;
+                -webkit-border-radius:5px;
+                border:1px solid #999;
+                border-radius:5px;
+                display:inline-block;
+                padding:3px 8px;
+                text-decoration:none;
+                color:#fffefe;
+                white-space: nowrap;
+                cursor:pointer;
+            }
+            .tree li.parent_li>span {
+                cursor:pointer
+            }
+            .tree>ul>li::before, .tree>ul>li::after {
+                border:0
+            }
+            .tree li:last-child::before {
+                height:26px
+            }
+            /*.tree li.parent_li>span:hover, .tree li.parent_li>span:hover+ul li span {
+                background:#eee;
+                border:1px solid #94a0b4;
+                color:#000
+            }*/
+            .tree li.parent_li>span:hover{
+                /*background:#eee;*/
+                border:1px solid #94a0b4;
+                color:#000
+            }
+            .active{
+                background:#23b8ab;
+                color:#000
+            }
+            .tree li.parent_li>span+ul li span+ul li span:hover{
+                /*background:#eee;*/
+                color:#000
+            }
+            .well{
+                border: none;
+                border-radius: 0;
+                padding: 0;
+                margin-bottom: 0px;
+            }
+            .jglbUl >li{
+                padding-left: 6px;
+            }
+            .zhankai{
+                background: url(../images/shouye/zhankai.png) no-repeat;
+                width:16px;
+                height: 14px;
+                left: -4px;
+            }
+            .shousuo{
+                background: url(../images/shouye/shousuo.png) no-repeat;
+                width:16px;
+                height: 14px;
+                left: -4px;
+            }
+            .zhanshi{
+                background: url(../images/shouye/zhanshi.png) no-repeat;
+                width:15px;
+                height: 12px;
+                left: -6px;
+            }
+        </style>
+        <link rel="stylesheet" href="../css/public/page_home1.css"/>
+        <script src="../js/libs/jquery-1.11.2.min.js"></script>
+        <script src="../vendor/highcharts/highcharts.js"></script>
+        <script type="text/javascript" src="../vendor/highcharts/highcharts-3d.js"></script>
+    </head>
+    <body>
+        <div class="home">
+            <div class="center">
+                <div class="top">
+                    <ul class="list">
+                        <li class="listLi active topL">
+                            <span class="listName">车辆总数22</span>
+                            <div class="listNum">
+                                <img src="../images/shouye/0.png">
+                                <img src="../images/shouye/0.png">
+                                <img src="../images/shouye/0.png">
+                                <img src="../images/shouye/0.png">
+                                <img src="../images/shouye/0.png">
+                                <img src="../images/shouye/0.png">
+                            </div>
+                        </li>
+                        <li class="listLi">
+                            <span class="listName">在线车辆数</span>
+                            <span class="listNum">
+                                <img src="../images/shouye/0.png">
+                                <img src="../images/shouye/1.png">
+                                <img src="../images/shouye/0.png">
+                                <img src="../images/shouye/1.png">
+                                <img src="../images/shouye/6.png">
+                                <img src="../images/shouye/8.png">
+                            </span>
+                        </li>
+                        <li class="listLi">
+                            <span class="listName">离线车辆数</span>
+                            <span class="listNum">
+                                <img src="../images/shouye/0.png">
+                                <img src="../images/shouye/0.png">
+                                <img src="../images/shouye/6.png">
+                                <img src="../images/shouye/5.png">
+                                <img src="../images/shouye/2.png">
+                                <img src="../images/shouye/0.png">
+                            </span>
+                        </li>
+                         <li class="listLi">
+                            <span class="listName">当月新增车辆数</span>
+                            <span class="listNum">
+                                <img src="../images/shouye/0.png">
+                                <img src="../images/shouye/0.png">
+                                <img src="../images/shouye/1.png">
+                                <img src="../images/shouye/6.png">
+                                <img src="../images/shouye/6.png">
+                                <img src="../images/shouye/6.png">
+                            </span>
+                        </li> 
+                        <li class="listLi topR">
+                            <span class="listName">当月结清车辆数</span>
+                            <span class="listNum">
+                                <img src="../images/shouye/0.png">
+                                <img src="../images/shouye/0.png">
+                                <img src="../images/shouye/0.png">
+                                <img src="../images/shouye/6.png">
+                                <img src="../images/shouye/9.png">
+                                <img src="../images/shouye/8.png">
+                            </span>
+                        </li>
+                         <li class="listLi">
+                            <span class="listName">当月新增上线车辆数</span>
+                            <span class="listNum">
+                                <img src="../images/shouye/0.png">
+                                <img src="../images/shouye/0.png">
+                                <img src="../images/shouye/5.png">
+                                <img src="../images/shouye/7.png">
+                                <img src="../images/shouye/6.png">
+                                <img src="../images/shouye/8.png">
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <script>
+            //body的overflow-y调整
+            $(function(){
+                var windowHeight=$(window).height();
+                if(windowHeight<=790){
+                    $('body').addClass('flow');
+                }
+                window.onresize=function(){
+                    var windowHeightChange=$(window).height();
+                    if(windowHeightChange<=790){
+                        $('body').addClass('flow');
+                    }else if(windowHeightChange>790){
+                        $('body').removeClass('flow');
+                    }
+                }
+            })
+            //生成树，与后台交互。
+            $(function(){
+                $.ajax({
+                    type : 'post',
+                    url:'../company/queryTreeRootNode',
+                    success : function(data) {
+                         if(data.success===true){
+                            var treeRootData=data.datas;
+                            if(data.datas.id){
+                                if(data.datas.isLeaf){
+                                    var str='';
+                                    str+='<li class="NotNode"><span class="active"><i class="glyphicon zhanshi"></i>'+data.datas.text+'</span></li>';
+                                    $('.jglbUl').append(str);
+                                }else{
+                                    var str='';
+                                    str+='<li class="parent_li"><span class="hasNode a active"><i class="glyphicon zhankai"></i>'+data.datas.text+'</span></li>';
+                                    $('.jglbUl').append(str);
+                                    $('.a').data('a',treeRootData);
+                                    $('.jglbUl li>span').removeClass('a');
+                                }
+                            }
+                        }
+                    },
+                    error : function(xhr,status,err) {
+                         console.log(status,err)
+                        return;
+                    }
+                });
+                $('.jglbUl').on('click','.hasNode',function(e){
+                    var t=$(this);
+                    var data=t.data('a');
+                    var oUl='<ul class="b"></ul>';
+                    t.removeClass('hasNode');
+                    t.find(' > i').addClass('shousuo').removeClass('zhankai');
+                    console.log('第一个单击')
+                    // 防止生成新的树节点时触发第二次click事件，造成事件混乱
+                    e.stopImmediatePropagation();  
+                    $.ajax({
+                        type: "POST",
+                        url: '../company/queryTreeNodeList'+'?&nodeId='+data.id,
+                        success:function(data){
+                            if(data.success===true){
+                                var oLi=t.parent();
+                                var getNode=data.datas.list;
+                                t.parent().append(oUl)
+                                $(getNode).each(function(i,elem){
+                                    if(getNode[i].isLeaf){
+                                        var str='';
+                                        str +='<li><span><i class="glyphicon zhanshi"></i>'+getNode[i].text+'</span></li>';
+                                        $('.b').append(str);
+                                    }else{
+                                        var str='';
+                                        str+=' <li class="parent_li"><span class="hasNode a"><i class="glyphicon zhankai"></i>'+getNode[i].text+'</span></li>';
+                                        $('.b').append(str);
+                                        $('.a').data('a',getNode[i]);
+                                        $('.jglbUl li>span').removeClass('a');
+                                    }
+                                })
+                                $('.jglbUl .b').removeClass('b');
+                            }
+                            setTimeout(function(){
+                                $('.jglbUl').find('.parent_li span').addClass('oneC');
+                            },500);
+                        },
+                        error:function(xhr,status,err){
+                            console.log(status,err)
+                            return;
+                        },
+                        dataType:'json'
+                    });
+                })
+            })
+            //树事件
+            $(function () {
+                //单击事件
+                 var TimeFn = null;
+                $('.jglbUl').on('click','.oneC',function (e) {
+                    var t=$(this);
+                    clearTimeout(TimeFn);
+                    TimeFn = setTimeout(function(){
+                        var children = t.parent('li.parent_li').find(' > ul > li');
+                        $('.parent_li span').removeClass('active');
+                        if(t.next()[0]){
+                            var oUl=t.next()[0].nodeName.toLowerCase();
+                            if(oUl =='ul'){
+                                if (children.is(":visible")) {
+                                    children.hide('fast');
+                                    t.find(' > i').addClass('zhankai').removeClass('shousuo');
+                                    console.log('第二个单击1');
+                                } else {
+                                    children.show('fast');
+                                    t.find(' > i').addClass('shousuo').removeClass('zhankai');
+                                    console.log('第二个单击2');
+                                }
+                            }
+                        }else{
+                            t.addClass('active');
+                            //在这里交互，单击的。
+                        }
+                    },300);
+                    e.stopPropagation();
+                });
+                //双击事件
+                $('.jglbUl').on('dblclick','.parent_li span',function (e) {
+                    var t=$(this);
+                    $('.parent_li span').removeClass('active');
+                    clearTimeout(TimeFn);
+                    // if(t.next()[0]){
+                    //     console.log('双击（判断的里面）');
+                    //     t.addClass('active');
+                    //     //双击的在这里交互。
+                    // }
+                    if(t.find('>i').hasClass('zhankai') || t.find('>i').hasClass('shousuo')){
+                        console.log('双击（判断的里面）');
+                        t.addClass('active');
+                        //双击的在这里交互。
+                    }
+                });
+            });
+        </script>
+        <script>
+            $(function () {
+                $('#bottomPic').highcharts({
+                    credits: {
+                      enabled:false
+                    },
+                    chart: {
+                        zoomType: 'x',
+                        spacingRight: 20
+                    },
+                    title: {
+                        text: null
+                    },
+                    // subtitle: {
+                    //     text: document.ontouchstart === undefined ?
+                    //         'Click and drag in the plot area to zoom in' :
+                    //         'Pinch the chart to zoom in'
+                    // },
+                    colors:['#f76e55'],
+                    xAxis: {
+                        type: 'datetime',
+                        maxZoom: 24 * 3600, // fourteen days
+                        title: {
+                            text: null
+                        }
+                    },
+                    yAxis: {
+                        title: {
+                            text: null
+                        }
+                    },
+                    // tooltip: {
+                    //     shared: true
+                    // },
+                    legend: {
+                        enabled: false
+                    },
+                    plotOptions: {
+                        line: {
+                            dataLabels: {enabled: true},
+                            enableMouseTracking: false
+                        },
+                        area: {
+                            fillColor: {
+                                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+                                stops: [
+                                    [0, '#f76e55'],
+                                    [1, Highcharts.Color('#f76e55').setOpacity(0).get('rgba')]
+                                ]
+                            },
+                            lineWidth: 1,
+                            // marker: {
+                            //     enabled: false
+                            // },
+                            shadow: false,
+                            states: {
+                                hover: {
+                                    lineWidth: 1
+                                }
+                            },
+                            threshold: null
+                        }
+                    },
+                    series: [{
+                        type: 'area',
+                        name: '车辆数',
+                        pointInterval:  3600 * 1000,
+                        pointStart: Date.UTC(2016, 0, 26),
+                        data: [
+                            3712, 4210, 4000, 3404,3244,3825,3712, 4357
+                        ]
+                    }]
+                });
+            });    
+
+            //饼状图
+            $(function () {
+                $('#bottomPic2').highcharts({
+                    colors:['#81aed1','#fd6e56'],
+                    credits: {
+                      enabled:false
+                    },
+                    chart: {
+                        type: 'pie',
+                        options3d: {
+                            enabled: true,
+                            alpha: 45,
+                            beta: 0
+                        }
+                    },
+                    title: {
+                        text: null
+                    },
+                    tooltip: {
+                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            depth: 16,
+                            dataLabels: {
+                                enabled: false,
+                                format: '{point.name}'
+                            }
+                        }
+                    },
+                    series: [{
+                        type: 'pie',
+                        name: '占比',
+                        data: [
+                            ['离线',39.1],
+                            ['在线',61.9]
+                        ]
+                    }]
+                });
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,320 @@
+[
+    {
+        "text": "安徽", 
+        "children": [
+            {
+                "callLetter": "13672660503", 
+                "text": "019871", 
+                "numberPlate": "019871", 
+                "vehicleId": 122950, 
+                "leaf": true, 
+                "checked": false, 
+                "href": "#", 
+                "unitId": 157823, 
+                "qtip": "<p>车载号码:15824137348</p> <font color='red'>右键发送指令</font>"
+            }, 
+            {
+                "callLetter": "18922819616", 
+                "text": "安徽合肥广汇", 
+                "numberPlate": "安徽合肥广汇", 
+                "vehicleId": 109210, 
+                "leaf": true, 
+                "checked": false, 
+                "href": "#", 
+                "unitId": 143976, 
+                "qtip": "<p>车载号码:13675878257</p> <font color='red'>右键发送指令</font>"
+            }, 
+            {
+                "callLetter": "00249975267", 
+                "text": "安徽金凯萨014168", 
+                "numberPlate": "安徽金凯萨014168", 
+                "vehicleId": 126933, 
+                "leaf": true, 
+                "checked": false, 
+                "href": "#", 
+                "unitId": 161801, 
+                "qtip": "<p>车载号码:18258181364</p> <font color='red'>右键发送指令</font>"
+            }, 
+            {
+                "callLetter": "18117503426", 
+                "text": "安徽科创工程项目管理公司018348", 
+                "numberPlate": "安徽科创工程项目管理公司018348", 
+                "vehicleId": 122220, 
+                "leaf": true, 
+                "checked": false, 
+                "href": "#", 
+                "unitId": 157094, 
+                "qtip": "<p>车载号码:18358143148</p> <font color='red'>右键发送指令</font>"
+            }, 
+            {
+                "callLetter": "18364495744", 
+                "text": "安徽圣智科技005303", 
+                "numberPlate": "安徽圣智科技005303", 
+                "vehicleId": 118730, 
+                "leaf": true, 
+                "checked": false, 
+                "href": "#", 
+                "unitId": 153556, 
+                "qtip": "<p>车载号码:18364495744</p> <font color='red'>右键发送指令</font>"
+            }, 
+            {
+                "callLetter": "18358143149", 
+                "text": "安徽天智科技013681", 
+                "numberPlate": "安徽天智科技013681", 
+                "vehicleId": 125663, 
+                "leaf": true, 
+                "checked": false, 
+                "href": "#", 
+                "unitId": 160523, 
+                "qtip": "<p>车载号码:18358143149</p> <font color='red'>右键发送指令</font>"
+            }, 
+            {
+                "callLetter": "18756684572", 
+                "text": "安徽邮政-皖A0A105", 
+                "numberPlate": "安徽邮政-皖A0A105", 
+                "vehicleId": 167611, 
+                "leaf": true, 
+                "checked": false, 
+                "href": "#", 
+                "unitId": 201480, 
+                "qtip": "<p>车载号码:18756684572</p> <font color='red'>右键发送指令</font>"
+            }, 
+            {
+                "callLetter": "18364499749", 
+                "text": "安徽卓峻房地产开发公司058829", 
+                "numberPlate": "安徽卓峻房地产开发公司058829", 
+                "vehicleId": 122857, 
+                "leaf": true, 
+                "checked": false, 
+                "href": "#", 
+                "unitId": 157730, 
+                "qtip": "<p>车载号码:18364499749</p> <font color='red'>右键发送指令</font>"
+            }, 
+            {
+                "callLetter": "15098521764", 
+                "text": "白波052488", 
+                "numberPlate": "白波052488", 
+                "vehicleId": 117597, 
+                "leaf": true, 
+                "checked": false, 
+                "href": "#", 
+                "unitId": 152424, 
+                "qtip": "<p>车载号码:15098521764</p> <font color='red'>右键发送指令</font>"
+            }, 
+            {
+                "callLetter": "14546665901", 
+                "text": "白正佳075427", 
+                "numberPlate": "白正佳075427", 
+                "vehicleId": 129565, 
+                "leaf": true, 
+                "checked": false, 
+                "href": "#", 
+                "unitId": 164463, 
+                "qtip": "<p>车载号码:14546665901</p> <font color='red'>右键发送指令</font>"
+            }, 
+            {
+                "callLetter": "18358184762", 
+                "text": "鲍凯037399", 
+                "numberPlate": "鲍凯037399", 
+                "vehicleId": 111746, 
+                "leaf": true, 
+                "checked": false, 
+                "href": "#", 
+                "unitId": 146512, 
+                "qtip": "<p>车载号码:18358184762</p> <font color='red'>右键发送指令</font>"
+            }, 
+            {
+                "callLetter": "15966442884", 
+                "text": "鲍现喜-005774", 
+                "numberPlate": "鲍现喜-005774", 
+                "vehicleId": 116175, 
+                "leaf": true, 
+                "checked": false, 
+                "href": "#", 
+                "unitId": 150941, 
+                "qtip": "<p>车载号码:15966442884</p> <font color='red'>右键发送指令</font>"
+            }, 
+            {
+                "callLetter": "15824495539", 
+                "text": "蔡丽046522", 
+                "numberPlate": "蔡丽046522", 
+                "vehicleId": 124511, 
+                "leaf": true, 
+                "checked": false, 
+                "href": "#", 
+                "unitId": 159370, 
+                "qtip": "<p>车载号码:15824495539</p> <font color='red'>右键发送指令</font>"
+            }, 
+            {
+                "callLetter": "18757151431", 
+                "text": "蔡致强074737", 
+                "numberPlate": "蔡致强074737", 
+                "vehicleId": 124736, 
+                "leaf": true, 
+                "checked": false, 
+                "href": "#", 
+                "unitId": 159589, 
+                "qtip": "<p>车载号码:18757151431</p> <font color='red'>右键发送指令</font>"
+            }
+        ]
+    },{
+        "text": "安徽",
+        "children": [
+            {
+                "callLetter": "15824137348",
+                "text": "019871",
+                "numberPlate": "019871",
+                "vehicleId": 122950,
+                "leaf": true,
+                "checked": false,
+                "href": "#",
+                "unitId": 157823,
+                "qtip": "<p>车载号码:15824137348</p> <font color='red'>右键发送指令</font>"
+            },
+            {
+                "callLetter": "13675878257",
+                "text": "安徽合肥广汇",
+                "numberPlate": "安徽合肥广汇",
+                "vehicleId": 109210,
+                "leaf": true,
+                "checked": false,
+                "href": "#",
+                "unitId": 143976,
+                "qtip": "<p>车载号码:13675878257</p> <font color='red'>右键发送指令</font>"
+            },
+            {
+                "callLetter": "00249975267",
+                "text": "安徽金凯萨014168",
+                "numberPlate": "安徽金凯萨014168",
+                "vehicleId": 126933,
+                "leaf": true,
+                "checked": false,
+                "href": "#",
+                "unitId": 161801,
+                "qtip": "<p>车载号码:18258181364</p> <font color='red'>右键发送指令</font>"
+            },
+            {
+                "callLetter": "18358143148",
+                "text": "安徽科创工程项目管理公司018348",
+                "numberPlate": "安徽科创工程项目管理公司018348",
+                "vehicleId": 122220,
+                "leaf": true,
+                "checked": false,
+                "href": "#",
+                "unitId": 157094,
+                "qtip": "<p>车载号码:18358143148</p> <font color='red'>右键发送指令</font>"
+            },
+            {
+                "callLetter": "18364495744",
+                "text": "安徽圣智科技005303",
+                "numberPlate": "安徽圣智科技005303",
+                "vehicleId": 118730,
+                "leaf": true,
+                "checked": false,
+                "href": "#",
+                "unitId": 153556,
+                "qtip": "<p>车载号码:18364495744</p> <font color='red'>右键发送指令</font>"
+            },
+            {
+                "callLetter": "18358143149",
+                "text": "安徽天智科技013681",
+                "numberPlate": "安徽天智科技013681",
+                "vehicleId": 125663,
+                "leaf": true,
+                "checked": false,
+                "href": "#",
+                "unitId": 160523,
+                "qtip": "<p>车载号码:18358143149</p> <font color='red'>右键发送指令</font>"
+            },
+            {
+                "callLetter": "18756684572",
+                "text": "安徽邮政-皖A0A105",
+                "numberPlate": "安徽邮政-皖A0A105",
+                "vehicleId": 167611,
+                "leaf": true,
+                "checked": false,
+                "href": "#",
+                "unitId": 201480,
+                "qtip": "<p>车载号码:18756684572</p> <font color='red'>右键发送指令</font>"
+            },
+            {
+                "callLetter": "18364499749",
+                "text": "安徽卓峻房地产开发公司058829",
+                "numberPlate": "安徽卓峻房地产开发公司058829",
+                "vehicleId": 122857,
+                "leaf": true,
+                "checked": false,
+                "href": "#",
+                "unitId": 157730,
+                "qtip": "<p>车载号码:18364499749</p> <font color='red'>右键发送指令</font>"
+            },
+            {
+                "callLetter": "15098521764",
+                "text": "白波052488",
+                "numberPlate": "白波052488",
+                "vehicleId": 117597,
+                "leaf": true,
+                "checked": false,
+                "href": "#",
+                "unitId": 152424,
+                "qtip": "<p>车载号码:15098521764</p> <font color='red'>右键发送指令</font>"
+            },
+            {
+                "callLetter": "14546665901",
+                "text": "白正佳075427",
+                "numberPlate": "白正佳075427",
+                "vehicleId": 129565,
+                "leaf": true,
+                "checked": false,
+                "href": "#",
+                "unitId": 164463,
+                "qtip": "<p>车载号码:14546665901</p> <font color='red'>右键发送指令</font>"
+            },
+            {
+                "callLetter": "18358184762",
+                "text": "鲍凯037399",
+                "numberPlate": "鲍凯037399",
+                "vehicleId": 111746,
+                "leaf": true,
+                "checked": false,
+                "href": "#",
+                "unitId": 146512,
+                "qtip": "<p>车载号码:18358184762</p> <font color='red'>右键发送指令</font>"
+            },
+            {
+                "callLetter": "15966442884",
+                "text": "鲍现喜-005774",
+                "numberPlate": "鲍现喜-005774",
+                "vehicleId": 116175,
+                "leaf": true,
+                "checked": false,
+                "href": "#",
+                "unitId": 150941,
+                "qtip": "<p>车载号码:15966442884</p> <font color='red'>右键发送指令</font>"
+            },
+            {
+                "callLetter": "15824495539",
+                "text": "蔡丽046522",
+                "numberPlate": "蔡丽046522",
+                "vehicleId": 124511,
+                "leaf": true,
+                "checked": false,
+                "href": "#",
+                "unitId": 159370,
+                "qtip": "<p>车载号码:15824495539</p> <font color='red'>右键发送指令</font>"
+            },
+            {
+                "callLetter": "18757151431",
+                "text": "蔡致强074737",
+                "numberPlate": "蔡致强074737",
+                "vehicleId": 124736,
+                "leaf": true,
+                "checked": false,
+                "href": "#",
+                "unitId": 159589,
+                "qtip": "<p>车载号码:18757151431</p> <font color='red'>右键发送指令</font>"
+            }
+        ]
+    }
+
+]

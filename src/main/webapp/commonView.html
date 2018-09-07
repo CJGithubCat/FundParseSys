@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh-CN">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>网上查车系统</title>
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+    <link href="css/libs/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/libs/webgisfont.min.css"/>
+    <link rel="stylesheet" href="css/plugins/bootstrap-table.min.css"/>
+    <link rel="stylesheet" href="css/views/infoManager.css"/>
+    <link rel="stylesheet" href="css/plugins/jstree.css"/>
+    <link rel="stylesheet" href="css/plugins/map.css"/>
+    <link rel="stylesheet" href="css/plugins/context.standalone.css">
+    <link rel="stylesheet" href="css/plugins/DrawingManager_min.css" />
+</head>
+<body>
+   <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container-flouid">
+            <div class="collapse navbar-collapse">
+                 <ul class="nav navbar-nav left-navbar-nav" id="common_nav_memu">
+                 </ul>
+            </div>
+        </div>
+    </div>
+    
+    <iframe  width="100%" height="100%" frameborder=no  id="commonFrame"></iframe>
+   
+    <script src="js/libs/jquery-1.11.2.min.js"></script>
+    <script src="js/libs/bootstrap.min.js"></script>
+    <script>
+    var initFlag =true;
+    $(function(e){
+    	if(window.opener && initFlag)
+   		   window.opener.doOpenAgain(); 
+    });
+   
+    //刷新事件处理
+    function reload(event){
+    	if(window.opener)
+    		 window.opener.doOpenAgain(); 
+    	
+    }
+    
+    <!-- 动态加载本页一级菜单 -->
+    var loaded = true;
+    var items;
+    //提供给父页面调用，preId=父菜单ID,id=子菜单ID
+    function initMenu(preId,id,url,menuValue){
+        items = menuValue[preId];
+        initFlag = false;
+    	if(items){
+    		doInitMenu(items,id);
+    	}
+    	
+    	document.getElementsByTagName("iframe")[0].src=url;
+    }
+    
+    //动态生成菜单
+    function doInitMenu(data,id){
+    	var menu = '';
+        for(var i= 0;i<data.length;i++){
+            if(data[i].items){
+            	menu += '<li id='+ '\''+ data[i].id +'\''+'><a class="dropdown-toggle" data-toggle="dropdown"' +
+                        'role="button" aria-expanded="false" href="javascript:void(0);">'+data[i].name+'<span class="caret"></span></a>' +
+                        '<ul class="dropdown-menu" role="menu">'; 
+                for(var j=0;j<data[i].items.length;j++){
+                         menu += '<li id='+data[i].items[j].id+'><a href="javascript:changeMemu('+ '\'' +data[i].items[j].url +'\''+ ','+ '\''+ data[i].id+'\''+ ')">'+data[i].items[j].name+'</a></li>'; 
+                }
+            }else{
+                menu += '<li  id='+ data[i].id +'><a href="javascript:changeMemu('+ '\'' +data[i].url +'\''+ ','+ '\''+ data[i].id+'\''+ ')">'+data[i].name+'</a></li>';
+            }
+            menu += '</ul></li>';
+        }
+        $('#common_nav_memu').html(menu);
+        $('#'+id).addClass('active');
+        
+    }
+    
+    //切换页面
+    function changeMemu(url,id){
+    	 document.getElementsByTagName("iframe")[0].src=url;
+    	$('#common_nav_memu li').each(function(index){
+        	$(this).removeClass('active');
+        });
+    	$('#'+id).addClass('active');
+    }
+    </script>
+    
+</body>
+</html>
