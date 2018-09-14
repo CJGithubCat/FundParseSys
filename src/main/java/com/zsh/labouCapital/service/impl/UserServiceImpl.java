@@ -41,10 +41,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
 			if (findedUser == null) {// 用户不存在
 				responseCode = 3;
 			} else {
-				int passwordOutDay = Integer.parseInt(StringUtils.isEmpty(findedUser.getPasswordOutDay())?"91":findedUser.getPasswordOutDay());
-				if (passwordOutDay > 90) {
-					responseCode = 6;// 密码超时未修改
-				} else if (user.getLoginPassword().equals(findedUser.getLoginPassword())
+				if (user.getLoginPassword().equals(findedUser.getLoginPassword())
 						&& findedUser.getStatus() == 0) {// 登录成功
 					responseCode = 0;
 				} else if (user.getLoginPassword().equals(findedUser.getLoginPassword())

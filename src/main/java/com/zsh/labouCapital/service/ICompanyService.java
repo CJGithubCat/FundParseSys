@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.zsh.labouCapital.entity.Company;
 import com.zsh.labouCapital.entity.ReturnValue;
-import com.zsh.labouCapital.pojo.TWgSales;
 import com.zsh.labouCapital.util.pagination.PageBean;
 
 public interface ICompanyService extends BaseService<Company>{
@@ -34,7 +33,6 @@ public interface ICompanyService extends BaseService<Company>{
 	
 	public ReturnValue edit(Company tWgAgency) throws Exception;
 	
-	public List<TWgSales> queryTWgSalesList(TWgSales tWgSales) throws Exception;
 	
 	public String getCompanyPathById(Integer agencyId);
 

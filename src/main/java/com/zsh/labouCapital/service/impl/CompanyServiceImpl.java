@@ -3,14 +3,15 @@ package com.zsh.labouCapital.service.impl;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.zsh.labouCapital.dao.CompanyMapper;
 import com.zsh.labouCapital.entity.Company;
 import com.zsh.labouCapital.entity.ReturnValue;
-import com.zsh.labouCapital.pojo.TWgSales;
 import com.zsh.labouCapital.service.ICompanyService;
 import com.zsh.labouCapital.util.pagination.Page;
 import com.zsh.labouCapital.util.pagination.PageBean;
@@ -93,11 +94,6 @@ public class CompanyServiceImpl extends BaseServiceImpl<Company> implements ICom
 		return null;
 	}
 
-	@Override
-	public List<TWgSales> queryTWgSalesList(TWgSales tWgSales) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public String getCompanyPathById(Integer companyId) {

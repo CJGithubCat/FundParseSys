@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import sun.org.mozilla.javascript.internal.NativeArray;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import javax.script.*;
 
 import org.apache.http.Consts;
 import org.apache.http.HttpEntity;
@@ -30,7 +30,9 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
-import org.json.JSONObject;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 public class HttpUtil {
 
@@ -143,24 +145,11 @@ public class HttpUtil {
 	        //System.out.println(reBody);
 	        ScriptEngineManager manager = new ScriptEngineManager();
 	        ScriptEngine engine = manager.getEngineByName("javascript");
-	        String tempStr = "var a=[1,2,3];";
 	        engine.eval(reBody);
-	        NativeArray array=(NativeArray)engine.get("Data_netWorthTrend");
-	        System.out.println(array.get);
-	        
-	        for (ScriptableObject object : array) {
-	            System.out.println(object);
-            }
-	        
-	        /*Pattern pattern = Pattern.compile("Data_rateInSimilarType");
-	        Matcher matcher = pattern.matcher(reBody);
-            // 检查所有的结果
-            while (matcher.find()) {
-                    System.out.print("Start index: " + matcher.start());
-                    System.out.print(" End index: " + matcher.end() + " ");
-                    System.out.println(matcher.group());
-            }*/
-	        
+	        Object array = engine.get("Data_netWorthTrend");
+	        JSONObject tempObj = JSONObject.fromObject(array);
+	        System.out.println(tempObj.size());
+	        System.out.println(tempObj.get("0"));
         }
         catch (Exception e) {
             e.printStackTrace();

@@ -33,7 +33,7 @@ public class GenEntityMysql {
 	// TODO 需要修改的地方
 	// private static final String URL =
 	// "jdbc:mysql://127.0.0.1:3306/laboucapital";
-	private static final String URL = "jdbc:mysql://127.0.0.1:3306/laboucapital";
+	private static final String URL = "jdbc:mysql://127.0.0.1:3306/fund";
 	private static final String NAME = "root";
 	private static final String PASS = "root";
 	private static final String DRIVER = "com.mysql.jdbc.Driver";
@@ -273,7 +273,7 @@ public class GenEntityMysql {
 	public static void main(String[] args) {
 		try {
 			// TODO 需要生成指定的表加入到字符串数组中,生成所有表则参数传入null
-			String[] generateTables = { "t_station_exam_notice_result","t_department_exam_notice_result" };// {"t_department_exam_notice_result","t_exam_notice","t_exam_summary","t_operation_log","t_salary_detail","t_station_exam_notice_result"};
+			String[] generateTables = { "t_fund_summary","t_fund_type","t_index_info" ,"t_market_situation","t_index_new", "t_net_worth_history", "t_website_info" };// {"t_department_exam_notice_result","t_exam_notice","t_exam_summary","t_operation_log","t_salary_detail","t_station_exam_notice_result"};
 			INSTANCE.generate(generateTables);
 			System.out.println("generate classes success!");
 		} catch (Exception e) {
