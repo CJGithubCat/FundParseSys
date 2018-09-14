@@ -139,8 +139,8 @@
 	    <script src="../js/plugins/ligerui.other.js"></script>
         <script src="../vendor/highcharts/highcharts.js"></script>
         <script src="../vendor/highcharts/highcharts-3d.js"></script>
-        <script	type="text/javascript" src="../js/views/timerTask.js" defer='defer'></script>
-    </head>
+<!--         <script	type="text/javascript" src="../js/views/timerTask.js" defer='defer'></script>
+ -->    </head>
     <body>
     	<%
  			String companyType = request.getParameter("companyType");   //获取url中的参数值

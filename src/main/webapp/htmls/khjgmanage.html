@@ -611,6 +611,31 @@ div[toolbarid='item-3'] .l-icon{
 		window.open(url, '_self');
 	}
 	
+	function updateGrowthRate(){
+		$.ajax({
+	        type: "POST",
+	        url: D2V.NetWorttHistoryURL.calDayGrothRate,
+	        data:{
+	        },
+	        error:function(xhr,status,err){
+	            $.ligerDialog.error('修改失败,网络故障!');
+	            return;
+	        },
+	        success:function(data){
+	        	console.log(data);
+	            if(data.success===true){
+	            	mainGrid.reload();
+	            	$.ligerDialog.success(data.message);
+	            }else{
+	                $.ligerDialog.error(data.message);
+	                $('.notice_key_num').html(' ');
+	            }
+	        },
+	         dataType:'json',
+	         async:false
+	    });
+	}
+	
 </script>
 </head>
 <body>
@@ -653,6 +678,13 @@ div[toolbarid='item-3'] .l-icon{
 					onclick="exportFile();return false;"
 					style="background-color: #3d8cd1;">
 					<i class="icon icon-search"></i>导出
+				</button>
+			</div>
+			<div class="form-group">
+				<button type="button" class="btn btn-search"
+					onclick="updateGrowthRate();return false;"
+					style="background-color: #3d8cd1;">
+					<i class="icon icon-search"></i>更新日增长率
 				</button>
 			</div>
 		</form>

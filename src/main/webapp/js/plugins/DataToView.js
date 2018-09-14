@@ -828,6 +828,12 @@
 			querydatabaseBak:'../databaseBak/querydatabaseBak',//数据库备份记录查询
 			bakDatabase:'../databaseBak/bakDatabase',//备份数据库
 	    }
+		
+		/*****************基金分析系统*********************/
+		DataToView.NetWorttHistoryURL={
+			calDayGrothRate:'../netWorth/calDayGrothRate',//备份数据库
+	    }
+		
 	window.D2V = DataToView;	
 }();
 $(function(){
