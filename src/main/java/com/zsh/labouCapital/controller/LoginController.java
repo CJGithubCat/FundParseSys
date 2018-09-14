@@ -93,7 +93,6 @@ public class LoginController {
    		    	session.setAttribute(SystemConst.MAIN_MENU_ITEMS, mainItems);//主菜单
 		   	    session.setAttribute(SystemConst.COMMOND_ITEMS, commItems);//指令菜单
    		    	  		   	    
-   		   	   // TWgAgency agency=agencyService.findById(String.valueOf(user.getCompanyId()));
    		   	   Company company =null;
    		   	   try {
    		   		   company = iCompanyService.findById(String.valueOf(user.getCompanyId()));
@@ -133,32 +132,7 @@ public class LoginController {
    	    }
    	   return responseData;   	
     }
-   /**
-    *  进入主页 
-    * @param request
-    * @param response
-    * @param username
-    * @param password
-    * @throws Exception
-    */    
-	/*@RequestMapping(value={"/index"},method={RequestMethod.GET})    
-    public void login(HttpServletRequest request,HttpServletResponse response)throws Exception{
-    	HttpSession session;
-    	session=request.getSession(false);
-    	String loginUrl=request.getServletContext().getAttribute(SystemConst.URL_BASE).toString();
-		if(null==session){			
-	    	response.sendRedirect(loginUrl);
-	    	return;
-		}else{
-			Object loginNameObj=session.getAttribute(SystemConst.ACCOUNT_LOGINNAME);
-			if(null==loginNameObj){
-    	    	response.sendRedirect(loginUrl); 
-    	    	return;
-			}else{
-				request.getRequestDispatcher("/htmls/index.html").forward(request, response); 
-			}
-		}   	    
-    }*/
+   
    /**
     * 退出
     * @param request
