@@ -106,9 +106,18 @@ public class NetWorthHistoryController extends BaseController {
 		ReturnValue rv = new ReturnValue();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
+        int buyType;//1--每周； 2--每两周； 3--每月
+        int interval;//周期
+        Date startTime = null;//开始时间
 		try {
-			Date endDate = new Date();
+			Date nowDate = new Date();
 			double erveryMoney = 1000;
+			
+			if(fundNetWorthDTO != null && fundNetWorthDTO.getStartTime() != null){
+			    startTime = fundNetWorthDTO.getStartTime();
+			}
+			buyType = fundNetWorthDTO.getBuyType();
+			interval = fundNetWorthDTO.getInterval();
 
 			// 1.查询所有基金信息
 			List<FundSummary> fundSummaryList = fundSummaryService.queryAllFundSummary();
@@ -117,13 +126,26 @@ public class NetWorthHistoryController extends BaseController {
 				FundSummary paramFund = fundSummaryList.get(k);
 				String fundCode = paramFund.getFundCode();
 				String estabDateStr = paramFund.getEstablishDate();
-				Date startDate = sdf.parse(estabDateStr);
+				Date estabDate = sdf.parse(estabDateStr);
+				
+				Date firstDate = null;
 				Calendar calendar = Calendar.getInstance();
-				calendar.setTime(startDate);
-				calendar.add(Calendar.MONTH, 1);
-				Date firstDate = calendar.getTime();
+				if(startTime!= null){
+				    if(startTime.getTime() <= estabDate.getTime()){//开始时间在创建之前，则取创建时间后一月为第一月
+	                    calendar.setTime(estabDate);
+	                    calendar.add(Calendar.MONTH, 1);
+	                    firstDate = calendar.getTime();
+	                }else{
+	                    firstDate = startTime;
+	                }
+				}else{
+                    calendar.setTime(estabDate);
+                    calendar.add(Calendar.MONTH, 1);
+                    firstDate = calendar.getTime();
+				}
+				calendar.setTime(firstDate);
 				List<IntervalBuy> insertList = new ArrayList<IntervalBuy>();
-				while (firstDate.getTime() < endDate.getTime()) {//
+				while (calendar.getTime().getTime() < nowDate.getTime()*1000) {//
 					String tempDateStr = sdf.format(firstDate);
 					System.out.println("****:FundCode:" + fundCode + "  Date:" + tempDateStr);
 					//查询历史数据信息
@@ -131,8 +153,7 @@ public class NetWorthHistoryController extends BaseController {
 					if(inNetWorthHistory == null){
 						break;
 					}
-					calendar.add(Calendar.MONTH, 1);
-					firstDate = calendar.getTime();
+					
 					IntervalBuy intervalBuy = new IntervalBuy();
 					intervalBuy.setFundCode(fundCode);
 					intervalBuy.setTotalCost(erveryMoney);
@@ -142,6 +163,16 @@ public class NetWorthHistoryController extends BaseController {
 					}
 					intervalBuy.setTradeDay(tempDateStr);
 					insertList.add(intervalBuy);
+					
+					//根据购买类型和间隔选择
+                    if(buyType == 1){//每一周
+                        calendar.add(Calendar.WEEK_OF_YEAR, 1);
+                    }else if(buyType == 2){//每两周
+                        calendar.add(Calendar.WEEK_OF_YEAR, 2);
+                    }else if(buyType == 3){//每月
+                        calendar.add(Calendar.MONTH, 1);
+                    }
+                    calendar.setTime(firstDate);
 				}
 				//插入到交易表
 				netWorthHistoryService.addIntervalTradeInfo(insertList);
@@ -157,4 +188,14 @@ public class NetWorthHistoryController extends BaseController {
 		return rv;
 	}
 
+	/**
+	 * @Title: getRealTimeNetWorthInfo   
+	 * @Description: 获取实时的净值信息
+	 * @param:       
+	 * @return: void      
+	 * @throws
+	 */
+	public void getRealTimeNetWorthInfo(HttpServletRequest request, FundNetWorthDTO fundNetWorthDTO){
+	    
+	}
 }

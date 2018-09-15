@@ -2,8 +2,6 @@ package com.zsh.labouCapital.util;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URL;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;

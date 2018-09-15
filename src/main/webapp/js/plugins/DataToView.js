@@ -832,6 +832,7 @@
 		/*****************基金分析系统*********************/
 		DataToView.NetWorttHistoryURL={
 			calDayGrothRate:'../netWorth/calDayGrothRate',//备份数据库
+			historyHuice:'../netWorth/analyseIntervalBuyModule'
 	    }
 		
 	window.D2V = DataToView;	

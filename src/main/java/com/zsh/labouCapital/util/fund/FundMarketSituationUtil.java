@@ -1,4 +1,4 @@
-package com.zsh.labouCapital.util;
+package com.zsh.labouCapital.util.fund;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -29,6 +29,7 @@ import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.hssf.util.Region;
 
 import com.zsh.labouCapital.entity.MarketSituation;
+import com.zsh.labouCapital.util.HttpUtil;
 
 import jxl.Sheet;
 import jxl.Workbook;
@@ -38,7 +39,7 @@ import jxl.Workbook;
  * 
  * @author zhouwei 2015-6-29
  */
-public class ExcelUtil {
+public class FundMarketSituationUtil {
 
     
     /**
@@ -365,6 +366,6 @@ public class ExcelUtil {
         // ExcelUtil.downLoadFile("http://www.csindex.com.cn/uploads/file/autofile/perf/000001perf.xls ", path);
 
         String dir = "G:\\test\\fundexcel\\180914";
-        ExcelUtil.parseMarketSituationInfo(dir);
+        FundMarketSituationUtil.parseMarketSituationInfo(dir);
     }
 }
