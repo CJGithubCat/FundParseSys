@@ -8,9 +8,8 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zsh.labouCapital.pojo.DataPermission;
 import com.zsh.labouCapital.entity.ReturnValue;
-import com.zsh.labouCapital.pojo.TBaVehicle;
+import com.zsh.labouCapital.pojo.DataPermission;
 
 
 public class ResponseUtil {

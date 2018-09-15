@@ -1,16 +1,10 @@
 package com.zsh.labouCapital.util;
 
+import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Connection;
-import java.sql.Statement;
 import java.text.SimpleDateFormat;
-import org.springframework.util.StringUtils;
-
-
-import net.sf.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -21,9 +15,12 @@ import javax.script.ScriptEngineManager;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.springframework.util.StringUtils;
 
 import com.mysql.jdbc.PreparedStatement;
 import com.zsh.labouCapital.entity.NetWorthHistory;
+
+import net.sf.json.JSONObject;
 
 public class GetFundDataUtil {
 

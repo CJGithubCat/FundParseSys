@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import javax.naming.ConfigurationException;
+
 
 /**
  * 读取配置文件

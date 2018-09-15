@@ -10,6 +10,13 @@ public class MarketSituation{
 	private String infoDate;
 	private String indexCode;
 	private String indexSname;
+	private String indexFname;
+	public String getIndexFname() {
+		return indexFname;
+	}
+	public void setIndexFname(String indexFname) {
+		this.indexFname = indexFname;
+	}
 	private String openPoint;
 	private String highestPoint;
 	private String lowestPoint;

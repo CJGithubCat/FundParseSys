@@ -3,16 +3,16 @@ package com.zsh.labouCapital.util;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.zsh.labouCapital.comm.SystemConst;
+
 import net.spy.memcached.AddrUtil;
 import net.spy.memcached.BinaryConnectionFactory;
 import net.spy.memcached.CASResponse;
 import net.spy.memcached.CASValue;
 import net.spy.memcached.MemcachedClient;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.zsh.labouCapital.comm.SystemConst;
 
 
 public class MemcachedUtil {
