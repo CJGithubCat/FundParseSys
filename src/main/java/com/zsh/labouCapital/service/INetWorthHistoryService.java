@@ -13,4 +13,6 @@ public interface INetWorthHistoryService extends BaseService<NetWorthHistory>{
 	public NetWorthHistory getBuyNetWorthInfo(String fundCode, String tempDateStr);
 
 	public void addIntervalTradeInfo(List<IntervalBuy> insertList);
+
+	public void updateOrinsertNetWorth(List<NetWorthHistory> revelus);
 }

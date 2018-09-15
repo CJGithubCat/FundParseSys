@@ -23,8 +23,8 @@ public class FundOperJob{
 	private IFundSummaryService fundSummaryService;
 	
 	private static int counter = 0;
-    protected void execute()  {
-    	logger.info("***********定时任务启动********");
+    protected void execute1()  {
+    	/*logger.info("***********定时任务启动********");
         long ms = System.currentTimeMillis();  
         System.out.println("\t\t" + new Date(ms));  
         System.out.println("(" + counter++ + ")");  
@@ -45,6 +45,6 @@ public class FundOperJob{
         	}
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		}*/
     }  
 }

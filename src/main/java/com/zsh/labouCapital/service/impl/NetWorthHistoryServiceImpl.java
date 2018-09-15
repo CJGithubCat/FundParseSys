@@ -50,4 +50,17 @@ public class NetWorthHistoryServiceImpl extends BaseServiceImpl<NetWorthHistory>
 			netWorthHistoryMapper.addIntervalTradeInfo(intervalBuy);
 		}
 	}
+
+	@Override
+	@Transactional
+	public void updateOrinsertNetWorth(List<NetWorthHistory> revelus) {
+		for (int i = 0; i < revelus.size(); i++) {
+			NetWorthHistory netWorth = revelus.get(i);
+			//查询是否有这个记录
+			List<NetWorthHistory> tempList = netWorthHistoryMapper.queryNetWorthHistoryInfo(netWorth);
+			if(tempList == null || tempList.size() == 0){
+				netWorthHistoryMapper.addNetWorthInfo(netWorth);
+			}
+		}
+	}
 }

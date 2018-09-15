@@ -8,10 +8,11 @@ import com.zsh.labouCapital.entity.NetWorthHistory;
 
 
 public interface NetWorthHistoryMapper extends BaseSqlMapper<NetWorthHistory> {
-	 List<NetWorthHistory> queryNetWorthHistoryInfo(NetWorthHistory netWorthHistory);
-
+	List<NetWorthHistory> queryNetWorthHistoryInfo(NetWorthHistory netWorthHistory);
 	void updateNetWorthHistory(NetWorthHistory tempNetWorth);
 	NetWorthHistory getBuyNetWorthInfo(Map<String, String> params);
 
 	void addIntervalTradeInfo(IntervalBuy intervalBuy);
+
+	void addNetWorthInfo(NetWorthHistory temp);
 }

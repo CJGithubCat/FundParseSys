@@ -9,7 +9,7 @@ public class IndexNew{
 
 	private String indexId;
 	private String indexCode;
-	private String indxSname;
+	private String indexSname;
 	private String indexEname;
 	private double basePoint;
 	private Date baseDate;
@@ -22,7 +22,34 @@ public class IndexNew{
 	private int agencyType;
 	private Date dateCreate;
 	private String hangqingfilepath;
-
+	private String detailUrl;
+	private String traceFunds;
+	private int isCheck;
+	
+	public String getIndexSname() {
+		return indexSname;
+	}
+	public void setIndexSname(String indexSname) {
+		this.indexSname = indexSname;
+	}
+	public int getIsCheck() {
+		return isCheck;
+	}
+	public void setIsCheck(int isCheck) {
+		this.isCheck = isCheck;
+	}
+	public String getTraceFunds() {
+		return traceFunds;
+	}
+	public void setTraceFunds(String traceFunds) {
+		this.traceFunds = traceFunds;
+	}
+	public String getDetailUrl() {
+		return detailUrl;
+	}
+	public void setDetailUrl(String detailUrl) {
+		this.detailUrl = detailUrl;
+	}
 	public void setIndexId(String indexId){
 		this.indexId=indexId;
 	}
@@ -36,10 +63,10 @@ public class IndexNew{
 		return indexCode;
 	}
 	public void setIndxSname(String indxSname){
-		this.indxSname=indxSname;
+		this.indexSname=indxSname;
 	}
 	public String getIndxSname(){
-		return indxSname;
+		return indexSname;
 	}
 	public void setIndexEname(String indexEname){
 		this.indexEname=indexEname;

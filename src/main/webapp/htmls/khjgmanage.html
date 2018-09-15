@@ -636,6 +636,55 @@ div[toolbarid='item-3'] .l-icon{
 	    });
 	}
 	
+	function analyseIntervalBuyModule(){
+		$.ajax({
+	        type: "POST",
+	        url: D2V.NetWorttHistoryURL.historyHuice,
+	        data:{
+	        },
+	        error:function(xhr,status,err){
+	            $.ligerDialog.error('修改失败,网络故障!');
+	            return;
+	        },
+	        success:function(data){
+	        	console.log(data);
+	            if(data.success===true){
+	            	mainGrid.reload();
+	            	$.ligerDialog.success(data.message);
+	            }else{
+	                $.ligerDialog.error(data.message);
+	                $('.notice_key_num').html(' ');
+	            }
+	        },
+	         dataType:'json',
+	         async:false
+	    });
+	}
+	
+	function analyseBestIndex(){
+		$.ajax({
+	        type: "POST",
+	        url: D2V.NetWorttHistoryURL.analyseBestIndex,
+	        data:{
+	        },
+	        error:function(xhr,status,err){
+	            $.ligerDialog.error('修改失败,网络故障!');
+	            return;
+	        },
+	        success:function(data){
+	        	console.log(data);
+	            if(data.success===true){
+	            	mainGrid.reload();
+	            	$.ligerDialog.success(data.message);
+	            }else{
+	                $.ligerDialog.error(data.message);
+	                $('.notice_key_num').html(' ');
+	            }
+	        },
+	         dataType:'json',
+	         async:false
+	    });
+	}
 </script>
 </head>
 <body>
@@ -685,6 +734,20 @@ div[toolbarid='item-3'] .l-icon{
 					onclick="updateGrowthRate();return false;"
 					style="background-color: #3d8cd1;">
 					<i class="icon icon-search"></i>更新日增长率
+				</button>
+			</div>
+			<div class="form-group">
+				<button type="button" class="btn btn-search"
+					onclick="analyseIntervalBuyModule();return false;"
+					style="background-color: #3d8cd1;">
+					<i class="icon icon-search"></i>回测
+				</button>
+			</div>
+			<div class="form-group">
+				<button type="button" class="btn btn-search"
+					onclick="analyseBestIndex();return false;"
+					style="background-color: #3d8cd1;">
+					<i class="icon icon-search"></i>过滤指数
 				</button>
 			</div>
 		</form>

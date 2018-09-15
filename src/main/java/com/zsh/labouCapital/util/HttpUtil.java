@@ -44,8 +44,10 @@ public class HttpUtil {
 		String body = null;
 		HttpGet get = new HttpGet(url);
 		// 设置参数
-		String str = EntityUtils.toString(new UrlEncodedFormEntity(params, Consts.UTF_8));
-		get.setURI(new URI(get.getURI().toString() + "?" + str));
+		if(params != null){
+			String str = EntityUtils.toString(new UrlEncodedFormEntity(params, Consts.UTF_8));
+			get.setURI(new URI(get.getURI().toString() + "?" + str));
+		}
 		// 发送请求
 		HttpResponse httpresponse = client.execute(get);
 		// 获取返回数据
