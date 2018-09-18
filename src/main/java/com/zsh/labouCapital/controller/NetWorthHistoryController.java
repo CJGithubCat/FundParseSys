@@ -198,4 +198,5 @@ public class NetWorthHistoryController extends BaseController {
 	public void getRealTimeNetWorthInfo(HttpServletRequest request, FundNetWorthDTO fundNetWorthDTO){
 	    
 	}
+	
 }
