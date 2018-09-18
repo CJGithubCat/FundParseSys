@@ -8,8 +8,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +29,10 @@ import com.zsh.labouCapital.entity.ReturnValue;
 import com.zsh.labouCapital.service.IFundSummaryService;
 import com.zsh.labouCapital.service.ILoggerService;
 import com.zsh.labouCapital.service.INetWorthHistoryService;
+import com.zsh.labouCapital.service.impl.FundSummaryServiceImpl;
+import com.zsh.labouCapital.util.HttpUtil;
+
+import net.sf.json.JSONArray;
 
 /**
  * 函数功能：NetWorthHistory
@@ -199,4 +207,55 @@ public class NetWorthHistoryController extends BaseController {
 	    
 	}
 	
+	/**
+     * 解析js中的历史累计净值数据
+     * "http://fund.eastmoney.com/pingzhongdata/530010.js"
+     */
+	@RequestMapping("/parseJsHistoryAddWorth")
+    @ResponseBody
+    public  void parseJsHistoryAddWorth(HttpServletRequest request, FundNetWorthDTO fundNetWorthDTO){
+	    System.out.println("******************开始分析累积净值信息****************");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            //1.查询所有信息;
+            List<FundSummary> fundSummaryList = fundSummaryService.queryAllFundSummary();
+            
+            for(int j=0; j < fundSummaryList.size();j++){
+                List<NetWorthHistory> reList = new ArrayList<>();
+                List<NameValuePair> params = new ArrayList<>();
+                FundSummary tempFund = fundSummaryList.get(j);
+                
+                params.add(new BasicNameValuePair("v","20180921161408"));
+                String reBody = HttpUtil.get(tempFund.getHistoryUrl(), params);
+                ScriptEngineManager manager = new ScriptEngineManager();
+                ScriptEngine engine = manager.getEngineByName("javascript");
+                engine.eval(reBody);
+                Object array = engine.get("Data_ACWorthTrend");
+                JSONArray tempObj = JSONArray.fromObject(array);
+                int len = tempObj.size();
+                for (int i = 0; i < len; i++) {
+                    NetWorthHistory temValue = new NetWorthHistory();
+                    JSONArray vaJsonArrary = (JSONArray) tempObj.get(i);
+                    
+                    Long dateTime =  vaJsonArrary.getLong(0);
+                    Double addValue = (double) vaJsonArrary.getDouble(1);
+                    
+                    Date date = new Date(dateTime);
+                    String dateStr = sdf.format(date);
+
+                    temValue.setFundCode(tempFund.getFundCode());
+                    temValue.setDateInfo(dateStr);
+                    temValue.setAddUpWorth(addValue);
+                    reList.add(temValue);
+                }
+                System.out.println("AAAAAA:"+reList.size());
+                //2.更新到数据库
+                netWorthHistoryService.updateNetWorthHistorys(reList);
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

@@ -5,6 +5,7 @@ public class NetWorthHistory {
 	private String fundCode;
 	private String dateInfo;
 	private double netWorth;
+	private double addUpWorth;
 	private double equityReturn;
 	private String unitMoney;   
 	private String dateCreate;
@@ -12,7 +13,13 @@ public class NetWorthHistory {
 	private String historyUrl;
 	private double networthDaygrowRate;
 	
-	public String getId() {
+	public double getAddUpWorth() {
+        return addUpWorth;
+    }
+    public void setAddUpWorth(double addUpWorth) {
+        this.addUpWorth = addUpWorth;
+    }
+    public String getId() {
 		return id;
 	}
 	public void setId(String id) {
@@ -74,11 +81,11 @@ public class NetWorthHistory {
 	public void setNetworthDaygrowRate(double networthDaygrowRate) {
 		this.networthDaygrowRate = networthDaygrowRate;
 	}
-	@Override
-	public String toString() {
-		return "NetWorthHistory [id=" + id + ", fundCode=" + fundCode + ", dateInfo=" + dateInfo + ", netWorth="
-				+ netWorth + ", equityReturn=" + equityReturn + ", unitMoney=" + unitMoney + ", dateCreate="
-				+ dateCreate + ", weekInfo=" + weekInfo + ", historyUrl=" + historyUrl + ", networthDaygrowRate="
-				+ networthDaygrowRate + "]";
-	}
+    @Override
+    public String toString() {
+        return "NetWorthHistory [id=" + id + ", fundCode=" + fundCode + ", dateInfo=" + dateInfo + ", netWorth=" + netWorth
+                + ", addUpWorth=" + addUpWorth + ", equityReturn=" + equityReturn + ", unitMoney=" + unitMoney + ", dateCreate="
+                + dateCreate + ", weekInfo=" + weekInfo + ", historyUrl=" + historyUrl + ", networthDaygrowRate=" + networthDaygrowRate
+                + "]";
+    }
 }
