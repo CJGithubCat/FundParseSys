@@ -66,8 +66,7 @@
 		SELECT tin.* 
 		FROM t_index_new tin
 		<include refid="indexQueryParams"></include>
-		and tin.trace_funds is null
-		and tin.is_check = 0
+		and tin.is_check =0
 	</select>
 	
 	<update id="updateIndexNewInfo" parameterType="com.zsh.labouCapital.entity.IndexNew">
@@ -79,4 +78,32 @@
 		WHERE index_id = #{indexId}
 	</update>
 	
+	<insert id="insertIndexFundTemp" parameterType="com.zsh.labouCapital.entity.TIndexFundTemp">
+		INSERT INTO t_index_fund_temp(index_code,fund_code) 
+		values(#{indexCode},#{fundCode})
+		ON DUPLICATE KEY UPDATE update_date = now()		
+	</insert>
+	
+	<select id="queryAllIndexFundTemp" parameterType="com.zsh.labouCapital.entity.TIndexFundTemp" resultType="com.zsh.labouCapital.entity.TIndexFundTemp">
+		SELECT * FROM 
+		t_index_fund_temp tt
+		where 1=1
+		<if test="indexCode != null">
+			and index_code = #{indexCode}
+		</if>
+	</select>
+	
+	<select id="queryUnderValueMarkStationIndex" parameterType="com.zsh.labouCapital.dto.MarketSituationDTO" resultType="com.zsh.labouCapital.dto.MarketSituationDTO">
+		SELECT 
+		  t.index_code,
+		  AVG(t.pe1_ratio) as avgPe1,
+		  AVG(t.pe2_ratio) as avgPe2,
+		  t.index_sname
+		FROM
+		  t_market_situation t 
+		GROUP BY t.index_code
+		HAVING AVG(t.pe1_ratio) <![CDATA[ <= ]]> 10
+		ORDER BY t.pe1_ratio ASC 
+		LIMIT 0, 10000 
+	</select>
 </mapper>
