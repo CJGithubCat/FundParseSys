@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zsh.labouCapital.dao.HoldPositionMapper">
+	
+	<sql id="commQueryParams">
+		<where>
+			<trim prefixOverrides="and|or">
+				1=1
+				<if test="id !=null and id > 0">
+					t.id = #{id}
+				</if>
+				<if test="fundCode !=null and fundCode != ''">
+					t tnwh.fund_code = #{fundCode}
+				</if>
+			</trim>
+		</where>
+	</sql>
+	
+	<select id="queryExceptFund" parameterType="com.zsh.labouCapital.entity.ExpectFund" resultType="com.zsh.labouCapital.entity.ExpectFund">
+		SELECT t.*
+		FROM t_expect_fund t
+		<ref id="commQueryParams"></ref>
+	</select>	
+</mapper>
