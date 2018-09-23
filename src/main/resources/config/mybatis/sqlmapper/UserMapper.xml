@@ -24,7 +24,7 @@
 				tu.company_id,
 				tu.role_id,
 				tc.company_type,
-				datediff(day,tu.update_password_time,GETDATE()) as passwordOutDay		 	 
+				0 as passwordOutDay		 	 
 		FROM t_user tu,t_company tc
 		WHERE tu.login_name=#{login_name}
 		and tu.status !=2 and tu.company_id=tc.company_id

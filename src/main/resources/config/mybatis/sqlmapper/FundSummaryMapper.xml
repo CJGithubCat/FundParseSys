@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zsh.labouCapital.dao.FundSummaryMapper">
+	
+	<select id="getFundSummaryByCode" parameterType="String" resultType="com.zsh.labouCapital.entity.FundSummary">
+		SELECT * 
+		FROM t_fund_summary tfs 
+		WHERE tfs.fund_code = #{fundCode}
+	</select>
+	
+	<select id="queryAllFundSummary"  resultType="com.zsh.labouCapital.entity.FundSummary">
+		SELECT * 
+		FROM t_fund_summary tfs
+	</select>
+	
+</mapper>
