@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zsh.labouCapital.dao.NetWorthHistoryMapper">
+	
+	<sql id="commQueryParams">
+		<where>
+			<trim prefixOverrides="and|or">
+				1=1
+				<if test="id !=null and id > 0">
+					tnwh.id = #{id}
+				</if>
+				<if test="fundCode !=null and fundCode != ''">
+					AND tnwh.fund_code = #{fundCode}
+				</if>
+				<if test="dateInfo !=null and dateInfo != ''">
+					AND tnwh.date_info = #{dateInfo}
+				</if>
+			</trim>
+		</where>
+	</sql>
+	
+	<insert id="addNetWorthInfo" parameterType="com.zsh.labouCapital.entity.NetWorthHistory">
+		INSERT INTO t_net_worth_history(fund_code,date_info,net_worth,equity_return,unit_money,week_info,date_create,networth_daygrow_rate)
+		VALUES(#{fundCode},#{dateInfo},#{netWorth},#{equityReturn},#{unitMoney},#{weekInfo},#{dateCreate},#{networthDaygrowRate})
+	</insert>
+	
+	<select id="queryNetWorthHistoryInfo" parameterType="com.zsh.labouCapital.entity.NetWorthHistory"
+		resultType="com.zsh.labouCapital.entity.NetWorthHistory">
+		SELECT
+		tnwh.*
+		FROM
+		t_net_worth_history tnwh
+		<include refid="commQueryParams"/>
+		AND tnwh.networth_daygrow_rate =0	
+		ORDER BY tnwh.date_info DESC
+	</select>
+	
+	<update id="updateNetWorthHistory" parameterType="com.zsh.labouCapital.entity.NetWorthHistory">
+		UPDATE t_net_worth_history
+		<if test="networthDaygrowRate != null">
+			SET networth_daygrow_rate = #{networthDaygrowRate}	
+		</if>
+		where id = #{id}
+		and fund_code = #{fundCode}
+	</update>
+	
+	<select id="getBuyNetWorthInfo" parameterType="map" resultType="com.zsh.labouCapital.entity.NetWorthHistory">
+		SELECT
+			  t.fund_code as fundCode,
+			  MIN(t.date_info) as dateInfo,
+			  t.net_worth  as netWorth
+			FROM
+			  t_net_worth_history t 
+			WHERE t.fund_code = #{fundCode}
+			  AND t.date_info >  #{dateInfo}
+	</select>
+
+	<insert id="addIntervalTradeInfo" parameterType="com.zsh.labouCapital.entity.IntervalBuy">
+		INSERT INTO t_interval_buy(fund_code,total_cost,net_worth,total_num,trade_day)
+		VALUES(#{fundCode},#{totalCost},#{netWorth},#{totalNum},#{tradeDay})
+	</insert>	
+</mapper>
