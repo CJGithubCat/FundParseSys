@@ -4,22 +4,22 @@ public class NetWorthHistory {
 	private String id;
 	private String fundCode;
 	private String dateInfo;
-	private double netWorth;
-	private double addUpWorth;
-	private double equityReturn;
+	private Double netWorth;
+	private Double addUpWorth;
+	private Double equityReturn;
 	private String unitMoney;   
 	private String dateCreate;
 	private int weekInfo;
 	private String historyUrl;
-	private double networthDaygrowRate;
+	private Double networthDaygrowRate;
 	
-	public double getAddUpWorth() {
-        return addUpWorth;
-    }
-    public void setAddUpWorth(double addUpWorth) {
-        this.addUpWorth = addUpWorth;
-    }
-    public String getId() {
+    public Double getAddUpWorth() {
+		return addUpWorth;
+	}
+	public void setAddUpWorth(Double addUpWorth) {
+		this.addUpWorth = addUpWorth;
+	}
+	public String getId() {
 		return id;
 	}
 	public void setId(String id) {
@@ -37,16 +37,16 @@ public class NetWorthHistory {
 	public void setDateInfo(String dateInfo) {
 		this.dateInfo = dateInfo;
 	}
-	public double getNetWorth() {
+	public Double getNetWorth() {
 		return netWorth;
 	}
-	public void setNetWorth(double netWorth) {
+	public void setNetWorth(Double netWorth) {
 		this.netWorth = netWorth;
 	}
-	public double getEquityReturn() {
+	public Double getEquityReturn() {
 		return equityReturn;
 	}
-	public void setEquityReturn(double equityReturn) {
+	public void setEquityReturn(Double equityReturn) {
 		this.equityReturn = equityReturn;
 	}
 	public String getUnitMoney() {
@@ -75,10 +75,10 @@ public class NetWorthHistory {
 		this.historyUrl = historyUrl;
 	}
 	
-	public double getNetworthDaygrowRate() {
+	public Double getNetworthDaygrowRate() {
 		return networthDaygrowRate;
 	}
-	public void setNetworthDaygrowRate(double networthDaygrowRate) {
+	public void setNetworthDaygrowRate(Double networthDaygrowRate) {
 		this.networthDaygrowRate = networthDaygrowRate;
 	}
     @Override

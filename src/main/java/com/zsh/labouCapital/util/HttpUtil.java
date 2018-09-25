@@ -35,7 +35,20 @@ public class HttpUtil {
 
 	public static String get(String url, List<NameValuePair> params) throws ParseException, IOException,
 			URISyntaxException {
-		CloseableHttpClient client = HttpClients.createMinimal();
+
+		RequestConfig defaultRequestConfig = RequestConfig.custom()
+		  .setSocketTimeout(30000)
+		  .setConnectTimeout(30000)
+		  .setConnectionRequestTimeout(30000)
+		  .setStaleConnectionCheckEnabled(true)
+		  .build();
+
+		//CloseableHttpClient client = HttpClients.createMinimal();
+		
+		CloseableHttpClient client = HttpClients.custom()
+			    .setDefaultRequestConfig(defaultRequestConfig)
+			    .build();
+		
 		String body = null;
 		HttpGet get = new HttpGet(url);
 		

@@ -8,5 +8,7 @@ public interface FundSummaryMapper extends BaseSqlMapper<FundSummary> {
 	FundSummary getFundSummaryByCode(String fundCode);
 
 	List<FundSummary> queryAllFundSummary();
+
+	List<FundSummary> queryFundSummaryNoHsitory();
 	
 }

@@ -31,5 +31,9 @@ public class FundSummaryServiceImpl extends BaseServiceImpl<FundSummary> impleme
 		return fundSummaryMapper.queryAllFundSummary();
 	}
 	
+	@Override
+	public List<FundSummary> queryFundSummaryNoHsitory() {
+		return fundSummaryMapper.queryFundSummaryNoHsitory();
+	}
 
 }

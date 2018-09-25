@@ -8,5 +8,7 @@ public interface IFundSummaryService extends BaseService<FundSummary>{
 	public FundSummary getFundSummaryByCode(String fundCode);
 
 	public List<FundSummary> queryAllFundSummary();
+	
+	public List<FundSummary> 	queryFundSummaryNoHsitory();
     
 }

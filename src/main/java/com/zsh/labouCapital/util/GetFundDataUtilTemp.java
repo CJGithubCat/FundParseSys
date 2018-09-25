@@ -285,7 +285,7 @@ public class GetFundDataUtilTemp {
 	 */
 	public static void proceeHistoryData() {
 		//String sql = "SELECT t.`fund_code` AS fundCode,t.`history_url` AS historyUrl FROM t_fund_summary t";
-		String sql = "SELECT t.fund_code AS fundCode,t.history_url AS historyUrl FROM t_fund_summary t WHERE t.fund_code IN ( SELECT DISTINCT tt.fund_code FROM t_net_worth_history tt )";
+		String sql = "SELECT t.fund_code AS fundCode,t.history_url AS historyUrl FROM t_fund_summary t WHERE t.fund_code";
 		try {
 			List<NetWorthHistory> reList = getAll(sql);
 			for (int i=0; i < reList.size();i++) {

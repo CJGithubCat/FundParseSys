@@ -121,7 +121,7 @@ public class FundAnalyseController extends BaseController {
 	}
 
 	/**
-	 * 函数功能：分析出有追随基金的指数且满足： 1.十天的平均PE < 10 2.由基金追踪的指数
+	 * 函数功能：分析出有追随基金的指数且满足： 1.十天的平均PE < 10 2.有基金追踪的指数
 	 */
 	@RequestMapping("/analyseUnderValueExceptFund")
 	@ResponseBody
