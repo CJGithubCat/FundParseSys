@@ -1,5 +1,11 @@
 package test.controller;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+
+import javax.script.ScriptException;
+
+import org.apache.http.ParseException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +18,7 @@ import com.zsh.labouCapital.spider.FundNetWorthSpider;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:config/spring/*.xml"})
-public class FundAnalyseControllerTest {
+public class NetWorthHistoryControllerTest {
 	@Autowired
 	private NetWorthHistoryController netWorthController;
 	
@@ -22,41 +28,20 @@ public class FundAnalyseControllerTest {
 	@Autowired
 	private FundAnalyseController fundAnalyseController;
 	
-/*	//@Test
-	public void calDayGrothRate(){
-		netWorthController.calDayGrothRate(null);
+	@Test
+	public void parseJsHistoryAddWorth() throws ParseException, IOException, URISyntaxException, ScriptException{
+		netWorthController.parseJsHistoryAddWorth(null,null);
 	}
 	
-	*//**
-	 * @Title: updateHistoryNetWorth   
-	 * @Description: 更新前10天的基金数据
-	 * @param:       
-	 * @return: void      
-	 * @throws
-	 *//*
-	//@Test
-	public void updateHistoryNetWorth(){
-		netWorthSpider.updateHistoryNetWorth(null,10);
-	}*/
-	
-	/***************指数分析************/
-	/*@Test
-	public void analyseBestIndex(){
-		fundAnalyseController.analyseBestIndex(null);
-	}*/
-	
-	/***
-	 * @Title: analyseExceptFund   
+	/**
+	 * @Title: calDayGrothRate   
 	 * @Description: TODO  
-	 * @param:解析出低估值的基金信息
+	 * @param:解析日增长率       
 	 * @return: void      
 	 * @throws
 	 */
 	@Test
-	public void analyseUnderValueExceptFund(){
-		fundAnalyseController.analyseUnderValueExceptFund(null);
+	public void calDayGrothRate(){
+		netWorthController.calDayGrothRate(null);
 	}
-	
-	
-	
 }
