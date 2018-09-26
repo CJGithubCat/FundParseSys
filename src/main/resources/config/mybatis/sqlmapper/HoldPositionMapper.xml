@@ -17,9 +17,23 @@
 		</where>
 	</sql>
 	
-	<select id="queryExceptFund" parameterType="com.zsh.labouCapital.entity.ExpectFund" resultType="com.zsh.labouCapital.entity.ExpectFund">
-		SELECT t.*
-		FROM t_expect_fund t
-		<ref id="commQueryParams"></ref>
-	</select>	
+	<select id="queryHoldPositionList" parameterType="com.zsh.labouCapital.entity.HoldPosition" resultType="com.zsh.labouCapital.entity.HoldPosition">
+		SELECT * 
+		FROM t_hold_position t
+		<include refid="commQueryParams"></include>
+		ORDER BY t.buy_date desc
+	</select>
+	
+	<insert id="insertHoldPositionInfo" parameterType="com.zsh.labouCapital.entity.HoldPosition">
+		INSERT INTO t_hold_position(fund_code,net_worth,buy_money,buy_num,buy_date,last_avg_cost,real_net_worth,grow_rate,TYPE,now_avg_cost,now_avg_cost)
+		VALUES(#{fundCode},#{netWorth},#{buyMoney},#{buyNum},#{buyDate},#{lastAvgCost},#{realNetWorth},#{growRate},#{type},#{nowAvgCost})
+	</insert>
+	
+	<select id="getTheLastHoldPosition" parameterType="String" resultType="com.zsh.labouCapital.entity.HoldPosition">
+		SELECT thp.*
+		FROM t_hold_position thp
+		WHERE thp.fund_code = #{fundCode}
+		ORDER BY thp.buy_date DESC
+		LIMIT 0,1
+	</select>
 </mapper>

@@ -15,11 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.zsh.labouCapital.comm.SysOperateEnum;
 import com.zsh.labouCapital.entity.ExpectFund;
 import com.zsh.labouCapital.entity.FundRealTimeNetWorthDTO;
 import com.zsh.labouCapital.entity.FundSummary;
 import com.zsh.labouCapital.entity.HoldPosition;
 import com.zsh.labouCapital.entity.ReturnValue;
+import com.zsh.labouCapital.entity.StrategyAdviceInfo;
 import com.zsh.labouCapital.service.IExpectFundService;
 import com.zsh.labouCapital.service.IFundSummaryService;
 import com.zsh.labouCapital.service.IHoldPositionService;
@@ -47,7 +49,7 @@ public class HoldPositionController{
 	private IIndexMarketSituationService indexMarketSituationService;
 	
 	@Autowired
-	private IExpectFundService iExceptFundService;
+	private IExpectFundService iExpectFundService;
 	
 	@Autowired
     private IHoldPositionService holdPositionService;
@@ -147,9 +149,9 @@ public class HoldPositionController{
 		try {
 			// 1.查询所有期待购买的基金信息;
 		    int count = 1;
-		    List<String> emailConList = new ArrayList<String>();
+		    List<StrategyAdviceInfo> emailConList = new ArrayList<StrategyAdviceInfo>();
 		    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		    List<ExpectFund> allExpectFund = iExceptFundService.queryExceptFundList(null);
+		    List<ExpectFund> allExpectFund = iExpectFundService.queryExpectFundList(null);
 		    for (int i = 0; i < allExpectFund.size(); i++) {
 		      ExpectFund expectFundEle = allExpectFund.get(i);
 		      //2.获取实时的净值信息;
@@ -169,8 +171,14 @@ public class HoldPositionController{
 	          String emailCont = "";
 	          double lastnowAvgCost = lastHoldPosition.getNowAvgCost();
 	          double growRate = (fundRealNetWorth.getNowNetWorth() - lastnowAvgCost)/lastnowAvgCost;
+	          StrategyAdviceInfo tempAdvice = new StrategyAdviceInfo();
 	          emailCont = "[时间]:"+ sdf.format(new Date())+" [实时净值]：" + fundRealNetWorth.getNowNetWorth() + " [目前成本]:" + lastnowAvgCost +" [差值]:" + (fundRealNetWorth.getNowNetWorth() - lastnowAvgCost) + "  [增长率]:" + growRate;
-	          
+	          tempAdvice.setId(count+"");
+	          tempAdvice.setTime(sdf.format(new Date()));
+	          tempAdvice.setNetWorth(fundRealNetWorth.getNowNetWorth());
+	          tempAdvice.setNowCost(lastnowAvgCost);
+	          tempAdvice.setDiffValue(fundRealNetWorth.getNowNetWorth() - lastnowAvgCost);
+	          tempAdvice.setGrowRate(growRate);
 	          String strageCon = "";
 	          if(growRate > 0){//漲了
 	              if(0.02< growRate && growRate <= 0.025){
@@ -202,7 +210,9 @@ public class HoldPositionController{
                   }
 	          }
 	          emailCont += strageCon;
-              emailConList.add(emailCont);
+	          System.out.println(emailCont);
+	          tempAdvice.setStageAdvice(strageCon);
+              emailConList.add(tempAdvice);
 	          count++;
             }
 		    //5.发送邮件
@@ -211,7 +221,7 @@ public class HoldPositionController{
 		        for (int i = 0; i < emailConList.size(); i++) {
                     emilCont += (i+1) + " :" +emailConList.get(i)+"\n";
                 }
-		        MimeMessage emailMsg = EmailUtil.createSimpleMail("策略建议", emilCont);
+		        MimeMessage emailMsg = EmailUtil.createTextMail("策略建议", emilCont);
 		        EmailUtil.sendEmail(emailMsg);
 		    }
 		    System.out.println("[BBBBB]:count:" + count + "分析完成.....");

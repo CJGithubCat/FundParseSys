@@ -5,8 +5,17 @@ import com.zsh.labouCapital.entity.ExpectFund;
 
 
 public interface IExpectFundService extends BaseService<ExpectFund>{
-    public List<ExpectFund> queryExceptFundList(ExpectFund expectFund);
 	
 	public void insertExceptFundInfos(List<ExpectFund> addList);
+
+    /**   
+     * @Title: queryExpectFundList   
+     * @Description: TODO   
+     * @param: @param object
+     * @param: @return      
+     * @return: List<ExpectFund>      
+     * @throws   
+     */
+    public List<ExpectFund> queryExpectFundList(ExpectFund expectFund);
 
 }

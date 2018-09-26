@@ -15,18 +15,16 @@ public class ExpectFundServiceImpl extends BaseServiceImpl<ExpectFund> implement
 	@Autowired
 	private ExpectFundMapper exceptFundMapper;
 
-
-	@Override
-	public List<ExpectFund> queryExceptFundList(ExpectFund expectFund) {
-		return exceptFundMapper.queryExceptFundList(expectFund);
-	}
-
 	@Override
 	@Transactional
 	public void insertExceptFundInfos(List<ExpectFund> addList) {
 		for (ExpectFund tExceptFund : addList) {
-			exceptFundMapper.insertExceptFund(tExceptFund);
+			exceptFundMapper.insertExpectFund(tExceptFund);
 		}
 	}
-	
+
+    @Override
+    public List<ExpectFund> queryExpectFundList(ExpectFund expectFund) {
+        return exceptFundMapper.queryExpectFundList(expectFund);
+    }
 }
