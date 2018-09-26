@@ -14,4 +14,11 @@
 		FROM t_fund_summary tfs
 	</select>
 	
+	<select id="queryFundSummaryNoHsitory"  resultType="com.zsh.labouCapital.entity.FundSummary">
+		SELECT * FROM t_fund_summary tfs
+		WHERE tfs.fund_code NOT IN(
+			SELECT DISTINCT tnh.fund_code FROM t_net_worth_history tnh
+		)
+	</select>
+	
 </mapper>

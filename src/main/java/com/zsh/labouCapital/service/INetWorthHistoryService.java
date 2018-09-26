@@ -15,4 +15,13 @@ public interface INetWorthHistoryService extends BaseService<NetWorthHistory>{
 	public void addIntervalTradeInfo(List<IntervalBuy> insertList);
 
 	public void updateOrinsertNetWorth(List<NetWorthHistory> revelus);
+
+    /**   
+     * @Title: addOrUpdateNetWorth   
+     * @Description: TODO   
+     * @param: @param reList      
+     * @return: void      
+     * @throws   
+     */
+    public void addOrUpdateNetWorth(List<NetWorthHistory> reList);
 }

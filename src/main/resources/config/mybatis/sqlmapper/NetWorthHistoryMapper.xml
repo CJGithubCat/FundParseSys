@@ -21,8 +21,8 @@
 	</sql>
 	
 	<insert id="addNetWorthInfo" parameterType="com.zsh.labouCapital.entity.NetWorthHistory">
-		INSERT INTO t_net_worth_history(fund_code,date_info,net_worth,equity_return,unit_money,week_info,date_create,networth_daygrow_rate)
-		VALUES(#{fundCode},#{dateInfo},#{netWorth},#{equityReturn},#{unitMoney},#{weekInfo},#{dateCreate},#{networthDaygrowRate})
+		INSERT INTO t_net_worth_history(fund_code,date_info,net_worth,equity_return,unit_money,week_info,date_create,networth_daygrow_rate,addup_worth)
+		VALUES(#{fundCode},#{dateInfo},#{netWorth},#{equityReturn},#{unitMoney},#{weekInfo},#{dateCreate},#{networthDaygrowRate},#{addUpWorth})
 	</insert>
 	
 	<select id="queryNetWorthHistoryInfo" parameterType="com.zsh.labouCapital.entity.NetWorthHistory"
@@ -32,7 +32,6 @@
 		FROM
 		t_net_worth_history tnwh
 		<include refid="commQueryParams"/>
-		AND tnwh.networth_daygrow_rate =0	
 		ORDER BY tnwh.date_info DESC
 	</select>
 	

@@ -1,14 +1,38 @@
 package com.zsh.labouCapital.service;
 import java.util.List;
 
-import com.zsh.labouCapital.dto.MarketSituationDTO;
-import com.zsh.labouCapital.entity.IndexNew;
-import com.zsh.labouCapital.entity.MarketSituation;
-import com.zsh.labouCapital.entity.NetWorthHistory;
 import com.zsh.labouCapital.entity.HoldPosition;
-import com.zsh.labouCapital.entity.TIndexFundTemp;
 
 
-public interface IHoldPositionService extends BaseService<HoldPosition>{
-    
+public interface IHoldPositionService {
+
+    /**   
+     * @Title: queryHoldPositionList   
+     * @Description: TODO   
+     * @param: @param holdPositionParam
+     * @param: @return      
+     * @return: List<HoldPosition>      
+     * @throws   
+     */
+    List<HoldPosition> queryHoldPositionList(HoldPosition holdPositionParam);
+
+    /**   
+     * @Title: insertHoldPositionInfo   
+     * @Description: TODO   
+     * @param: @param holdPosition      
+     * @return: void      
+     * @throws   
+     */
+    void insertHoldPositionInfo(HoldPosition holdPosition);
+
+    /**   
+     * @Title: getTheLastHoldPosition   
+     * @Description: TODO   
+     * @param: @param fundCode
+     * @param: @return      
+     * @return: HoldPosition      
+     * @throws   
+     */
+    HoldPosition getTheLastHoldPosition(String fundCode);
+        
 }

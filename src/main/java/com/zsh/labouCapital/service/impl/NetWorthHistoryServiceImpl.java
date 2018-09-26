@@ -63,4 +63,23 @@ public class NetWorthHistoryServiceImpl extends BaseServiceImpl<NetWorthHistory>
 			}
 		}
 	}
+
+    /**
+    *
+    * (non-Javadoc)
+    * @see com.zsh.labouCapital.service.INetWorthHistoryService#addOrUpdateNetWorth(java.util.List)
+    */
+    @Override
+    public void addOrUpdateNetWorth(List<NetWorthHistory> reList) {
+        for (int i = 0; i < reList.size(); i++) {
+            NetWorthHistory element = reList.get(i);
+            List<NetWorthHistory> reNetValues= netWorthHistoryMapper.queryNetWorthHistoryInfo(element);
+            if(reNetValues == null || reNetValues.size() <= 0){
+                netWorthHistoryMapper.addNetWorthInfo(element);
+            }else{
+                netWorthHistoryMapper.updateNetWorthHistory(element);
+            }
+        }
+        
+    }
 }

@@ -13,24 +13,21 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zsh.labouCapital.dto.MarketSituationDTO;
+import com.zsh.labouCapital.entity.ExpectFund;
 import com.zsh.labouCapital.entity.IndexNew;
 import com.zsh.labouCapital.entity.ReturnValue;
-import com.zsh.labouCapital.entity.TExceptFund;
 import com.zsh.labouCapital.entity.TIndexFundTemp;
-import com.zsh.labouCapital.service.IExceptFundService;
+import com.zsh.labouCapital.service.IExpectFundService;
 import com.zsh.labouCapital.service.IFundSummaryService;
 import com.zsh.labouCapital.service.IIndexMarketSituationService;
 import com.zsh.labouCapital.service.ILoggerService;
 import com.zsh.labouCapital.service.INetWorthHistoryService;
 import com.zsh.labouCapital.util.HttpUtil;
-
-import net.sf.jsqlparser.statement.create.table.Index;
 
 /**
  * 函数功能：marketStation挑选基金
@@ -50,7 +47,7 @@ public class FundAnalyseController extends BaseController {
 	private IIndexMarketSituationService indexMarketSituationService;
 	
 	@Autowired
-	private IExceptFundService iExceptFundService;
+	private IExpectFundService iExpectFundService;
 
 	@Autowired
 	private ILoggerService iloggerService;
@@ -121,7 +118,7 @@ public class FundAnalyseController extends BaseController {
 	}
 
 	/**
-	 * 函数功能：分析出有追随基金的指数且满足： 1.十天的平均PE < 10 2.有基金追踪的指数
+	 * 函数功能：分析出有追随基金的指数且满足： 1.十天的平均PE < 10 2.由基金追踪的指数
 	 */
 	@RequestMapping("/analyseUnderValueExceptFund")
 	@ResponseBody
@@ -139,16 +136,16 @@ public class FundAnalyseController extends BaseController {
 				BeanUtils.copyProperties(paramIndex, marketSituationTemp);
 
 				List<TIndexFundTemp>  indexTempList = indexMarketSituationService.queryAllIndexFundTemp(paramIndex);
-				List<TExceptFund> addExceptFunds = new ArrayList<>();
+				List<ExpectFund> addExceptFunds = new ArrayList<>();
 				for (int j = 0; j < indexTempList.size(); j++) {
 					TIndexFundTemp indexFundTempelement = indexTempList.get(j);
-					TExceptFund tExceptFund = new TExceptFund();
+					ExpectFund tExceptFund = new ExpectFund();
 					BeanUtils.copyProperties(tExceptFund, indexFundTempelement);
 					tExceptFund.setType(1);
 					addExceptFunds.add(tExceptFund);
 				}
 				//插入到t_except_fund表中
-				iExceptFundService.insertExceptFundInfos(addExceptFunds);
+				iExpectFundService.insertExceptFundInfos(addExceptFunds);
 				System.out.println("[BBBBB]:第 count:" + count++ + "次分析.....");
 			}
 			System.out.println("******************分析完成********************");
