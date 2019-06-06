@@ -151,9 +151,9 @@ public class HoldPositionController{
 		    int count = 1;
 		    List<StrategyAdviceInfo> emailConList = new ArrayList<StrategyAdviceInfo>();
 		    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		    List<ExpectFund> allExpectFund = iExpectFundService.queryExpectFundList(null);
-		    for (int i = 0; i < allExpectFund.size(); i++) {
-		      ExpectFund expectFundEle = allExpectFund.get(i);
+		    List<ExpectFund> allExpectFundList = iExpectFundService.queryExpectFundList(null);
+		    for (int i = 0; i < allExpectFundList.size(); i++) {
+		      ExpectFund expectFundEle = allExpectFundList.get(i);
 		      //2.获取实时的净值信息;
 	          FundSummary fundSummary = fundSummaryService.getFundSummaryByCode(expectFundEle.getFundCode());
 	          FundRealTimeNetWorthDTO fundRealNetWorth = FundRealTimeUtil.getFundRealTimeNetWorth(fundSummary);
@@ -174,6 +174,8 @@ public class HoldPositionController{
 	          StrategyAdviceInfo tempAdvice = new StrategyAdviceInfo();
 	          emailCont = "[时间]:"+ sdf.format(new Date())+" [实时净值]：" + fundRealNetWorth.getNowNetWorth() + " [目前成本]:" + lastnowAvgCost +" [差值]:" + (fundRealNetWorth.getNowNetWorth() - lastnowAvgCost) + "  [增长率]:" + growRate;
 	          tempAdvice.setId(count+"");
+	          tempAdvice.setFundCode(expectFundEle.getFundCode());
+	          tempAdvice.setFundName(fundSummary.getFundName());
 	          tempAdvice.setTime(sdf.format(new Date()));
 	          tempAdvice.setNetWorth(fundRealNetWorth.getNowNetWorth());
 	          tempAdvice.setNowCost(lastnowAvgCost);
@@ -182,31 +184,31 @@ public class HoldPositionController{
 	          String strageCon = "";
 	          if(growRate > 0){//漲了
 	              if(0.02< growRate && growRate <= 0.025){
-	                  strageCon =" [策略建议]:" +"卖出20%";
+	                  strageCon ="卖出20%";
 	                  System.out.println(strageCon);
 	              }else if(0.025 < growRate && growRate <= 0.03){
-	                  strageCon = " [策略建议]:" +"卖出50%";
-                      System.out.println(" [策略建议]:" +"卖出30%");
+	                  strageCon = "卖出50%";
+                      System.out.println("卖出30%");
                   }else if(0.03 < growRate && growRate <= 0.04){
-                      strageCon = " [策略建议]:" +"卖出50%";
-                      System.out.println(" [策略建议]:" +"卖出50%");
+                      strageCon = "卖出50%";
+                      System.out.println("卖出50%");
                   }else if(0.04 < growRate){
-                      strageCon = " [策略建议]:" +"卖出全部";
-                      System.out.println(" [策略建议]:" +"卖出全部");
+                      strageCon = "卖出全部";
+                      System.out.println("卖出全部");
                   }
 	          }else{//跌了
 	              if( 0.01< Math.abs(growRate) && growRate <= 0.02){
-	                  strageCon = " [策略建议]:" +"买入500";
-                      System.out.println(" [策略建议]:" +"买入500");
+	                  strageCon = "买入500";
+                      System.out.println("买入500");
                   }else if(0.02< Math.abs(growRate) && Math.abs(growRate) <= 0.025){
-                      strageCon = " [策略建议]:" +"买入1000";
-                      System.out.println(" [策略建议]:" +"买入1000");
+                      strageCon = "买入1000";
+                      System.out.println("买入1000");
                   }else if(0.025 < Math.abs(growRate) && Math.abs(growRate) <= 0.03){
-                      strageCon =" [策略建议]:" +"买入1500";
-                      System.out.println(" [策略建议]:" +"买入1500");
+                      strageCon ="买入1500";
+                      System.out.println("买入1500");
                   }else if(0.03 < Math.abs(growRate)){
-                      strageCon =" [策略建议]:" +"买入2000";
-                      System.out.println(" [策略建议]:" +"买入2000");
+                      strageCon ="买入2000";
+                      System.out.println("买入2000");
                   }
 	          }
 	          emailCont += strageCon;
@@ -217,11 +219,7 @@ public class HoldPositionController{
             }
 		    //5.发送邮件
 		    if(emailConList.size() >=0){
-		        String emilCont = "";
-		        for (int i = 0; i < emailConList.size(); i++) {
-                    emilCont += (i+1) + " :" +emailConList.get(i)+"\n";
-                }
-		        MimeMessage emailMsg = EmailUtil.createTextMail("策略建议", emilCont);
+		        MimeMessage emailMsg = EmailUtil.creatHtmlMail("策略建议", emailConList);
 		        EmailUtil.sendEmail(emailMsg);
 		    }
 		    System.out.println("[BBBBB]:count:" + count + "分析完成.....");

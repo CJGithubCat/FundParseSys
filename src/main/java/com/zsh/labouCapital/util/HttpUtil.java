@@ -76,21 +76,21 @@ public class HttpUtil {
 		String body = null;
 		// Post请求
 		HttpPost post = new HttpPost(url);
-		String stamp = Long.toString(System.currentTimeMillis());
-		String nonce = UUID.randomUUID().toString();
-		post.setHeader("nonce", nonce);
-		post.setHeader("stamp", stamp);
-		post.setHeader("signature", SignUtil.sign(stamp, nonce));
-
 		// 设置参数
-		if (params != null)
-			post.setEntity(new UrlEncodedFormEntity(params, Consts.UTF_8));
-
+		if (params != null){
+		    post.setEntity(new UrlEncodedFormEntity(params, Consts.UTF_8));
+		}
+			
+		post.setHeader("Content-type", "application/json;charset=utf-8");
+        post.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36");
+        post.setHeader("Content-Security-Policy", "default-src 'self'£»script-src * 'unsafe-inline'");
+        
 		// 发送请求
 		HttpResponse httpresponse = client.execute(post);
 		// 获取返回数据
 		HttpEntity entity = httpresponse.getEntity();
 		body = EntityUtils.toString(entity, Consts.UTF_8);
+		System.out.println(com.alibaba.fastjson.JSONObject.toJSON(body));
 		post.releaseConnection();
 		client.close();
 		return body;
@@ -114,6 +114,7 @@ public class HttpUtil {
 		String stamp = Long.toString(System.currentTimeMillis());
 		post.setHeader("Content-type", "application/json;charset=utf-8");
 		post.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36");
+		post.setHeader("Date","Wed, 06 Mar 2019 11:42:44 GMT");
 		// 设置参数
 		//post.setEntity(new StringEntity(json, Consts.UTF_8));
 		// 设置请求和传输超时时间
@@ -153,10 +154,11 @@ public class HttpUtil {
 
 	public static void main(String[] args) throws ParseException, IOException, URISyntaxException {
 	    try {
-	        String url = "http://fund.eastmoney.com/pingzhongdata/530010.js";//v=20180907161408
+	        String url = "http://pscsxbm.cltt.org/Web/SignUpOnLine/OnlineSign.aspx/GetTestSite";
 	        List<NameValuePair> params = new ArrayList<>();
-	        params.add(new BasicNameValuePair("v","20180907161408"));
-	        String reBody = HttpUtil.get(url, params);
+	        params.add(new BasicNameValuePair("cityId","005"));
+	        String reBody = HttpUtil.post(url, params);
+	        System.out.println("reBody:" + reBody);
 	        //System.out.println(reBody);
 	        ScriptEngineManager manager = new ScriptEngineManager();
 	        ScriptEngine engine = manager.getEngineByName("javascript");

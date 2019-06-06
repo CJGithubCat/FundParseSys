@@ -127,7 +127,7 @@ public class EmailUtil {
             trStrBuff.append("</td>");
             
             trStrBuff.append("<td>");
-            trStrBuff.append(tAdviceInfo.getGrowRate());
+            trStrBuff.append(tAdviceInfo.getStageAdvice());
             trStrBuff.append("</td>");
             trStrBuff.append("</tr>");
             allTrs.append(trStrBuff.toString());

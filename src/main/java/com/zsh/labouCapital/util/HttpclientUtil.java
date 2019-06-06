@@ -172,7 +172,7 @@ public class HttpclientUtil {
 
 			httpPost.setConfig(requestConfig);
 			// 4.设置HttpPost头消息；
-			httpPost.setHeader("Content-Type", "application/xml;charset=utf-8");
+			httpPost.setHeader("Content-Type", "application/json;charset=utf-8");
 
 			// 5.组装json消息实体
 			StringEntity strEntity = null;
@@ -184,6 +184,7 @@ public class HttpclientUtil {
 				httpPost.setEntity(strEntity);
 				// 7.解析返回的Json数据
 				response = httpClient.execute(httpPost);
+				System.out.println("response:" + JSONObject.toJSONString(response));////////////////
 				if (response.getStatusLine().getStatusCode() == 200) {
 					HttpEntity respEntity = response.getEntity();
 					if (respEntity != null) {

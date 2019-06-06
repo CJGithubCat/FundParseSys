@@ -3,10 +3,13 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zsh.labouCapital.dao.ExpectFundMapper">
 	
-	<select id="queryExceptFundInfo" parameterType="String" resultType="com.zsh.labouCapital.entity.ExpectFund">
+	<select id="queryExpectFundList" parameterType="String" resultType="com.zsh.labouCapital.entity.ExpectFund">
 		SELECT * 
 		FROM t_expect_fund tfs 
-		WHERE tfs.fund_code = #{fundCode}
+		WHERE 1=1
+		<if test="fundCode != null">
+			tfs.fund_code = #{fundCode}
+		</if>
 	</select>
 
 	<insert id="insertExceptFund" parameterType="com.zsh.labouCapital.entity.ExpectFund">
