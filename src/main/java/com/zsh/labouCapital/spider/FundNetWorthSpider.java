@@ -20,7 +20,8 @@ import com.zsh.labouCapital.entity.FundSummary;
 import com.zsh.labouCapital.entity.NetWorthHistory;
 import com.zsh.labouCapital.service.IFundSummaryService;
 import com.zsh.labouCapital.service.INetWorthHistoryService;
-import com.zsh.labouCapital.util.HttpUtil;
+import com.zsh.labouCapital.util.DateUtil;
+import com.zsh.labouCapital.util.HttpclientUtil;
 
 import net.sf.json.JSONObject;
 
@@ -51,7 +52,7 @@ public class FundNetWorthSpider {
 		try {
 			String timStamp = sdf.format(new Date());
 			params.add(new BasicNameValuePair("v",timStamp));
-	        String reBody = HttpUtil.get(url, params);
+	        String reBody = HttpclientUtil.get(url, params);
 	        //2.解析js数据
 	        ScriptEngineManager manager = new ScriptEngineManager();
 	        ScriptEngine engine = manager.getEngineByName("javascript");
@@ -74,7 +75,7 @@ public class FundNetWorthSpider {
 	        	
 	        	String dateInfo = sdf1.format(new Date(milSecod));
 	        	temValue.setFundCode(fundCode);
-	        	temValue.setDateInfo(dateInfo);
+	        	temValue.setDateInfo(DateUtil.parse(dateInfo, DateUtil.YMD));
 	        	temValue.setNetWorth(value);
 	        	if(!StringUtils.isEmpty(equityReturn)){
 	        		temValue.setEquityReturn(Double.parseDouble(equityReturn));
@@ -151,6 +152,6 @@ public class FundNetWorthSpider {
 	
 	public static void main(String[] args) {
 		List<NetWorthHistory> reList = FundNetWorthSpider.parseJsNetWorth("http://fund.eastmoney.com/pingzhongdata/530010.js", "530010",1);
-		System.out.println(reList);
+		System.out.println(com.alibaba.fastjson.JSONObject.toJSON(reList));
 	}
 }

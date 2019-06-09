@@ -101,7 +101,7 @@ public class GetFundDataUtilTemp {
 			for (int j = 0; j < netWorths.size(); j++) {
 				NetWorthHistory netWorthTemp = netWorths.get(j);
 				pstmt.setString(1, netWorthTemp.getFundCode());
-				pstmt.setString(2, netWorthTemp.getDateInfo());
+				pstmt.setString(2, DateUtil.format(netWorthTemp.getDateInfo(), DateUtil.YMD_DASH));
 				pstmt.setDouble(3, netWorthTemp.getNetWorth());
 				pstmt.setDouble(4, netWorthTemp.getEquityReturn());
 				pstmt.setString(5, netWorthTemp.getUnitMoney());
@@ -146,7 +146,7 @@ public class GetFundDataUtilTemp {
                 NetWorthHistory netWorthTemp = netWorths.get(j);
                 pstmt.setDouble(1, netWorthTemp.getAddUpWorth());
                 pstmt.setString(2, netWorthTemp.getFundCode());
-                pstmt.setString(3, netWorthTemp.getDateInfo());
+                pstmt.setString(3, DateUtil.format(netWorthTemp.getDateInfo(), DateUtil.YMD_DASH));
                 
                 pstmt.addBatch();
             }
@@ -182,7 +182,7 @@ public class GetFundDataUtilTemp {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		try {
 			params.add(new BasicNameValuePair("v","20180907161408"));
-	        String reBody = HttpUtil.get(url, params);
+	        String reBody = HttpclientUtil.get(url, params);
 	        ScriptEngineManager manager = new ScriptEngineManager();
 	        ScriptEngine engine = manager.getEngineByName("javascript");
 	        engine.eval(reBody);
@@ -198,9 +198,9 @@ public class GetFundDataUtilTemp {
 	        	String unitMoney = vaJsonObject.getString("unitMoney");
 	        	int week = getWeekInfo(milSecod);
 	        	
-	        	String dateInfo = sdf.format(new Date(milSecod));
 	        	temValue.setFundCode(fundCode);
-	        	temValue.setDateInfo(dateInfo);
+	        	temValue.setDateInfo(new Date(milSecod));
+
 	        	temValue.setNetWorth(value);
 	        	if(!StringUtils.isEmpty(equityReturn)){
 	        		temValue.setEquityReturn(Double.parseDouble(equityReturn));
@@ -250,7 +250,7 @@ public class GetFundDataUtilTemp {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         try {
             params.add(new BasicNameValuePair("v","20180921161408"));
-            String reBody = HttpUtil.get("http://fund.eastmoney.com/pingzhongdata/530010.js", params);
+            String reBody = HttpclientUtil.get("http://fund.eastmoney.com/pingzhongdata/530010.js", params);
             ScriptEngineManager manager = new ScriptEngineManager();
             ScriptEngine engine = manager.getEngineByName("javascript");
             engine.eval(reBody);
@@ -265,10 +265,9 @@ public class GetFundDataUtilTemp {
                 Double addValue = (double) vaJsonArrary.getDouble(1);
                 
                 Date date = new Date(dateTime);
-                String dateStr = sdf.format(date);
 
                 temValue.setFundCode(fundCode);
-                temValue.setDateInfo(dateStr);
+                temValue.setDateInfo(date);
                 temValue.setAddUpWorth(addValue);
                 reList.add(temValue);
                 System.out.println(temValue);

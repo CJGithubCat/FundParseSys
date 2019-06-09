@@ -51,7 +51,7 @@ public class ExcelUtil {
      */
     public static String requestHtmlOrJsFile(String url,List<NameValuePair> params) {
         try {
-            String respBody = HttpUtil.get(url, params);
+            String respBody = HttpclientUtil.get(url, params);
             return respBody;
         }
         catch (Exception e) {

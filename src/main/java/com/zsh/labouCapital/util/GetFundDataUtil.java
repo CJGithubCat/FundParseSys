@@ -98,7 +98,7 @@ public class GetFundDataUtil {
 			for (int j = 0; j < netWorths.size(); j++) {
 				NetWorthHistory netWorthTemp = netWorths.get(j);
 				pstmt.setString(1, netWorthTemp.getFundCode());
-				pstmt.setString(2, netWorthTemp.getDateInfo());
+				pstmt.setString(2, DateUtil.format(netWorthTemp.getDateInfo(), DateUtil.YMD_DASH) );
 				pstmt.setDouble(3, netWorthTemp.getNetWorth());
 				pstmt.setDouble(4, netWorthTemp.getEquityReturn());
 				pstmt.setString(5, netWorthTemp.getUnitMoney());
@@ -136,7 +136,7 @@ public class GetFundDataUtil {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		try {
 			params.add(new BasicNameValuePair("v","20180907161408"));
-	        String reBody = HttpUtil.get(url, params);
+	        String reBody = HttpclientUtil.get(url, params);
 	        ScriptEngineManager manager = new ScriptEngineManager();
 	        ScriptEngine engine = manager.getEngineByName("javascript");
 	        engine.eval(reBody);
@@ -154,7 +154,7 @@ public class GetFundDataUtil {
 	        	
 	        	String dateInfo = sdf.format(new Date(milSecod));
 	        	temValue.setFundCode(fundCode);
-	        	temValue.setDateInfo(dateInfo);
+	        	temValue.setDateInfo(new Date(milSecod));
 	        	temValue.setNetWorth(value);
 	        	if(!StringUtils.isEmpty(equityReturn)){
 	        		temValue.setEquityReturn(Double.parseDouble(equityReturn));
@@ -195,7 +195,7 @@ public class GetFundDataUtil {
 	}
 	
 	/**
-	 * 处理基金的历史数据
+	 * 处理所有基金的历史数据
 	 */
 	public static void proceeHistoryData() {
 		//String sql = "SELECT t.`fund_code` AS fundCode,t.`history_url` AS historyUrl FROM t_fund_summary t";
@@ -214,9 +214,23 @@ public class GetFundDataUtil {
 		}
 	}
 	
+	/**
+	 * @Title: processSpecFundHistoryData   
+	 * @Description: 获取指定的基金的历史数据值   
+	 * @param: @param url
+	 * @param: @param fundCode      
+	 * @return: void      
+	 * @throws
+	 */
+	public static void processSpecFundHistoryData(String url,String fundCode){
+	    List<NetWorthHistory> revelus = parseJsNetWorth(url,fundCode);
+        insert(revelus);
+	}
 	
 	public static void main(String[] args) {
-		proceeHistoryData();
+//		proceeHistoryData();
 		//System.out.println(getWeekInfo(1536429963000L));
+		
+		processSpecFundHistoryData("http://fund.eastmoney.com/pingzhongdata/161725.js?v=","161725");
 	}
 }
