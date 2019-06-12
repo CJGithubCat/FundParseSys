@@ -30,8 +30,13 @@ public class NetWorthHistoryControllerTest {
 	
 	@Test
 	public void parseJsHistoryAddWorth() throws ParseException, IOException, URISyntaxException, ScriptException{
-		netWorthController.parseJsHistoryAddWorth(null,null);
+		netWorthController.parseAllJsHistoryAddWorth(null,null);
 	}
+	
+	@Test
+    public void parseSpecJsHistoryAddWorth() throws ParseException, IOException, URISyntaxException, ScriptException{
+        netWorthController.parseSpecJsHistoryAddWorth(null,null);
+    }
 	
 	/**
 	 * @Title: calDayGrothRate   

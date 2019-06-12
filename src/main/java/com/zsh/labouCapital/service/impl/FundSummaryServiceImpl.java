@@ -32,6 +32,11 @@ public class FundSummaryServiceImpl extends BaseServiceImpl<FundSummary> impleme
 	}
 	
 	@Override
+    public List<FundSummary> queryFundSummaryByEample(FundSummary examPle) {
+        return fundSummaryMapper.queryFundSummaryByEample(examPle);
+    }
+	
+	@Override
 	public List<FundSummary> queryFundSummaryNoHsitory() {
 		return fundSummaryMapper.queryFundSummaryNoHsitory();
 	}

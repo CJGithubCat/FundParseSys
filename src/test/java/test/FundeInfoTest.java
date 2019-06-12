@@ -51,15 +51,21 @@ public class FundeInfoTest {
                 java.sql.Date dateInfo = rs.getDate("date_info");
                 netWorthHistory.setId(id+"");
                 netWorthHistory.setNetWorth(netWorth);
-                netWorthHistory.setDateInfoStr(DateUtil.format(dateInfo, DateUtil.YMD));
+                try {
+                    netWorthHistory.setDateInfoStr(DateUtil.getDateString(dateInfo, DateUtil.DATE_TIME_PATTERN));
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
                 netWorthHistory.setDateInfo(new Date(dateInfo.getTime()));
                 netWorthHistory.setFundCode(fundCode);
                 netWorthList.add(netWorthHistory);
             }
             logger.error("$$$:" + JSONObject.toJSONString(netWorthList));
             try {
-                List<NetWorthHistory> netWorthTempList = countAvgLine(netWorthList,90);
-                updateAvgLineData(netWorthTempList,90);
+                int dayNum = 240;
+                List<NetWorthHistory> netWorthTempList = countAvgLine(netWorthList,dayNum);
+                updateAvgLineData(netWorthTempList,dayNum);
             }
             catch (Exception e) {
                 e.printStackTrace();
@@ -81,7 +87,7 @@ public class FundeInfoTest {
      */
     public List<NetWorthHistory> countAvgLine(List<NetWorthHistory> netWorthList,int day) throws SQLException{
       //2.计算均线；
-        String avg30Sql = "SELECT AVG(t.net_worth) AS avgLine FROM t_net_worth_history t WHERE t.fund_code = '161725' AND t.date_info < ? ORDER BY t.date_info DESC LIMIT 0,?";
+        String avg30Sql = "SELECT AVG(tt.net_worth) as  avgLine from (SELECT t.net_worth FROM t_net_worth_history t WHERE t.fund_code = '161725' AND t.date_info < ? ORDER BY t.date_info DESC LIMIT 0,?)tt";
         PreparedStatement pstm30 = JDBCUtil.getPrepareStatement(avg30Sql);
         List<NetWorthHistory> netWorthListTemp = new ArrayList<NetWorthHistory>();
         for (NetWorthHistory netWorthHistory : netWorthList) {

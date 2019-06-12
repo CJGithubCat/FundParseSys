@@ -10,5 +10,15 @@ public interface IFundSummaryService extends BaseService<FundSummary>{
 	public List<FundSummary> queryAllFundSummary();
 	
 	public List<FundSummary> 	queryFundSummaryNoHsitory();
+
+    /**   
+     * @Title: queryFundSummaryByEample   
+     * @Description: TODO   
+     * @param: @param examPle
+     * @param: @return      
+     * @return: List<FundSummary>      
+     * @throws   
+     */
+    List<FundSummary> queryFundSummaryByEample(FundSummary examPle);
     
 }

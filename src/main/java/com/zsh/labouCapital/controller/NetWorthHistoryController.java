@@ -4,9 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -30,8 +28,8 @@ import com.zsh.labouCapital.entity.ReturnValue;
 import com.zsh.labouCapital.service.IFundSummaryService;
 import com.zsh.labouCapital.service.ILoggerService;
 import com.zsh.labouCapital.service.INetWorthHistoryService;
-import com.zsh.labouCapital.service.impl.FundSummaryServiceImpl;
-import com.zsh.labouCapital.util.HttpUtil;
+import com.zsh.labouCapital.util.DateTimeUtil;
+import com.zsh.labouCapital.util.HttpclientUtil;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -213,10 +211,87 @@ public class NetWorthHistoryController extends BaseController {
      * 解析js中的历史累计净值数据
      * "http://fund.eastmoney.com/pingzhongdata/530010.js"
      */
-	@RequestMapping("/parseJsHistoryAddWorth")
+	@RequestMapping("/parseSpecJsHistoryAddWorth")
     @ResponseBody
-    public  void parseJsHistoryAddWorth(HttpServletRequest request, FundNetWorthDTO fundNetWorthDTO){
+    public  void parseSpecJsHistoryAddWorth(HttpServletRequest request, FundNetWorthDTO fundNetWorthDTO){
 	    System.out.println("******************开始分析累积净值信息****************");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date updateDateLine = DateTimeUtil.afterDay(new Date(), 10);
+        try {
+            //1.查询所有信息;
+            FundSummary param = new FundSummary();
+            param.setFundCode("161725");
+            List<FundSummary> fundSummaryList = fundSummaryService.queryFundSummaryByEample(param);
+            for(int j=0; j < fundSummaryList.size();j++){
+                List<NetWorthHistory> reList = new ArrayList<>();
+                List<NameValuePair> params = new ArrayList<>();
+                FundSummary tempFund = fundSummaryList.get(j);
+                                
+                String timeStamp = this.generateTimeStamp(new Date());
+                params.add(new BasicNameValuePair("v",timeStamp));
+                String reBody = HttpclientUtil.get(tempFund.getHistoryUrl(), params);
+                ScriptEngineManager manager = new ScriptEngineManager();
+                ScriptEngine engine = manager.getEngineByName("javascript");
+                engine.eval(reBody);
+                
+                Object array = engine.get("Data_netWorthTrend");
+                JSONArray tempObj1 = JSONArray.fromObject(array);
+                String tempObj1Str = tempObj1.toString().replace("},", "}},{");
+                com.alibaba.fastjson.JSONArray temArr = (com.alibaba.fastjson.JSONArray) com.alibaba.fastjson.JSONArray.parse(tempObj1Str);
+                System.out.println(com.alibaba.fastjson.JSONObject.toJSONString(temArr));
+                
+                int len = temArr.size();
+                for (int i = 0; i < len; i++) {
+                    NetWorthHistory temValue = new NetWorthHistory();
+                    com.alibaba.fastjson.JSONObject jsonTemp = (com.alibaba.fastjson.JSONObject) temArr.getJSONObject(i).getJSONObject(""+i);
+                    
+                    Date dateTime =  jsonTemp.getDate("x");
+                    //只更新最近几天的数据;
+                    if(dateTime.getTime() > updateDateLine.getTime()){
+                        continue;
+                    }
+                    
+                    double netWorth = (double) jsonTemp.getDoubleValue("y");
+                    temValue.setFundCode(tempFund.getFundCode());
+                    temValue.setNetWorth(netWorth);
+                    temValue.setDateInfo(dateTime);
+                    temValue.setDateInfoStr(sdf.format(dateTime));
+                    temValue.setDateCreate(sdf.format(new Date()));
+                    reList.add(temValue);
+                }
+                System.out.println("AAAAAA:"+com.alibaba.fastjson.JSONObject.toJSONString(reList));
+                //2.更新到数据库
+                netWorthHistoryService.updateNetWorthHistorys(reList);
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+	
+	/**
+	 * @Title: genTimeStamp   
+	 * @Description: TODO   
+	 * @param: @return      
+	 * @return: String      
+	 * @throws
+	 */
+	public String generateTimeStamp(Date dateTime){
+	    if(dateTime == null){
+	        dateTime = new Date();
+	    }
+	    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+	    return sdf.format(dateTime);
+	}
+	
+	/**
+     * 解析js中的历史累计净值数据
+     * "http://fund.eastmoney.com/pingzhongdata/530010.js"
+     */
+    @RequestMapping("/parseAllJsHistoryAddWorth")
+    @ResponseBody
+    public  void parseAllJsHistoryAddWorth(HttpServletRequest request, FundNetWorthDTO fundNetWorthDTO){
+        System.out.println("******************开始分析累积净值信息****************");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         try {
             //1.查询所有信息;
@@ -227,8 +302,8 @@ public class NetWorthHistoryController extends BaseController {
                 List<NameValuePair> params = new ArrayList<>();
                 FundSummary tempFund = fundSummaryList.get(j);
                 
-                params.add(new BasicNameValuePair("v","20180925161408"));
-                String reBody = HttpUtil.get(tempFund.getHistoryUrl(), params);
+                params.add(new BasicNameValuePair("v","20190611161408"));
+                String reBody = HttpclientUtil.get(tempFund.getHistoryUrl(), params);
                 ScriptEngineManager manager = new ScriptEngineManager();
                 ScriptEngine engine = manager.getEngineByName("javascript");
                 engine.eval(reBody);
@@ -246,7 +321,7 @@ public class NetWorthHistoryController extends BaseController {
                     String dateStr = sdf.format(date);
 
                     temValue.setFundCode(tempFund.getFundCode());
-                    temValue.setDateInfo(dateStr);
+                    temValue.setDateInfo(date);
                     temValue.setAddUpWorth(addValue);
                     reList.add(temValue);
                 }
@@ -278,7 +353,7 @@ public class NetWorthHistoryController extends BaseController {
             for(int j=0; j<fundSummaryList.size();j++){
                 FundSummary fundTemp = fundSummaryList.get(j);
                 params.add(new BasicNameValuePair("v","20180925161408"));
-                String reBody = HttpUtil.get(fundTemp.getHistoryUrl(), params);
+                String reBody = HttpclientUtil.get(fundTemp.getHistoryUrl(), params);
                 ScriptEngineManager manager = new ScriptEngineManager();
                 ScriptEngine engine = manager.getEngineByName("javascript");
                 engine.eval(reBody);
@@ -300,7 +375,7 @@ public class NetWorthHistoryController extends BaseController {
                     
                     String dateInfo = sdf.format(new Date(milSecod));
                     temValue.setFundCode(fundTemp.getFundCode());
-                    temValue.setDateInfo(dateInfo);
+                    temValue.setDateInfo(new Date(milSecod));
                     temValue.setNetWorth(value);
                     if(!StringUtils.isEmpty(equityReturn)){
                         temValue.setEquityReturn(Double.parseDouble(equityReturn));
@@ -341,5 +416,4 @@ public class NetWorthHistoryController extends BaseController {
         }
         return week;
     }
-
 }

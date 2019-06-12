@@ -30,7 +30,8 @@ public class NetWorthHistoryServiceImpl extends BaseServiceImpl<NetWorthHistory>
 	public void updateNetWorthHistorys(List<NetWorthHistory> updateList) {
 		for (int i = 0; i < updateList.size(); i++) {
 			NetWorthHistory tempNetWorth = updateList.get(i);
-			netWorthHistoryMapper.updateNetWorthHistory(tempNetWorth);
+			netWorthHistoryMapper.deleteNetWorthHistoryByExample(tempNetWorth);
+			netWorthHistoryMapper.addNetWorthInfo(tempNetWorth);
 		}
 	}
 

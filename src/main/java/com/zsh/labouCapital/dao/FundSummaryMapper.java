@@ -10,5 +10,15 @@ public interface FundSummaryMapper extends BaseSqlMapper<FundSummary> {
 	List<FundSummary> queryAllFundSummary();
 
 	List<FundSummary> queryFundSummaryNoHsitory();
+
+    /**   
+     * @Title: queryFundSummaryByEample   
+     * @Description: TODO   
+     * @param: @param examPle
+     * @param: @return      
+     * @return: List<FundSummary>      
+     * @throws   
+     */
+    List<FundSummary> queryFundSummaryByEample(FundSummary examPle);
 	
 }
