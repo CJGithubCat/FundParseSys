@@ -58,5 +58,15 @@
 	<insert id="addIntervalTradeInfo" parameterType="com.zsh.labouCapital.entity.IntervalBuy">
 		INSERT INTO t_interval_buy(fund_code,total_cost,net_worth,total_num,trade_day)
 		VALUES(#{fundCode},#{totalCost},#{netWorth},#{totalNum},#{tradeDay})
-	</insert>	
+	</insert>
+	
+	<delete id="deleteNetWorthHistoryByExample" parameterType="com.zsh.labouCapital.entity.NetWorthHistory">
+		DELETE 
+		FROM
+		  t_net_worth_history 
+		WHERE fund_code = #{fundCode}
+		<if test="dateInfoStr != null">
+			AND date_info = #{dateInfoStr}
+		</if>
+	</delete>	
 </mapper>

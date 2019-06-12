@@ -11,7 +11,16 @@
 	
 	<select id="queryAllFundSummary"  resultType="com.zsh.labouCapital.entity.FundSummary">
 		SELECT * 
+		FROM t_fund_summary tfs		
+	</select>
+	
+	<select id="queryFundSummaryByEample"  resultType="com.zsh.labouCapital.entity.FundSummary" parameterType="com.zsh.labouCapital.entity.FundSummary">
+		SELECT * 
 		FROM t_fund_summary tfs
+		where 1=1
+		<if test='fundCode != null'>
+			and tfs.fund_code = #{fundCode}
+		</if>	
 	</select>
 	
 	<select id="queryFundSummaryNoHsitory"  resultType="com.zsh.labouCapital.entity.FundSummary">
