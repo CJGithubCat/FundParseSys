@@ -8,8 +8,9 @@
 		FROM t_expect_fund tfs 
 		WHERE 1=1
 		<if test="fundCode != null">
-			tfs.fund_code = #{fundCode}
+			and tfs.fund_code = #{fundCode}
 		</if>
+		and tfs.is_enable = 1
 	</select>
 
 	<insert id="insertExceptFund" parameterType="com.zsh.labouCapital.entity.ExpectFund">

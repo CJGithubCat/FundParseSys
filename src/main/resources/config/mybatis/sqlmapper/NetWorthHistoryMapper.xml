@@ -68,5 +68,327 @@
 		<if test="dateInfoStr != null">
 			AND date_info = #{dateInfoStr}
 		</if>
-	</delete>	
+	</delete>
+	
+	<select id="queryAvgLineModelData" parameterType="com.zsh.labouCapital.dto.TAvglineBugRecordDto" resultType="com.zsh.labouCapital.entity.TAvglineBugRecord">
+		SELECT 
+			  t.id as netWorthId,
+			  t.fund_code as fundCode,
+			  t.date_info as dateInfo,
+			  <if test="avgLineType == 30">
+			  	t.avg_line30 AS avgLineWorth,
+			  	(t.avg_line30 - t.net_worth) as diffValue,
+			  </if>
+			  <if test="avgLineType == 60">
+			  	t.avg_line60 AS avgLineWorth,
+			  	(t.avg_line60 - t.net_worth) as diffValue,
+			  </if>
+			  <if test="avgLineType == 90">
+			  	t.avg_line90 AS avgLineWorth,
+			  	(t.avg_line90 - t.net_worth) as diffValue,
+			  </if>
+			  <if test="avgLineType == 120">
+			  	t.avg_line120 AS avgLineWorth,
+			  	(t.avg_line120 - t.net_worth) as diffValue,
+			  </if>
+			  <if test="avgLineType == 240">
+			  	 t.avg_line240 AS avgLineWorth,
+			  	(t.avg_line240 - t.net_worth) as diffValue,
+			  </if>
+			   t.net_worth as netWorth
+		FROM
+		  t_net_worth_history t 
+		WHERE 1=1
+			<if test="avgLineType == 30">
+			  	AND t.net_worth <![CDATA[ < ]]> t.avg_line30 
+			  </if>
+			  <if test="avgLineType == 60">
+			  	AND t.net_worth <![CDATA[ < ]]> t.avg_line60 
+			  </if>
+			  <if test="avgLineType == 90">
+			  	AND t.net_worth <![CDATA[ < ]]> t.avg_line90 
+			  </if>
+			  <if test="avgLineType == 120">
+			  	AND t.net_worth <![CDATA[ < ]]> t.avg_line120 
+			  </if>
+			  <if test="avgLineType == 240">
+			  	AND t.net_worth <![CDATA[ < ]]> t.avg_line240 
+			  </if>
+		  AND t.fund_code = #{fundCode}
+		  <if test="dateInfo != null">
+		  	AND t.date_info > #{dateInfo}
+		  </if>
+		  <if test="startDate != null">
+		  	AND t.date_info >= #{startDate}
+		  </if>
+		  <if test="endDate != null">
+		  	AND t.date_info <![CDATA[ < ]]> #{endDate}
+		  </if>
+		  
+		ORDER BY t.date_info ASC
+	</select>
+	
+	<insert id="addAvglineBugRecord" parameterType="com.zsh.labouCapital.entity.TAvglineBugRecord">
+		INSERT INTO t_avgline_bug_record (
+		  id,
+		  net_worth_id,
+		  fund_code,
+		  date_info,
+		  net_worth,
+		  avg_line_worth,
+		  diff_value,
+		  avg_line_type,
+		  bug_money,
+		  bug_num,
+		  bug_cost,
+		  buy_model,
+		  date_create,
+		  start_date,
+		  end_date,
+		  batch_no		  
+		) 
+		VALUES
+		  (
+		    #{id},
+		    #{netWorthId},
+			#{fundCode},
+			#{dateInfo},
+			#{netWorth},
+			#{avgLineWorth},
+			#{diffValue},
+			#{avgLineType},
+			#{bugMoney},
+			#{bugNum},
+			#{bugCost},
+			#{buyModel},
+			#{dateCreate},
+			#{startDate},
+			#{endDate},
+			#{batchNo}
+		  )
+	</insert>
+	
+	<insert id="addAllAvgLineAnalyseResult">
+		insert into t_analyse_avgline_result (
+		  id,
+		  fund_code,
+		  batch_no,
+		  start_date,
+		  end_date,
+		  total_buy_money,
+		  total_buy_num,
+		  total_buy_fee,
+		  cost_net_worth,
+		  sale_net_worth,
+		  return_rate,
+		  buy_model,
+		  buy_strategy
+		) 
+		select 
+		  (SELECT 
+		    SUBSTRING(MD5(RAND()), 1, 20)) as id,
+		  t.fund_code as fundCode,
+		  t.batch_no as batchNo,
+		  t.start_date as startDate,
+		  t.end_date as endDate,
+		  sum(t.bug_money) as totalBuyMoney,
+		  sum(t.bug_num) as totalBuyNum,
+		  0 as totalBuyFee,
+		  (
+		    SUM(t.bug_money) / SUM(t.bug_num)
+		  ) as costNetWorth,
+		  0 as saleNetWorth,
+		  0 as returnRate,
+		  t.buy_model as buyModel,
+		  concat('avg',t.avg_line_type)
+		from
+		  t_avgline_bug_record t 
+		group by t.batch_no ;
+	</insert>
+	
+	<delete id="deleteAnalyseAvgLineResult" parameterType="com.zsh.labouCapital.dto.TAnalyseAvglineResultDto">
+		delete from t_analyse_avgline_result	
+	</delete>
+	
+	<select id="queryTradeSummaryByExample" parameterType="com.zsh.labouCapital.entity.TTradeSummary" resultType="com.zsh.labouCapital.entity.TTradeSummary">
+		select * 
+		from t_trade_summary t 
+		where t.fund_code = #{fundCode}
+	</select>
+	
+	<insert id="insertTradeSummaryInfo" parameterType="com.zsh.labouCapital.entity.TTradeSummary">
+		insert into t_trade_summary (
+		  id,
+		  fund_code,
+		  model_id,
+		  now_total_cost,
+		  now_total_num,
+		  now_avg_cost,
+		  date_info
+		) 
+		values
+		  (
+		    #{id},
+		    #{fundCode},
+		    #{modelId},
+		    #{nowTotalCost},
+		    #{nowTotalNum},
+		    #{nowAvgCost},
+		    #{dateInfo}
+		  )
+	</insert>
+	
+	<insert id="insertTradeDetailInfo" parameterType="com.zsh.labouCapital.entity.TTradeDetail">
+		insert into t_trade_detail (
+			  id,
+			  fund_code,
+			  model_id,
+			  date_info,
+			  net_worth,
+			  trade_type,
+			  trade_money,
+			  trade_num,
+			  now_avg_cost,
+			  trade_strage,
+			  starnd_value
+			) 
+			values
+			  (
+			    #{id},
+			    #{fundCode},
+			    #{modelId},
+			    #{dateInfo},
+			    #{netWorth},
+			    #{tradeType},
+			    #{tradeMoney},
+			    #{tradeNum},
+			    #{nowAvgCost},
+			    #{tradeStrage},
+			    #{starndValue}
+			  )
+	</insert>
+	
+	<select id="queryTradeDetailList" parameterType="com.zsh.labouCapital.entity.TTradeDetail" resultType="com.zsh.labouCapital.entity.TTradeDetail">
+		select * from t_trade_detail
+		where fund_code = #{fundCode}
+	</select>
+	
+	<delete id="deleteTradeDetailByExample" parameterType="com.zsh.labouCapital.entity.TTradeDetail">
+		delete from t_trade_detail where model_id = #{modelId}
+	</delete>
+	
+	<update id="updateTradeSummayByExample" parameterType="com.zsh.labouCapital.entity.TTradeSummary">
+		update t_trade_summary
+			set now_total_cost = #{nowTotalCost},
+			now_total_num = #{nowTotalNum},
+			now_avg_cost = #{nowAvgCost},
+			date_info = #{dateInfo}
+		where id = #{id}
+	</update>
+	
+	<delete id="deleteTradeSummaryByExample" parameterType="com.zsh.labouCapital.entity.TTradeSummary">
+		delete from t_trade_summary
+		where fund_code = #{fundCode}
+		<if test ="modelId != null">
+			and model_id = #{modelId}
+		</if>
+	</delete>
+	
+	<select id="selectTradeModelByExample" parameterType="com.zsh.labouCapital.entity.TTradeModel" resultType="com.zsh.labouCapital.entity.TTradeModel">
+		select *
+		from
+		  t_trade_model 
+		where 1=1
+		<if test="modelId != null">
+			and model_id = #{modelId}
+		</if>
+		<if test="fundCode != null">
+			and fund_code = #{fundCode}
+		</if>
+	</select>
+	
+	<select id="queryTradeModelById" parameterType="com.zsh.labouCapital.entity.TTradeModel" resultType="com.zsh.labouCapital.entity.TTradeModel">
+		select *
+		from
+		  t_trade_model 
+		where model_id = #{modelId}
+	</select>
+	
+	<update id="updateTradeModelInfo" parameterType="com.zsh.labouCapital.entity.TTradeModel">
+		update t_trade_model
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="buyMoney != null and buyMoney >= 0">
+				buy_money = buy_money + #{buyMoney},
+			</if>
+			<if test="totalBuyNum != null and totalBuyNum >= 0">
+				total_buy_num =total_buy_num + #{totalBuyNum},
+			</if>
+			<if test="saleMoney != null and saleMoney >= 0">
+				sale_money =sale_money + #{saleMoney},
+			</if>
+			<if test="totalSaleNum != null and totalSaleNum >= 0">
+				total_sale_num = total_sale_num + #{totalSaleNum},
+			</if>
+    	</trim>
+		where model_id = #{modelId} 
+	</update>
+	
+	<update id="updateTradeModelByExample" parameterType="com.zsh.labouCapital.entity.TTradeModel">
+		update t_trade_model
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="buyMoney != null and buyMoney >= 0">
+				buy_money = #{buyMoney},
+			</if>
+			<if test="totalBuyNum != null and totalBuyNum >= 0">
+				total_buy_num = #{totalBuyNum},
+			</if>
+			<if test="saleMoney != null and saleMoney >= 0">
+				sale_money = #{saleMoney},
+			</if>
+			<if test="totalSaleNum != null and totalSaleNum >= 0">
+				total_sale_num = #{totalSaleNum},
+			</if>
+			<if test="earnMoney != null and earnMoney != 0">
+				earn_money = #{earnMoney},
+			</if>
+			<if test="earnRate != null">
+				earn_rate = #{earnRate},
+			</if>
+			<if test="yearEarnRate != null">
+				year_earn_rate = #{yearEarnRate}
+			</if>
+    	</trim>
+		where model_id = #{modelId} 
+	</update>
+	
+	<update id="updateTradeModelEarnInfo" parameterType="com.zsh.labouCapital.entity.TTradeModel">
+		update t_trade_model
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="earnMoney != null and earnMoney != 0">
+				earn_money = #{earnMoney},
+			</if>
+			<if test="earnRate != null">
+				earn_rate = #{earnRate},
+			</if>
+			<if test="yearEarnRate != null">
+				year_earn_rate = #{yearEarnRate}
+			</if>
+    	</trim>
+		where model_id = #{modelId} 
+	</update>
+
+	<select id="getMaxDateNetWorthHistory" parameterType="java.util.Date" resultType="com.zsh.labouCapital.entity.NetWorthHistory">
+		select * from t_net_worth_history t 
+		where t.date_info <![CDATA[ <= ]]> #{endDate} 
+		order by t.date_info desc limit 0,1
+	</select>
+	
+	<select id="getNewestDateByFundCode" parameterType="String" resultType="String">
+		SELECT 
+		  DATE_FORMAT(MAX(t.date_info),'%Y-%m-%d %H:%i:%S') AS maxDate
+		FROM
+		  t_net_worth_history t 
+		WHERE t.fund_code = #{fundCode}
+	</select>
+	
 </mapper>
