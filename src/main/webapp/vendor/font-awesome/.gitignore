@@ -31,3 +31,7 @@ stunnel.log
 
 .ruby-version
 .bundle
+
+.classpath
+.project
+.settings
