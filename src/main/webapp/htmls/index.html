@@ -1,396 +1,135 @@
 <!DOCTYPE html>
 <html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <!-- 启用360浏览器的极速模式(webkit) -->
-    <meta name="renderer" content="webkit">
-    <!-- 避免IE使用兼容模式 -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>劳资综合管理系统</title>
-    <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico"/>
-	<link rel="bookmark" type="image/x-icon" href="../favicon.ico"/>
-    <link rel="stylesheet" href="../vendor/bootstrap/dist/css/bootstrap.css"/>
-    <link rel="stylesheet" href="../vendor/ligerUI/skins/Aqua/css/ligerui-all.css"/>
-    <link rel="stylesheet" href="../css/public/ligerui-custom.css"/>
-    <link rel="stylesheet" href="../css/public/page_index.css"/>
- <style type="text/css">
-	.qimo8{ overflow:hidden; width:300px;position:absolute;top:0px;right:50px;;heigth:80px;font-size:14px;color:yellow}
-	.qimo8 .qimo {/*width:99999999px;*/width:8000%; height:30px;}
-	.qimo8 .qimo div{ float:left;}
-	.qimo8 .qimo ul{float:left; height:30px; overflow:hidden; zoom:1;cursor: pointer; }
-	.qimo8 .qimo ul li{float:left; line-height:30px; list-style:none;}
-	.qimo8 .qimo ul li p{float:left;}
-	#gg_create_time,#gg_notice_content{font-size:14px;}
-	.qimo8 li a{margin-right:10px;color:#444444;}
-		#detail-dialog h3{
-			font-weight: bold;
-			width: 450px;
-			color:red;
-			text-align: center;
-			margin: 10px auto;
-		}
-		#gg_create_time{
-			margin: 5px auto;
-			text-align: center;
-		}
-		#gg_notice_content{
-			text-align: left;
-			width: 95%;
-			margin: 10px auto;
-			margin-bottom: 30px;
-		}
-		.noted_fater{position:relative;height:30px;}
-		.click_deail{position:absolute;right:853px;top:5px;font-size:14px;color: #fff;}
-		.update_loadown{
-			position: absolute;
-		    bottom: 5px;
-		    left: 50%;
-		    width: 220px;
-		    height: 30px;
-		    line-height: 30px;
-		    background:#19b969;
-		    text-align: center;
-		    border-radius: 5px;
-		    margin-left:-100px;
-		}
-		.update_loadown a{
-			display: inline-block;
-    		width: 100%;
-    		color:#fff;
-		}
-		.update_loadown .down_icon{
-			position: absolute;
-		    left: 6px;
-		    color: #fff;
-		    width: 20px;
-		    height: 20px;
-		    background:#1aa56c;
-		    top: 5px;
-		    line-height: 20px;
-		    border-radius: 50%;
-		    cursor:pointer;
-		}
-		.site-header{z-index:11111;}
-		.warm_box{
-				background: #fff;
-				width:150px;
-				border-radius: 4px;
-				padding-bottom: 0;
-				position: absolute;
-    			left: -80px;
-    			top:36px;
-    			display:none;
-			}
-			.warm_box ul{
-				overflow: hidden;
-				padding: 6px;
-			}
-			.site-header .infos .warm_box ul li{
-				height: 48px;
-			    border-bottom: 1px solid #ccc;
-			    display: block;
-			    margin-right: 0;
-			}
-			.warm_box ul li:last-child{
-				border-bottom: 0 none !important;
-			}
-			.warm_left{
-				display: inline-block;
-				margin-bottom: 6px;
-			}
-			.warm_left img{
-				width:40px;
-			}
-			.warm_right{
-				display: inline-block;
-				margin-left: 12px;
-    			width: 87px;
-			}
-			.warm_right p{
-				    text-align: center;
-			}
-			.warm_right p span{
-				    color: #ff0000;
-    				font-size: 19px;
-			}
-			.radius_box{
-				width:30px;
-				height:30px;
-				background: #4295DD;
-				border-radius: 50%;
-				float: left;
-				color:#fff;
-				text-align: center;
-				line-height: 30px;
-				font-size: 16px;
-			}
-		 .site-header li .warm_box .warm_right a{
-				color:#333;
-				font-size:12px;
-			}
-			.site-header li .warm_box .warm_right a:hover{
-				    text-decoration: underline;
-			}
-		.warm_car{cursor:pointer;position:relative;}
-		#warm_car2{width:56px;}
-		#warm_car2 a{position:absolute;top:-28px;left:0px;}
-		#detailId{z-index:99999 !important;}
-		.show_warm{display:none !important;}
-		.menu_parent{position:absolute;width:1px;float:left;height:100%;}
-		.menu_son{position:absolute;width:30px;height:80px;left:225px;top:50%;margin-top:-80px;cursor:pointer;z-index:10001;background: url(../images/carGIS/tl.png) no-repeat center;}
-		.menu_son2{position:absolute;width:30px;height:80px;left:-2px;top:50%;margin-top:-80px;cursor:pointer;z-index:10001;background: url(../images/carGIS/tr.png) no-repeat center;}
-	</style>
-</head>
-<body>
-    <div class="site-header">
-        <a class="logo"></a>
-        <!--51~63行为为公告滚动 -->
-        <div class="noted_fater">
-        	<!-- <span class="click_deail">点击右侧查看详情<img src="../images/click_right.gif"/></span> -->
-			<div id="demo" class="qimo8">
-			  <div class="qimo">
-			    <div id="demo1">
-			       <ul>
-			       <li style="color:#F8E81C;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;尊敬的用户:您好! 欢迎使用劳资综合管理系统.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
-			      </ul>
+		<head lang="en">
+        <meta charset="UTF-8">
+        <title>时间是最好的朋友</title>
+        <link rel="stylesheet" href="../layui/css/layui.css">
+        <link rel="shortcut icon" type="image/x-icon" href="favicon.ico"/>
+		<link rel="bookmark" type="image/x-icon" href="favicon.ico"/>
+        <link rel="stylesheet" href="vendor/bootstrap/dist/css/bootstrap.css"/>
+        <script src="js/libs/jquery-1.11.2.min.js"></script>
+        <script src="js/libs/jquery.cookie.js"></script>
+        <script src="js/util/md5.js"></script>
+        <script src="layui/layui.js"></script>
+        <script src="../layui/layui.js"></script>
+       	<script>
+       		 if(top !== window) top.location = location.href; 
+       	</script>
+       	
+        <body class="layui-layout-body">
+<!-- ***********************头部区域******************************** -->
+			<div class="layui-layout layui-layout-admin">
+  				<div class="layui-header">
+    				<div class="layui-logo">时间是最好的朋友</div>
+				    <!-- 头部区域（可配合layui已有的水平导航） -->
+				    <!-- <ul class="layui-nav layui-layout-left">
+				      <li class="layui-nav-item"><a href="">首页</a></li>
+				      <li class="layui-nav-item">
+				        <a href="javascript:;">其它系统</a>
+				        <dl class="layui-nav-child">
+				          <dd><a href="">邮件管理</a></dd>
+				          <dd><a href="">消息管理</a></dd>
+				          <dd><a href="">授权管理</a></dd>
+				        </dl>
+				      </li>
+				    </ul> -->
+				    <!--  用户信息 -->
+				    <ul class="layui-nav layui-layout-right">
+				      <li class="layui-nav-item">
+				        <a href="javascript:;">
+				          <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+				         		 贤心
+				        </a>
+				        <dl class="layui-nav-child">
+				          <dd><a href="">基本资料</a></dd>
+				          <dd><a href="">安全设置</a></dd>
+				        </dl>
+				      </li>
+				      <li class="layui-nav-item"><a href="">退了</a></li>
+				    </ul>
+  				</div>  				
+<!-- ***********************左侧菜单******************************** -->
+				  <div class="layui-side layui-bg-black">
+				    <div class="layui-side-scroll">
+				      <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+				      <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+				      	<li class="layui-nav-item layui-nav-itemed">
+				          <a class="" href="www.baidu.com">首页</a>
+				        </li>
+				        <li class="layui-nav-item">
+				          <a class="" href="javascript:;">数据统计</a>
+				          <dl class="layui-nav-child">
+				            <dd><a href="javascript:;">净值统计</a></dd>
+				            <dd><a href="javascript:;">复盘统计</a></dd>
+				            <dd><a href="">超链接</a></dd>
+				          </dl>
+				        </li>
+				        <li class="layui-nav-item">
+				          <a href="javascript:;">数据管理</a>
+				          <dl class="layui-nav-child">
+				            <dd><a href="javascript:;">持有基金管理</a></dd>
+				            <dd><a href="javascript:;">策略管理</a></dd>
+				            <dd><a href="javascript:;">指数管理(含估值)</a></dd>
+				          </dl>
+				        </li>
+				        <li class="layui-nav-item">
+				        	<a href="javascript:;">分析模型</a>
+				        	<dl class="layui-nav-child">
+				        		<dd><a href="javascript:;">均线模型管理</a></dd>
+				        	</dl>				        	
+				        </li>
+				        <li class="layui-nav-item">
+				        	<a href="javascript:;">系统管理</a>
+				        	<dl class="layui-nav-child">
+					        	<dd><a href="javascript:;">系统参数管理</a></dd>
+					        	<dd><a href="javascript:;">跑批管理</a></dd>
+					        	<dd><a href="javascript:;">用户管理</a></dd>
+				        	</dl>
+				        </li>
+				      </ul>
+				    </div>
+				  </div>
+ <!-- ***********************内容主体区域******************************** -->
+		  <div class="layui-body">
+		    <!-- 内容主体区域 -->
+		    <div style="padding: 15px;">内容主体区域</div>
+		    <div class="layui-tab layui-tab-card" lay-allowclose="true">
+			  <ul class="layui-tab-title">
+			    <li class="layui-this">网站设置</li>
+			    <li>用户基本管理</li>
+			    <li>权限分配</li>
+			    <li>商品管理</li>
+			    <li>订单管理</li>
+			  </ul>
+			  <div class="layui-tab-content" style="height: 150px;">
+			    <div class="layui-tab-item layui-show">
+			      1. 我个人比较喜欢卡片风格的，所以你发现又是以卡片的风格举例
+			      2. 删除功能适用于所有风格
 			    </div>
-			    <div id="demo2"></div>
+			    <div class="layui-tab-item">2</div>
+			    <div class="layui-tab-item">3</div>
+			    <div class="layui-tab-item">4</div>
+			    <div class="layui-tab-item">5</div>
+			    <div class="layui-tab-item">6</div>
 			  </div>
 			</div>
-		</div>
-        <ul class="infos">
-            <li>欢迎你!</li>
-            <li><i class="naviconfont">&#xe60d;</i> <span id="username">劳资综合管理系统管理员</span></li>
-            <li><a href="../logout"><i class="naviconfont">&#xe609;</i> 退出</a></li>
-        </ul>
-    </div>
-    <div class="site-main">
-    	<div class="menu_parent">
-    		<div class="menu_son" id="winshoushuo"></div>
-        </div>
-        <ul class="main-menu">        	
-        </ul>
-        <div class="contents">
-            <div class="site-tab l-tab-custom">
-                <div title="首页" tabid="home">
-                    <iframe src="../home/firstLog"></iframe> 
-                </div>
-            </div>
-        </div>
-    </div>
-   
-    <script src="../vendor/jquery/dist/jquery.min.js"></script>
-    <script src="../vendor/ligerUI/js/ligerui.all.js"></script>
-     <script src="../js/plugins/ligerui.other.js"></script>
-    <script src="../js/page/index.js"></script>
-    <script src="../js/plugins/DataToView.js"></script>
-    <script>
-		Date.prototype.format = function(style) {
-		  var o = {   
-		    "M+" : this.getMonth() + 1, //month   
-		    "d+" : this.getDate(),      //day   
-		    "h+" : this.getHours(),     //hour   
-		    "m+" : this.getMinutes(),   //minute   
-		    "s+" : this.getSeconds(),   //second   
-		    "w+" : "日一二三四五六".charAt(this.getDay()),   //week   
-		    "q+" : Math.floor((this.getMonth() + 3) / 3),  //quarter   
-		    "S"  : this.getMilliseconds() //millisecond   
-		  }   
-		  if(/(y+)/.test(style)) {   
-			style = style.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));   
-		  }
-		  for(var k in o){
-		    if(new RegExp("("+ k +")").test(style)){   
-		      style = style.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));   
-		    }
-		  } 
-		  return style;
-		};
-    	$(function(){
-    		//1.获取用户名;
-    		$.ajax({
-    			url:'../getloginusername',
-    			method:"POST",
-    			dataType:"json",
-    			success:function(data){
-    				if(data.success===true){
-    				  $("#username").text(data.message);
-    				}else{
-    					$("#username").text("导航用户");
-    				}
-    				passwordNotice();
-    			},
-    			error: function(XMLHttpRequest, textStatus, errorThrown) {
-                	console.log(XMLHttpRequest.status);
-                	$("#username").text("导航用户");
-                }
-    		});
-    		//2.获取菜单;
-    		$.ajax({
-    			url:'../module/queryModules',
-    			method:"POST",
-    			dataType:"json",
-    			success:function(resp){
-    				//1.动态加载菜单项
-    				var main_menu = resp.datas.main_menu_items;
-    				var mainItems = new Array();
-    				var fItems = new Array();    				
-    				//2.将菜单按照级别以及层级划分
-    				$.each(main_menu,function(i,n){
-						var mainData = main_menu[i];
-    					if(mainData.categoryid == 1){
-    						if(mainData.parentid == 0){//一级菜单
-    							fItems.push(mainData);
-    						}
-    					}
-    				});
-    				//排序
-    				fItems.sort(function(a,b){
-    					return a.orderid - b.orderid;
-    				});
-    				$.each(fItems,function(i,n){
-    					var mianItem ={};
-    					var sItemArr = new Array();
-    					$.each(main_menu,function(j,k){
-    						if(main_menu[j].categoryid == 1){
-    							if(main_menu[j].parentid == fItems[i].moduleId){//查找一级菜单的子菜单
-    								sItemArr.push(main_menu[j]);
-    								
-        						}
-    						}
-    					});
-    					sItemArr.sort(function(a,b){
-	    					return a.orderid - b.orderid;
-	    				});
-    					mianItem.fItem = fItems[i];
-    					mianItem.sItemArr = sItemArr;
-    					mainItems.push(mianItem);
-    				});
-    				//菜单结构：｛fitem,sItemArr[]｝
-    				//将菜单写到全局变量中
-    				//按照获取的菜单绘制界面
-    				//console.log(mainItems);/////////////////////
-    				makeindexMenu(mainItems);
-    				//控制点击菜单之后的动作
-    				menuAction();
-    			},
-    			error: function(XMLHttpRequest, textStatus, errorThrown) {
-    				console.log(XMLHttpRequest.status);
-    				$("#username").text("导航用户");
-    			}
-    		});
-    	});
-    	
-    	//按照菜单组装页面
-    	function makeindexMenu(menu){
-    		if(menu == null){
-    			alert('菜单为空,登录失败!');
-    			location.href="../htmls/index.html";
-    		}
-    		var mainUL = $('.main-menu');//main-menu的 ul
-    		$.each(menu,function(i,n){
-    			var fItem = menu[i].fItem;
-    			var sItemArr = menu[i].sItemArr;
-    			//1.拼接一级菜单
-    			var firstLi = '';
-    			if(fItem.havsubitems == 0){//没有子菜单
-					if(fItem.itemname == 'IndexPageMenu'){//是首页则添加active类
-						firstLi = '<li class="main-item active"><a class="main-link" onclick="SiteTab.newTab('+'\''+fItem.url+'\''+','+'\''+fItem.description+'\''+',0,true)"><i class="'+fItem.iconurl+'"></i>'+fItem.description+'</a></li>';
-    				}else{
-    					firstLi = '<li class="main-item"><a class="main-link" onclick="SiteTab.newTab('+'\''+fItem.url+'\''+','+'\''+fItem.description+'\''+',0,true)"><i class="'+fItem.iconurl+'"></i>'+fItem.description+'</a></li>';	
-    				}
-					mainUL.append(firstLi);
-    			}else{//有子菜单,拼接2级菜单
-    				firstLi = '<li class="main-item" id="'+ fItem.moduleName+'"><a class="main-link"><i class="'+fItem.iconurl+'"></i>'+fItem.description+'</a><ul class="sub-menu"></ul></li>';
-    				mainUL.append(firstLi);
-    				//拼接子菜单
-					var mainSonUL = $('.main-item');
-    				var subMenu = $('#'+fItem.moduleName).find('.sub-menu');
-					$.each(sItemArr,function(i,n){
-						var subItem = '<li><a onclick="SiteTab.newTab('+'\''+sItemArr[i].url+'\''+','+'\''+sItemArr[i].description+'\''+',0,true)"><span>'+sItemArr[i].description+'</span></a></li>';
-						subMenu.append(subItem);
-					});
-    			}
-    		});
-    	}
-    	//菜单动作样式
-    	function menuAction(){
-    		var mainMenu = $('.main-menu');
-		    var mainItems = mainMenu.find('.main-item');
-		    var subItems = mainMenu.find('.sub-menu > li');
-		    
-		    mainMenu.on('click','.main-link', function(e){
-		       var mainItem = $(this).parent();
-		        mainItems.removeClass('active').removeClass('selected').find('.sub-menu > li').removeClass('active');
-		        var that = $(this).parent();
-		        if(mainItem.find('.sub-menu').length <= 0){
-		            mainItem.addClass('selected');
-		            mainItem.siblings().removeClass("wnf_active");
-		        }else{
-		            if(that.hasClass("wnf_active")){
-		            	that.removeClass("wnf_active");
-		            }else{
-		            	that.addClass("wnf_active").siblings().removeClass("wnf_active");
-		            }		            
-		        }
-		    });
-		    
-		    mainMenu.on('click','.sub-menu a', function(e){
-		       var subItem = $(this).parent();
-		        subItems.removeClass('selected');
-		        subItem.addClass('selected');
-		    });
-    	}
-    	//90天内至少修改一次密码
-        function passwordNotice() {
-        	$.ajax({
-        		type: 'post',
-        		url: '../getPasswordNotice',
-        		success: function(data) {
-        			if (data.success == true) {
-        				var text = '<div style="font-size: 12px;color:red;">您的密码即将过期,为了不影响您使用,请尽快修改密码!';
-        				var tip =$.ligerDialog.tip({
-				        	title: '温馨提示',
-				        	content: text,
-				        	id:"f_tip",
-				        	})
-				        setTimeout(function (){
-				        	tip.close();
-				        },50000);
-        			}
-        		}
-        	})
-        }
-    </script>
-    <script>
-    	$(function(){
-    		$(".menu_parent").css("height",$(".menu_parent").height()-80+"px");	
-    		 $("#winshoushuo").click(function(){
-    			 if($(this).hasClass("menu_son")){
-    				   $(this).css("left","-2px").parent().siblings(".main-menu").css("width","0px");
-    				   $(this).addClass("menu_son2").removeClass("menu_son");
-    				   $(this).parent().siblings(".contents").css("marginLeft","4px");
-    				   $(this).parent().css("position","static");
-    			 }else{
-    				   $(this).css("left","225px").parent().siblings(".main-menu").css("width","230px");
-	  				   $(this).addClass("menu_son").removeClass("menu_son2");
-	  				   $(this).parent().siblings(".contents").css("marginLeft","230px");
-	  				   $(this).parent().css("position","absolute");
-    			 }
-			   
-		   	});
-    	})
-    	~(function(){
-				$(document).click(function(){
-					var warm_box =$(".warm_box");
-					if (warm_box.is(':visible')) {  
-		             	//$(".warm_box").stop(true,true).slideUp();//隐藏   
-		             	$(".warm_box").hide();
-		         	}
-					return;
-				})
-			})();
-    </script>
+		  </div>
+
+<!-- ***********************底部固定区域******************************** -->		  
+		  <div class="layui-footer">
+		    <!-- 底部固定区域 -->
+		    ©cj.com - 时间是最好的朋友
+		  </div>
+	</div>
+
+<script src="../src/layui.js"></script>
+<script>
+	//JavaScript代码区域
+	layui.use('element', function(){
+	  var element = layui.element;
+	});
+	
+	//
+</script>
 </body>
 </html>
