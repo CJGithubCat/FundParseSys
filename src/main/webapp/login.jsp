@@ -3,7 +3,7 @@
 <html>
 <head lang="en">
         <meta charset="UTF-8">
-        <title>劳资综合管理系统</title>
+        <title>时间是最好的朋友</title>
         <link rel="shortcut icon" type="image/x-icon" href="favicon.ico"/>
 		<link rel="bookmark" type="image/x-icon" href="favicon.ico"/>
         <link rel="stylesheet" href="vendor/bootstrap/dist/css/bootstrap.css"/>
@@ -34,7 +34,7 @@
             }
             .top{
                 width: 100%;
-                background-color: #4f9de0;
+                background-color: #23262E;
                 height: 90px;
                 position: absolute;
                 top:0;
@@ -338,8 +338,7 @@
         <div class="top">
             <div class="topContent">
                 <!-- <img src='images/denglu/logo.png' class="logo" /> -->
-                <div class='loginName'>劳资综合管理系统</div>
-                <img src='images/denglu/logo2.png' />
+                <div class='loginName'>时间是最好的朋友</div>
             </div>
         </div>
         <div class="center">
