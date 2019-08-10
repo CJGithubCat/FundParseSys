@@ -49,4 +49,45 @@ public class NetWorthHistoryControllerTest {
 	public void calDayGrothRate(){
 		netWorthController.calDayGrothRate(null);
 	}
+	
+	@Test
+    public void ananlyBuyByAvgLineModel(){
+        try {
+            netWorthController.ananlyBuyByAvgLineModel(null);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+	
+	@Test
+    public void addAllAvgLineAnalyseResult(){
+        try {
+            netWorthController.addAllAvgLineAnalyseResult(null);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+	
+	/*@Test
+    public void simulateTradeModelAnalyse(){
+	    try {
+	        netWorthController.simulateTradeModelAnalyse(null);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+	}*/
+	
+	@Test
+    public void simulateTradeModelAnalyseFromModel(){
+        try {
+            netWorthController.simulateTradeModelAnalyseFromModel(null);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+	
 }

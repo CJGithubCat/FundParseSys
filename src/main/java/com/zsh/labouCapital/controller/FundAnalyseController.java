@@ -27,7 +27,8 @@ import com.zsh.labouCapital.service.IFundSummaryService;
 import com.zsh.labouCapital.service.IIndexMarketSituationService;
 import com.zsh.labouCapital.service.ILoggerService;
 import com.zsh.labouCapital.service.INetWorthHistoryService;
-import com.zsh.labouCapital.util.HttpUtil;
+import com.zsh.labouCapital.util.HttpclientUtil;
+
 
 /**
  * 函数功能：marketStation挑选基金
@@ -77,7 +78,7 @@ public class FundAnalyseController extends BaseController {
 				}
 				System.out.println("[AAAAAAA]:count:" + count + "      detailUrl:" + detailUrl);
 				// 使用http请求，获取页面信息，并解析
-				String reBody = HttpUtil.get(detailUrl.trim(), null);
+				String reBody = HttpclientUtil.get(detailUrl.trim(), null);
 				Document doc = Jsoup.parse(reBody);
 				Elements rows = doc.select("#item").get(0).select("tr");
 				String fundCodes = "";

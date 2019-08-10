@@ -273,7 +273,7 @@ public class GenEntityMysql {
 	public static void main(String[] args) {
 		try {
 			// TODO 需要生成指定的表加入到字符串数组中,生成所有表则参数传入null
-			String[] generateTables = { "t_except_fund"};
+			String[] generateTables = { "t_trade_model"};
 			INSTANCE.generate(generateTables);
 			System.out.println("generate classes success!");
 		} catch (Exception e) {

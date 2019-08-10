@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.zsh.labouCapital.dao.BmkhtzdMapper;
 import com.zsh.labouCapital.entity.DepartmentExamNoticeResult;
+import com.zsh.labouCapital.entity.TTradeModel;
 import com.zsh.labouCapital.service.IBmkhtzdService;
 import com.zsh.labouCapital.util.excel.ExcelConfigJson;
 import com.zsh.labouCapital.util.excel.ExcelExport;
@@ -115,4 +116,5 @@ public class BmkhtzdServiceImpl extends BaseServiceImpl<DepartmentExamNoticeResu
 	public void batchopBmNoticeSalaryStatus(Map<String, Object> paramMap) {
 		bmkhtzdMapper.batchopBmNoticeSalaryStatus(paramMap);
 	}
+
 }

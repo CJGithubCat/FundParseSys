@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.session.RowBounds;
 
 import com.zsh.labouCapital.entity.ReturnValue;
+import com.zsh.labouCapital.entity.TTradeModel;
 
 
 /**
@@ -88,4 +89,5 @@ public interface BaseService<T> {
 	 * @throws Exception
 	 */
 	public List<T> findList(T entity) throws Exception;
+
 }
