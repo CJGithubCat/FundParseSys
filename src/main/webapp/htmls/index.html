@@ -4,19 +4,9 @@
         <meta charset="UTF-8">
         <title>时间是最好的朋友</title>
         <link rel="stylesheet" href="../layui/css/layui.css">
-        <link rel="shortcut icon" type="image/x-icon" href="favicon.ico"/>
-		<link rel="bookmark" type="image/x-icon" href="favicon.ico"/>
-        <link rel="stylesheet" href="vendor/bootstrap/dist/css/bootstrap.css"/>
-        <script src="js/libs/jquery-1.11.2.min.js"></script>
-        <script src="js/libs/jquery.cookie.js"></script>
-        <script src="js/util/md5.js"></script>
-        <script src="layui/layui.js"></script>
-        <script src="../layui/layui.js"></script>
-       	<script>
-       		 if(top !== window) top.location = location.href; 
-       	</script>
-       	
-        <body class="layui-layout-body">
+       
+        
+		<body class="layui-layout-body">
 <!-- ***********************头部区域******************************** -->
 			<div class="layui-layout layui-layout-admin">
   				<div class="layui-header">
@@ -57,11 +47,9 @@
 				          <a class="" href="www.baidu.com">首页</a>
 				        </li>
 				        <li class="layui-nav-item">
-				          <a class="" href="javascript:;">数据统计</a>
+				          <a href="javascript:;">数据统计</a>
 				          <dl class="layui-nav-child">
-				            <dd><a href="javascript:;">净值统计</a></dd>
-				            <dd><a href="javascript:;">复盘统计</a></dd>
-				            <dd><a href="">超链接</a></dd>
+				            <dd><a href="javascript:;" class="layTabPlus" tab_url="https://gitee.com/Leytton/SimJQ">净值统计</a></dd>
 				          </dl>
 				        </li>
 				        <li class="layui-nav-item">
@@ -91,29 +79,49 @@
 				  </div>
  <!-- ***********************内容主体区域******************************** -->
 		  <div class="layui-body">
-		    <!-- 内容主体区域 -->
-		    <div style="padding: 15px;">内容主体区域</div>
-		    <div class="layui-tab layui-tab-card" lay-allowclose="true">
-			  <ul class="layui-tab-title">
-			    <li class="layui-this">网站设置</li>
-			    <li>用户基本管理</li>
-			    <li>权限分配</li>
-			    <li>商品管理</li>
-			    <li>订单管理</li>
-			  </ul>
-			  <div class="layui-tab-content" style="height: 150px;">
-			    <div class="layui-tab-item layui-show">
-			      1. 我个人比较喜欢卡片风格的，所以你发现又是以卡片的风格举例
-			      2. 删除功能适用于所有风格
-			    </div>
-			    <div class="layui-tab-item">2</div>
-			    <div class="layui-tab-item">3</div>
-			    <div class="layui-tab-item">4</div>
-			    <div class="layui-tab-item">5</div>
-			    <div class="layui-tab-item">6</div>
-			  </div>
+				<!-- 内容主体区域 -->
+				<div class="layui-tab" lay-filter="demoTab" lay-allowClose="true">
+					<ul class="layui-tab-title">
+						<li class="layui-this noclose" lay-id='base_info'>基本信息</li>
+					</ul>
+					<div class="layui-tab-content" style="padding:0px;">
+						<div class="layui-tab-item layui-show">
+							<div class="sysNotice col">
+								<blockquote class="layui-elem-quote title">基本信息</blockquote>
+								<table class="layui-table">
+									<tbody>
+										<tr>
+											<td>当前版本</td>
+											<td class="version">V1.2</td>
+										</tr>
+										<tr>
+											<td>开发作者</td>
+											<td class="author">Leytton</td>
+										</tr>
+										<tr>
+											<td>项目首页</td>
+											<td class="homePage"><a href="https://gitee.com/Leytton/layTabPlus">https://gitee.com/Leytton/layTabPlus</a></td>
+										</tr>
+										<tr>
+											<td colspan="2">
+												<script src='https://gitee.com/Leytton/layTabPlus/widget_preview'></script>
+												<style>
+												.pro_name a{color: #4183c4;}
+												.osc_git_title{background-color: #fff;}
+												.osc_git_box{background-color: #fff;}
+												.osc_git_box{border-color: #E3E9ED;}
+												.osc_git_info{color: #666;}
+												.osc_git_main a{color: #9B9B9B;}
+												</style>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
-		  </div>
 
 <!-- ***********************底部固定区域******************************** -->		  
 		  <div class="layui-footer">
@@ -122,14 +130,40 @@
 		  </div>
 	</div>
 
-<script src="../src/layui.js"></script>
-<script>
-	//JavaScript代码区域
-	layui.use('element', function(){
-	  var element = layui.element;
-	});
-	
-	//
-</script>
+	<script src="../layui/layui.all.js"></script>
+	<script>
+		var $ = layui.jquery;
+		var layer = layui.layer;
+		var element = layui.element;
+		var util = layui.util;
+		var table = layui.table;
+	</script>
+	<script src="../layui/layTabPlus.js"></script>
+	<script>
+		layTabPlus.init({
+			lay_filter: 'demoTab'
+		});
+	</script>
 </body>
 </html>
+<style>
+	.sysNotice .layui-table {
+		margin-top: 0;
+		border-left: 5px solid #e2e2e2;
+	}
+	
+	.layui-elem-quote.title {
+		padding: 10px 15px;
+		margin-bottom: 0;
+	}
+	
+	.sysNotice {
+		width: 75%;
+	}
+	.code{
+		color: #c7254e;
+		background-color: #f9f2f4;
+		border-radius: 2px;
+		padding: 4px 2px 0;
+	}
+</style>
