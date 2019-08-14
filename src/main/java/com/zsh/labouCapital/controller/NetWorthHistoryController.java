@@ -72,6 +72,23 @@ public class NetWorthHistoryController extends BaseController {
     /**
      * 函数功能：统计当前的日增长率
      */
+    @RequestMapping("/queryNetWorthInfoList")
+    @ResponseBody
+    public ReturnValue queryNetWorthInfoList(HttpServletRequest request) {
+    	List<NetWorthHistory> netWorthList = new ArrayList<>();
+    	NetWorthHistory tempNetWorth1 = new NetWorthHistory();
+    	tempNetWorth1.setFundCode("160091");
+    	tempNetWorth1.setNetWorth(0.987);
+    	netWorthList.add(tempNetWorth1);
+    	
+    	ReturnValue rv = new ReturnValue();
+    	rv.setDatas(netWorthList);
+    	return rv;
+    }
+    
+    /**
+     * 函数功能：统计当前的日增长率
+     */
     @RequestMapping("/calDayGrothRate")
     @ResponseBody
     public ReturnValue calDayGrothRate(HttpServletRequest request) {
