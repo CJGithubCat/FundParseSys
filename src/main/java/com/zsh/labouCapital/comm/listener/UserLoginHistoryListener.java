@@ -1,4 +1,4 @@
-package com.zsh.labouCapital.comm.listener;
+/*package com.zsh.labouCapital.comm.listener;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
@@ -18,11 +18,11 @@ import com.zsh.labouCapital.service.IUserLoginHistoryService;
 import com.zsh.labouCapital.util.ipaddress.FindIpAddress;
 import com.zsh.labouCapital.util.ipaddress.IpToAddress;
 
-/**
+*//**
  * 
  * @author gongyu
  *
- */
+ *//*
 public class UserLoginHistoryListener implements HttpSessionBindingListener{
 	
 	private static Logger logger = LoggerFactory.getLogger(LoginController.class);
@@ -97,3 +97,4 @@ public class UserLoginHistoryListener implements HttpSessionBindingListener{
 	}
 
 }
+*/

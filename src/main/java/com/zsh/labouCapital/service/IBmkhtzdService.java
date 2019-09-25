@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.zsh.labouCapital.entity.DepartmentExamNoticeResult;
 import com.zsh.labouCapital.util.pagination.PageBean;
 
-public interface IBmkhtzdService extends BaseService<DepartmentExamNoticeResult> {
+public interface IBmkhtzdService{
 
 	public HashMap<String, Object> findBmkhtzdPage(String yearMonthDate, String bmmc, String status,String salaryStatus,PageBean pageBean,
 			String companyPath) throws Exception;

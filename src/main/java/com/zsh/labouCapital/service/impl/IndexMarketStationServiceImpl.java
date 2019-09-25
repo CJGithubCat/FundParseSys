@@ -1,4 +1,4 @@
-package com.zsh.labouCapital.service.impl;
+/*package com.zsh.labouCapital.service.impl;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ import com.zsh.labouCapital.service.IFundSummaryService;
 import com.zsh.labouCapital.service.IIndexMarketSituationService;
 
 @Service
-public class IndexMarketStationServiceImpl extends BaseServiceImpl<MarketSituation> implements IIndexMarketSituationService {
+public class IndexMarketStationServiceImpl implements IIndexMarketSituationService {
 	@Autowired
 	private IndexMarketSituationMapper indexMarketSituationMapper;
 
@@ -70,3 +70,4 @@ public class IndexMarketStationServiceImpl extends BaseServiceImpl<MarketSituati
 	}
 	
 }
+*/

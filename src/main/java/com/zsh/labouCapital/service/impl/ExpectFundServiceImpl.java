@@ -1,4 +1,4 @@
-package com.zsh.labouCapital.service.impl;
+/*package com.zsh.labouCapital.service.impl;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import com.zsh.labouCapital.entity.ExpectFund;
 import com.zsh.labouCapital.service.IExpectFundService;
 
 @Service
-public class ExpectFundServiceImpl extends BaseServiceImpl<ExpectFund> implements IExpectFundService {
+public class ExpectFundServiceImpl implements IExpectFundService {
 	@Autowired
 	private ExpectFundMapper exceptFundMapper;
 
@@ -28,3 +28,4 @@ public class ExpectFundServiceImpl extends BaseServiceImpl<ExpectFund> implement
         return exceptFundMapper.queryExpectFundList(expectFund);
     }
 }
+*/

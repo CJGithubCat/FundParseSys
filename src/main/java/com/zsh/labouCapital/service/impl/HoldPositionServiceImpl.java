@@ -1,4 +1,4 @@
-package com.zsh.labouCapital.service.impl;
+/*package com.zsh.labouCapital.service.impl;
 
 import java.util.List;
 
@@ -31,3 +31,4 @@ public class HoldPositionServiceImpl implements IHoldPositionService {
     }
 	
 }
+*/

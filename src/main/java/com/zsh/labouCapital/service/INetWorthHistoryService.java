@@ -12,7 +12,7 @@ import com.zsh.labouCapital.entity.TTradeModel;
 import com.zsh.labouCapital.entity.TTradeSummary;
 
 
-public interface INetWorthHistoryService extends BaseService<NetWorthHistory>{
+public interface INetWorthHistoryService {
 	public List<NetWorthHistory> queryNetWorthHistoryInfo(NetWorthHistory netWorthHistory);
 
 	public void updateNetWorthHistorys(List<NetWorthHistory> updateList);

@@ -7,13 +7,13 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.zsh.labouCapital.dao.OperationRecordsMapper;
+import com.zsh.labouCapital.dao.client.OperationRecordsMapper;
 import com.zsh.labouCapital.entity.OperationLog;
 import com.zsh.labouCapital.service.ILoggerService;
 import com.zsh.labouCapital.util.pagination.PageBean;
 
 @Service
-public class OperationRecordsImpl extends BaseServiceImpl<OperationLog> implements ILoggerService {
+public class OperationRecordsImpl implements ILoggerService {
 	@Autowired
 	private OperationRecordsMapper operationRecordsMapper;
 

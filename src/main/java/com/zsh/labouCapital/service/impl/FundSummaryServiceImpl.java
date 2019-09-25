@@ -1,4 +1,4 @@
-package com.zsh.labouCapital.service.impl;
+/*package com.zsh.labouCapital.service.impl;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import com.zsh.labouCapital.service.IFundSummaryService;
 @Service
 // 先不声明为原型类型，当有状态添加的时候再声明
 // @Scope("prototype")
-public class FundSummaryServiceImpl extends BaseServiceImpl<FundSummary> implements IFundSummaryService {
+public class FundSummaryServiceImpl implements IFundSummaryService {
 	@Autowired
 	private FundSummaryMapper fundSummaryMapper;
 
@@ -42,3 +42,4 @@ public class FundSummaryServiceImpl extends BaseServiceImpl<FundSummary> impleme
 	}
 
 }
+*/

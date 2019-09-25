@@ -22,6 +22,7 @@ public class DateTimeUtil {
     public static final String DEFAULT_DATE_TIME_PATTERN_S = "yyyy-MM-dd 00:00:00";
     public static final String DEFAULT_DATE_TIME_PATTERN4 = "yyyyMMddHHmmssSSSS";
     public static final String DEFAULT_DATE_TIME_PATTERN5 = "yyyy-MM-dd HH:mm";
+    public static final String DEFAULT_DATE_TIME_PATTERN6 = "yyyyMMddHHmmss";
 
     public static String formatDate(Date date, String pattern) {
         return (new DateTime(date)).toString(pattern);

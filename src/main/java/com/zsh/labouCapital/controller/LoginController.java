@@ -1,8 +1,6 @@
 package com.zsh.labouCapital.controller;
 
-import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,16 +18,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.gson.Gson;
 import com.zsh.labouCapital.comm.SysCodeEnum;
 import com.zsh.labouCapital.comm.SystemConst;
-import com.zsh.labouCapital.entity.Company;
+import com.zsh.labouCapital.dao.dto.TUser;
 import com.zsh.labouCapital.entity.ReturnValue;
-import com.zsh.labouCapital.entity.Role;
 import com.zsh.labouCapital.entity.User;
-import com.zsh.labouCapital.pojo.TWgPermission;
-import com.zsh.labouCapital.service.ICompanyService;
-import com.zsh.labouCapital.service.IModuleService;
-import com.zsh.labouCapital.service.IRoleService;
 import com.zsh.labouCapital.service.IUserService;
-import com.zsh.labouCapital.util.ipaddress.RequestRealIp;
 
 @Controller
 public class LoginController {
@@ -38,24 +30,13 @@ public class LoginController {
 	@Autowired
     private IUserService userService;
 	
-	/**********************************************************************/
-	@Autowired
-	private IModuleService iModuleService;
-	
-	@Autowired
-	private ICompanyService iCompanyService;
-	
-	@Autowired
-	private IRoleService iRoleService;
-	
-	
-   /**
+    /**
     * 验证用户名，密码
     * @param username
     * @param password
     * @return
     * @throws Exception
-    */	
+    */
 	@SuppressWarnings("unchecked")
 	@ResponseBody()
     @RequestMapping(value={"/validatepwd"},method={RequestMethod.POST})
@@ -72,48 +53,13 @@ public class LoginController {
    		     if(code==0){
    		    	session=request.getSession(false);
    		    	//获取用户信息
-   		    	user=userService.getUserByLoginName(user.getLoginName());
-   		   	    session.setAttribute(SystemConst.ACCOUNT_ID,user.getUserId());
-   		   	    session.setAttribute(SystemConst.ACCOUNT_LOGINNAME,user.getLoginName());
-   		   	    session.setAttribute(SystemConst.ACCOUNT_USERNAME,user.getUserName()); 
-   		   	    session.setAttribute(SystemConst.ACCOUNT_COMPANY_TYPE, user.getCompanyType());
-   		    	
-   		    	//获取当前用户的菜单项和指令项功能
-   		   	    HashMap<String, Object> hm =  iModuleService.queryModulesByUid(user.getUserId());
-		   	    //HashMap<String, Object> hm = tWgPermissionService.queryPermissionsByUid(user.getUserId());
-		   	    ArrayList<TWgPermission> mainItems =  (ArrayList<TWgPermission>) hm.get(SystemConst.MAIN_MENU_ITEMS);
-		   	    ArrayList<TWgPermission> commItems =  (ArrayList<TWgPermission>) hm.get(SystemConst.COMMOND_ITEMS);
-   		    	if(mainItems.size() == 0 && mainItems.size() ==0){
-   		   	    	responseData.setErrorCode(SysCodeEnum.RE_LOGIN_NO_PERMISSION.getCode());
-   		   	    	responseData.setMessage(SysCodeEnum.RE_LOGIN_NO_PERMISSION.getDesc());
-   		   	    	return responseData;
-		   	    }//有权限登录
-		   	    responseData.setErrorCode(SysCodeEnum.RE_LOGIN_SUCESS.getCode());   		    	
-		   	    //将菜单放入session
-   		    	session.setAttribute(SystemConst.MAIN_MENU_ITEMS, mainItems);//主菜单
-		   	    session.setAttribute(SystemConst.COMMOND_ITEMS, commItems);//指令菜单
-   		    	  		   	    
-   		   	   Company company =null;
-   		   	   try {
-   		   		   company = iCompanyService.findById(String.valueOf(user.getCompanyId()));
-    		   	   session.setAttribute(SystemConst.ACCOUNT_AGENCY, company);
-    		   	   session.setAttribute(SystemConst.ACCOUNT_AGENCYID, company.getCompanyId());
-    		   	   session.setAttribute(SystemConst.ACCOUNT_ATTRIBUTE_PATH, company.getCompanyPath());//机构路径
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+   		    	TUser tuser = userService.getUserByLoginName(user.getLoginName());
+   		   	    session.setAttribute(SystemConst.ACCOUNT_ID, tuser.getUserId());
+   		   	    session.setAttribute(SystemConst.ACCOUNT_LOGINNAME, tuser.getLoginName());
+   		   	    session.setAttribute(SystemConst.ACCOUNT_USERNAME, tuser.getUserName());
    		   	    
-   		   	    session.setAttribute(SystemConst.ATTRIBUTE_LOGINIP, RequestRealIp.getIpAddress(request));
-   		   	    /*session.setAttribute(SystemConst.ATTRIBUTE_USERLOGIN, new UserLoginHistoryListener());*/
-   		   	    
-   		   	    //查询并设置当前用户的角色信息
-   		   	    //TWgRoles roles = twgRolesService.queryRoleByUid(user.getUserId());
-   		   	    Role roles = iRoleService.queryRoleByUid(user.getUserId());
-   		   	    if(roles == null){
-   		   	    	session.setAttribute(SystemConst.ROLE, null);
-   		   	    }else{
-   		   	    	session.setAttribute(SystemConst.ROLE, roles);
-   		   	    }
+   		   	    responseData.setErrorCode(SysCodeEnum.RE_LOGIN_SUCESS.getCode());
+			    responseData.setMessage(SysCodeEnum.RE_LOGIN_SUCESS.getDesc());
    		   	    //写日志
    		   	    //iloggerService.writeLog(user.getUserId(), DateUtil.formatNowTime(), SysOperateEnum.OP_LOG_IN.getModuleId(),ip, SysOperateEnum.OP_LOG_IN.getDesc());
   		     }else if(code==1){
@@ -132,6 +78,7 @@ public class LoginController {
    	    }
    	   return responseData;   	
     }
+
    
    /**
     * 退出
@@ -155,13 +102,14 @@ public class LoginController {
     	String loginUrl = httpRequest.getScheme()+"://"+httpRequest.getServerName()+":"+httpRequest.getLocalPort()+httpRequest.getContextPath()+"/";
 		response.sendRedirect(loginUrl);
     }
+}
    /**
     * 首页获得用户名 
     * @param request
     * @param response
     * @return
     * @throws Exception
-    */
+    *//*
     @RequestMapping(value={"/getloginusername"},method={RequestMethod.POST})  
     @ResponseBody
     public ReturnValue getLoginUserName(HttpServletRequest request,HttpServletResponse response)throws Exception{
@@ -183,13 +131,13 @@ public class LoginController {
        }    	
        return rv;
     }
-    /**
+    *//**
      * 登录前：查询t_wg_user表中cache_status的状态 0：浏览器缓存未清空，1：浏览器缓存已清空
      * @param request
      * @param response
      * @return
      * @throws Exception
-     */
+     *//*
      @ResponseBody()
      @RequestMapping(value={"/queryUserCacheStatus"},method={RequestMethod.POST})  
      public ReturnValue queryUserCacheStatus(HttpServletRequest request,@RequestBody String jsonParam)throws Exception{
@@ -221,13 +169,13 @@ public class LoginController {
  		}
  		return rv;
      }
-    /**
+    *//**
      * 登录前：提示用户升级后清空缓存 ,若用户选择“已清空”，则修改t_wg_user表中cache_status=1
      * @param request
      * @param response
      * @return
      * @throws Exception
-     */
+     *//*
      @ResponseBody()
      @RequestMapping(value={"/updateUserCacheStatus"},method={RequestMethod.POST})  
      public ReturnValue updateUserCacheClearStatus(HttpServletRequest request,@RequestBody String jsonParam)throws Exception{
@@ -247,13 +195,13 @@ public class LoginController {
  		return rv;
      }
      
-     /**
+     *//**
       * 获取是否提示要修改密码 
       * @param request
       * @param response
       * @return
       * @throws Exception
-      */
+      *//*
       @RequestMapping(value={"/getPasswordNotice"},method={RequestMethod.POST})  
       @ResponseBody
       public ReturnValue getPasswordNotice(HttpServletRequest request,HttpServletResponse response)throws Exception{
@@ -279,4 +227,4 @@ public class LoginController {
          }    	
          return rv;
       }
-}
+}*/

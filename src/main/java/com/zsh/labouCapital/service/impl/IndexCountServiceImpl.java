@@ -1,4 +1,4 @@
-package com.zsh.labouCapital.service.impl;
+/*package com.zsh.labouCapital.service.impl;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -53,3 +53,4 @@ public class IndexCountServiceImpl implements IndexCountService {
 		return indexCountMapper.queryXgsExamNoticeCount(param);
 	}
 }
+*/

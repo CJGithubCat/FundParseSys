@@ -1,4 +1,4 @@
-package com.zsh.labouCapital.controller;
+/*package com.zsh.labouCapital.controller;
 
 import java.util.Map;
 
@@ -23,11 +23,11 @@ import com.zsh.labouCapital.service.ILoggerService;
 import com.zsh.labouCapital.service.IUserLoginHistoryService;
 import com.zsh.labouCapital.util.ipaddress.RequestRealIp;
 import com.zsh.labouCapital.util.pagination.Pager;
-/**
+*//**
  * 用户登录退出日志查询
  * @author gongyu
  *
- */
+ *//*
 @Controller
 public class UserLoginHistoryController {
 	private static Logger logger = LoggerFactory.getLogger(UserLoginHistoryController.class);
@@ -42,18 +42,18 @@ public class UserLoginHistoryController {
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
-    	/*HttpSession session=request.getSession(false);
+    	HttpSession session=request.getSession(false);
     	session.invalidate();
     	String test="test";
-    	System.out.println(test);*/
+    	System.out.println(test);
     	  	    
     }
-   /**
+   *//**
     * 日志查询，登录，退出 	
     * @param loginHistory
     * @param page
     * @param pagesize
-    */
+    *//*
 	@RequestMapping(value={"/log/finduserloginhistory"},method={RequestMethod.POST}) 
 	@ResponseBody
     public ReturnValue findUserLoginHistory(UserLoginHistory loginHistory,
@@ -74,11 +74,11 @@ public class UserLoginHistoryController {
 		} 
 		return rspData;
     }
-   /**
+   *//**
     * 日志查询，导出登录退出日志 	
     * @param loginHistory
     * @param response
-    */
+    *//*
 	@RequestMapping(value = "/log/exportuserloginhistory",method = RequestMethod.POST)
 	@ResponseBody
 	public void exportloguserloginhistory(UserLoginHistory loginHistory,HttpServletRequest request,HttpServletResponse response){
@@ -99,3 +99,4 @@ public class UserLoginHistoryController {
 		}
 	}
 }
+*/

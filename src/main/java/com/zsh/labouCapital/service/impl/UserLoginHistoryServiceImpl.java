@@ -1,4 +1,4 @@
-package com.zsh.labouCapital.service.impl;
+/*package com.zsh.labouCapital.service.impl;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,27 +19,27 @@ import com.zsh.labouCapital.util.excel.ExcelExport;
 import com.zsh.labouCapital.util.excel.IExcelConfig;
 import com.zsh.labouCapital.util.pagination.Pager;
 import com.zsh.labouCapital.vo.excel.ExcelConfigVo;
-/**
+*//**
  * 用户登录，退出日志
  * @author gongyu
  *
- */
+ *//*
 @Service("loginHistoryService")
 public class UserLoginHistoryServiceImpl implements IUserLoginHistoryService{
 	@Autowired
 	private UserLoginHistoryMapper userLoginHistoryDao;
-   /**
+   *//**
     * 添加一条日志记录
-    */
+    *//*
 	@Override
 	@Transactional
 	public void addUserLoginHistory(UserLoginHistory loginHistory) throws Exception {
 		userLoginHistoryDao.addUserLoginHistory(loginHistory);
 		
 	}
-   /**
+   *//**
     * 分页查询用户登退录findUserLoginHistory
-    */
+    *//*
 	@Override
 	public Map<String,Object> findUserLoginHistory(UserLoginHistory loginHistory,Pager pager) throws Exception {
 		RowBounds rb=new RowBounds(pager.getStartRow(),pager.getCurSize());
@@ -70,3 +70,4 @@ public class UserLoginHistoryServiceImpl implements IUserLoginHistoryService{
 	
    
 }
+*/

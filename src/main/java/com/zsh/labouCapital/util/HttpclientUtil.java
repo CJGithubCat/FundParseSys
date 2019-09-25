@@ -273,7 +273,7 @@ public class HttpclientUtil {
      * @throws
      */
     public static void main(String[] args) {
-        String checkUrl = "http://api.goseek.cn/Tools/holiday?date=";
+        String checkUrl = "https://danjuanapp.com/djapi/order/p/list?page=1&size=20&type=all";
         List<NameValuePair> paramList = new ArrayList<NameValuePair>();
         paramList.add(new BasicNameValuePair("date", "20190607"));
         try {

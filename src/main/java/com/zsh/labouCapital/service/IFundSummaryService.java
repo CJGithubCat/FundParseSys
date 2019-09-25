@@ -3,7 +3,7 @@ import java.util.List;
 
 import com.zsh.labouCapital.entity.FundSummary;
 
-public interface IFundSummaryService extends BaseService<FundSummary>{
+public interface IFundSummaryService {
    
 	public FundSummary getFundSummaryByCode(String fundCode);
 

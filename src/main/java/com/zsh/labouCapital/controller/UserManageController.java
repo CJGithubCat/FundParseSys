@@ -1,4 +1,4 @@
-
+/*
 package com.zsh.labouCapital.controller;
 
 import java.text.SimpleDateFormat;
@@ -29,10 +29,10 @@ import com.zsh.labouCapital.util.ipaddress.RequestRealIp;
 import com.zsh.labouCapital.util.pagination.Pager;
 import com.zsh.labouCapital.vo.UserManageView;
 
-/**
+*//**
  * 
  * @author 用户管理
- */
+ *//*
 @Controller
 @RequestMapping(value = { "/usermanage" })
 public class UserManageController {
@@ -43,14 +43,14 @@ public class UserManageController {
 	@Autowired
 	private ILoggerService iloggerService;
 
-	/**
+	*//**
 	 * 根据机构，登录名分页查询用户
 	 * 
 	 * @param userManageView
 	 * @param pageNumber
 	 * @param pageSize
 	 * @return
-	 */
+	 *//*
 	@ResponseBody
 	@RequestMapping(value = { "/manager/finduser" }, method = { RequestMethod.POST })
 	public ReturnValue findUserByPage(HttpServletRequest request, UserManageView userManageView,
@@ -75,12 +75,12 @@ public class UserManageController {
 		return rspData;
 	}
 
-	/**
+	*//**
 	 * 添加用户
 	 * 
 	 * @param body
 	 * @return
-	 */
+	 *//*
 	@ResponseBody
 	@RequestMapping(value = { "/manager/adduser" }, method = { RequestMethod.POST })
 	public ReturnValue addUser(@RequestBody String body, HttpServletRequest request) {
@@ -119,12 +119,12 @@ public class UserManageController {
 		return rsp;
 	}
 
-	/**
+	*//**
 	 * 删除用户
 	 * 
 	 * @param loginName
 	 * @return
-	 */
+	 *//*
 	@RequestMapping(value = { "/manager/deleteuser" }, method = { RequestMethod.POST })
 	@ResponseBody
 	public ReturnValue deleteUser(@RequestBody String body, HttpServletRequest request) {
@@ -150,12 +150,12 @@ public class UserManageController {
 		return rsp;
 	}
 
-	/**
+	*//**
 	 * 更新用户信息
 	 * 
 	 * @param body
 	 * @return
-	 */
+	 *//*
 	@RequestMapping(value = { "/manager/updateuser" }, method = { RequestMethod.POST })
 	@ResponseBody
 	public ReturnValue updateUser(@RequestBody String body, HttpServletRequest request) {
@@ -197,13 +197,13 @@ public class UserManageController {
 		return rsp;
 	}
 
-	/**
+	*//**
 	 * 用户修改密码，验证旧密码是否正确
 	 * 
 	 * @param request
 	 * @param oldPssword
 	 * @return
-	 */
+	 *//*
 	@ResponseBody
 	@RequestMapping(value = { "/user/updatepassword/validate" }, method = { RequestMethod.POST })
 	public ReturnValue validateOldPassword(HttpServletRequest request,
@@ -227,14 +227,14 @@ public class UserManageController {
 		return rsp;
 	}
 
-	/**
+	*//**
 	 * 修改密码
 	 * 
 	 * @param request
 	 * @param oldPassword
 	 * @param newPassword
 	 * @return
-	 */
+	 *//*
 	@ResponseBody
 	@RequestMapping(value = { "/user/updatepassword/update" }, method = { RequestMethod.POST })
 	public ReturnValue udpatePassword(HttpServletRequest request,
@@ -269,12 +269,12 @@ public class UserManageController {
 		return rsp;
 	}
 
-	/**
+	*//**
 	 * 用户信息管理报表导出
 	 * 
 	 * @param request
 	 * @param response
-	 */
+	 *//*
 	@RequestMapping("/manager/exportUser")
 	@ResponseBody
 	public void exportUserManage(HttpServletRequest request, HttpServletResponse response) {
@@ -310,3 +310,4 @@ public class UserManageController {
 	}
 
 }
+*/

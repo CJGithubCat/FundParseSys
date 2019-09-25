@@ -1,6 +1,4 @@
-package com.zsh.labouCapital.controller;
-
-import static org.hamcrest.CoreMatchers.nullValue;
+/*package com.zsh.labouCapital.controller;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -14,7 +12,6 @@ import javax.script.ScriptEngineManager;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.slf4j.Logger;
@@ -34,6 +31,7 @@ import com.zsh.labouCapital.entity.FundSummary;
 import com.zsh.labouCapital.entity.IntervalBuy;
 import com.zsh.labouCapital.entity.NetWorthHistory;
 import com.zsh.labouCapital.entity.ReturnValue;
+import com.zsh.labouCapital.entity.ReturnValue2;
 import com.zsh.labouCapital.entity.TAvglineBugRecord;
 import com.zsh.labouCapital.entity.TTradeDetail;
 import com.zsh.labouCapital.entity.TTradeModel;
@@ -49,12 +47,12 @@ import com.zsh.labouCapital.util.UUIDUtils;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-/**
+*//**
  * 函数功能：NetWorthHistory
- */
+ *//*
 @RestController
 @RequestMapping(value = "/netWorth")
-public class NetWorthHistoryController extends BaseController {
+public class NetWorthHistoryController {
     private static Logger logger = LoggerFactory.getLogger(NetWorthHistoryController.class);
 
     @Autowired
@@ -64,31 +62,42 @@ public class NetWorthHistoryController extends BaseController {
     private IFundSummaryService fundSummaryService;
 
     @Autowired
-    private ILoggerService iloggerService;
-    
-    @Autowired
     private IExpectFundService iExpectFundServiceImpl;
 
-    /**
+    *//**
      * 函数功能：统计当前的日增长率
-     */
+     *//*
     @RequestMapping("/queryNetWorthInfoList")
     @ResponseBody
-    public ReturnValue queryNetWorthInfoList(HttpServletRequest request) {
+    public ReturnValue2 queryNetWorthInfoList(HttpServletRequest request) {
     	List<NetWorthHistory> netWorthList = new ArrayList<>();
     	NetWorthHistory tempNetWorth1 = new NetWorthHistory();
     	tempNetWorth1.setFundCode("160091");
     	tempNetWorth1.setNetWorth(0.987);
     	netWorthList.add(tempNetWorth1);
     	
-    	ReturnValue rv = new ReturnValue();
-    	rv.setDatas(netWorthList);
+    	NetWorthHistory tempNetWorth2 = new NetWorthHistory();
+    	tempNetWorth2.setFundCode("160091");
+    	tempNetWorth2.setNetWorth(0.987);
+    	netWorthList.add(tempNetWorth2);
+    	
+    	NetWorthHistory tempNetWorth3 = new NetWorthHistory();
+    	tempNetWorth3.setFundCode("160091");
+    	tempNetWorth3.setNetWorth(0.987);
+    	netWorthList.add(tempNetWorth3);
+    	
+    	ReturnValue2 rv = new ReturnValue2();
+    	rv.setCode("0");
+    	rv.setCount(1);
+    	rv.setData(netWorthList);
+    	rv.setMsg("success");
+    	
     	return rv;
     }
     
-    /**
+    *//**
      * 函数功能：统计当前的日增长率
-     */
+     *//*
     @RequestMapping("/calDayGrothRate")
     @ResponseBody
     public ReturnValue calDayGrothRate(HttpServletRequest request) {
@@ -141,9 +150,9 @@ public class NetWorthHistoryController extends BaseController {
         return rv;
     }
 
-    /**
+    *//**
      * 函数功能：分析定投模型
-     */
+     *//*
     @RequestMapping("/analyseIntervalBuyModule")
     @ResponseBody
     public ReturnValue analyseIntervalBuyModule(HttpServletRequest request, FundNetWorthDTO fundNetWorthDTO) {
@@ -237,21 +246,21 @@ public class NetWorthHistoryController extends BaseController {
         return rv;
     }
 
-    /**
+    *//**
      * @Title: getRealTimeNetWorthInfo
      * @Description: 获取实时的净值信息
      * @param:
      * @return: void
      * @throws
-     */
+     *//*
     public void getRealTimeNetWorthInfo(HttpServletRequest request, FundNetWorthDTO fundNetWorthDTO) {
 
     }
 
-    /**
+    *//**
      * 解析js中的历史累计净值数据
      * "http://fund.eastmoney.com/pingzhongdata/530010.js"
-     */
+     *//*
     @RequestMapping("/parseSpecJsHistoryAddWorth")
     @ResponseBody
     public void parseSpecJsHistoryAddWorth(HttpServletRequest request, FundNetWorthDTO fundNetWorthDTO) {
@@ -266,7 +275,7 @@ public class NetWorthHistoryController extends BaseController {
         
     }
 
-    /**   
+    *//**   
      * @Title: parseNewestNetworthInfo   
      * @Description: 解析关注的基金净值信息;   
      * @param: @param sdf
@@ -339,7 +348,7 @@ public class NetWorthHistoryController extends BaseController {
      * @param: @return
      * @return: String
      * @throws
-     */
+     *//*
     public String generateTimeStamp(Date dateTime) {
         if (dateTime == null) {
             dateTime = new Date();
@@ -348,7 +357,7 @@ public class NetWorthHistoryController extends BaseController {
         return sdf.format(dateTime);
     }
 
-    /**
+    *//**
      * 解析js中的历史累计净值数据
      * "http://fund.eastmoney.com/pingzhongdata/530010.js"
      */
@@ -403,7 +412,7 @@ public class NetWorthHistoryController extends BaseController {
     /**
      * 解析js中的信息
      * "http://fund.eastmoney.com/pingzhongdata/530010.js"
-     */
+     *//*
     @RequestMapping("/parseJsNetWorth")
     @ResponseBody
     public void parseJsNetWorth(HttpServletRequest request, Date startDate) {
@@ -459,12 +468,12 @@ public class NetWorthHistoryController extends BaseController {
         }
     }
 
-    /**
+    *//**
      * 函数功能：根据均线进行购买;
      * 
      * @throws IOException
      * @throws ServletException
-     */
+     *//*
     @RequestMapping("/ananlyBuyByAvgLineModel")
     @ResponseBody
     public ReturnValue ananlyBuyByAvgLineModel(HttpServletRequest request) throws ServletException, IOException {
@@ -501,7 +510,7 @@ public class NetWorthHistoryController extends BaseController {
         return rv;
     }
 
-    /**
+    *//**
      * @Title: addAvglineBugRecordDB
      * @Description: 组装并入库操作;
      * @param: @param startDate
@@ -510,7 +519,7 @@ public class NetWorthHistoryController extends BaseController {
      * @param: @param buyModel
      * @return: void
      * @throws
-     */
+     *//*
     public void addAvglineBugRecordDB(Date startDate, Date endDate, int avgLineType, int buyModel) {
         // 1.获取所有指数信息
         TAvglineBugRecordDto params = new TAvglineBugRecordDto();
@@ -539,12 +548,12 @@ public class NetWorthHistoryController extends BaseController {
         netWorthHistoryService.addAvglineBugRecords(avglineBugRecordList);
     }
 
-    /**
+    *//**
      * 函数功能：统计均线的结果;
      * 
      * @throws IOException
      * @throws ServletException
-     */
+     *//*
     @RequestMapping("/addAllAvgLineAnalyseResult")
     @ResponseBody
     public ReturnValue addAllAvgLineAnalyseResult(HttpServletRequest request) throws ServletException, IOException {
@@ -564,12 +573,12 @@ public class NetWorthHistoryController extends BaseController {
         return rv;
     }
 
-    /**
+    *//**
      * 函数功能：模拟交易模型分析;
      * 
      * @throws IOException
      * @throws ServletException
-     */
+     *//*
     @RequestMapping("/simulateTradeModelAnalyse")
     @ResponseBody
     public ReturnValue simulateTradeModelAnalyse(HttpServletRequest request) throws ServletException, IOException {
@@ -702,13 +711,13 @@ public class NetWorthHistoryController extends BaseController {
         return rv;
     }
 
-    /**
+    *//**
      * @Title: earnMoneyCount   
      * @Description: 收益计算   
      * @param:       
      * @return: void      
      * @throws
-     */
+     *//*
     public void earnMoneyCount(String modelId){
         TTradeModel tradeModel = netWorthHistoryService.queryTradeModelById(modelId);
         if(tradeModel == null || tradeModel.getBuyMoney() <= 0){
@@ -728,13 +737,13 @@ public class NetWorthHistoryController extends BaseController {
         netWorthHistoryService.updateTradeModelEarnInfo(uptradeModel);
     }
     
-    /**   
+    *//**   
      * @Title: updateTradeModel   
      * @Description: TODO   
      * @param:       
      * @return: void      
      * @throws   
-     */
+     *//*
     private void updateTradeModel(TTradeDetail tradeDatetial) {
         TTradeModel tradeModel = new TTradeModel();
         tradeModel.setModelId(tradeDatetial.getModelId());
@@ -751,13 +760,13 @@ public class NetWorthHistoryController extends BaseController {
         netWorthHistoryService.updateTradeModelInfo(tradeModel);
     }
     
-    /**
+    *//**
      * @Title: clearTempData   
      * @Description: 清空旧数据   
      * @param: @param tradeModel      
      * @return: void      
      * @throws
-     */
+     *//*
     public void clearTempData(TTradeModel tradeModel){
         TTradeDetail tradeDetail = new TTradeDetail();
         tradeDetail.setModelId(tradeModel.getModelId());
@@ -777,13 +786,13 @@ public class NetWorthHistoryController extends BaseController {
         netWorthHistoryService.updateTradeModelByExample(updateTradeModel);
     }
     
-    /**
+    *//**
      * @Title: getLastWorkDay   
      * @Description:获取指定日期之前最大有净值的日期；
      * @param: @return      
      * @return: Date      
      * @throws
-     */
+     *//*
     public Date getLastWorkDay(Date endDate){
         Date reDate = null;
         if(endDate == null){
@@ -797,13 +806,13 @@ public class NetWorthHistoryController extends BaseController {
     }
     
     
-    /**
+    *//**
      * @Title: buyModel
      * @Description: 买入模型
      * @param: @param netWorthHistory
      * @return: void
      * @throws
-     */
+     *//*
     public TTradeDetail buyModel(TTradeModel tradeModel,NetWorthHistory netWorthHistory) {
         TTradeDetail tradeDetail = null;
         if (netWorthHistory.getAvgLine30() > netWorthHistory.getNetWorth()
@@ -826,13 +835,13 @@ public class NetWorthHistoryController extends BaseController {
         return tradeDetail;
     }
     
-    /**
+    *//**
      * @Title: lastDaySalModel   
      * @Description: 最后一天  
      * @param:       
      * @return: void      
      * @throws
-     */
+     *//*
     public void lastDaySalModel(Date curDate,Date endDate,TTradeModel tTradeModel,NetWorthHistory netWorthHistory){
         if(DateTimeUtil.compare(curDate, "=", endDate)){//最后一天如果有数据，则按照当天的价格卖完
             TTradeSummary params = new TTradeSummary();
@@ -874,13 +883,13 @@ public class NetWorthHistoryController extends BaseController {
         }
     }
     
-    /**
+    *//**
      * @Title: saleModel
      * @Description: 卖出模型
      * @param: @param netWorthHistory
      * @return: void
      * @throws
-     */
+     *//*
     public TTradeDetail saleModel(TTradeModel tTradeModel,NetWorthHistory netWorthHistory) {
         TTradeDetail tradeDetail = null;
         TTradeSummary params = new TTradeSummary();
@@ -916,14 +925,14 @@ public class NetWorthHistoryController extends BaseController {
         return tradeDetail;
     }
 
-    /**
+    *//**
      * @Title: getSalRate
      * @Description: TODO
      * @param: @param rate
      * @param: @return
      * @return: double
      * @throws
-     */
+     *//*
     private double getSalRate(double rate, int straage) {
         double saleLot = 0;
         if (straage == 1) {
@@ -964,14 +973,14 @@ public class NetWorthHistoryController extends BaseController {
         return saleLot;
     }
 
-    /**
+    *//**
      * @throws Exception
      * @Title: updateTradeSummary
      * @Description: 更新交易汇总信息
      * @param:
      * @return: void
      * @throws
-     */
+     *//*
     public void updateTradeSummary(TTradeDetail tradeDatetial) throws Exception {
         TTradeSummary params = new TTradeSummary();
         String fundCode = tradeDatetial.getFundCode();
@@ -1048,7 +1057,7 @@ public class NetWorthHistoryController extends BaseController {
         }
     }
 
-    /**
+    *//**
      * @Title: getBuyMoney
      * @Description: 获取购买金额
      * @param: @param buyMode
@@ -1056,7 +1065,7 @@ public class NetWorthHistoryController extends BaseController {
      * @param: @return
      * @return: int
      * @throws
-     */
+     *//*
     public long getBuyMoney(int buyMode, TAvglineBugRecord avglineBugRecord) {
         long buyMoney = 0;
         if (buyMode == 1) {// 定值100
@@ -1068,11 +1077,11 @@ public class NetWorthHistoryController extends BaseController {
         return buyMoney;
     }
 
-    /**
+    *//**
      * 判断是星期几
      * 入参：毫秒数
      * 1~7:星期几；1~7代表星期日到星期六
-     */
+     *//*
     public static int getWeekInfo(Long datel) {
         int week = Integer.MIN_VALUE;
         try {
@@ -1098,4 +1107,6 @@ public class NetWorthHistoryController extends BaseController {
         Calendar calendar = Calendar.getInstance();
         System.out.println(calendar.get(Calendar.YEAR));
     }
+}
+*/
 }

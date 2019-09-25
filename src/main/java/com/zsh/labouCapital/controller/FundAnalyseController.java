@@ -1,4 +1,4 @@
-package com.zsh.labouCapital.controller;
+/*package com.zsh.labouCapital.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,19 +30,13 @@ import com.zsh.labouCapital.service.INetWorthHistoryService;
 import com.zsh.labouCapital.util.HttpclientUtil;
 
 
-/**
+*//**
  * 函数功能：marketStation挑选基金
- */
+ *//*
 @RestController
 @RequestMapping(value = "/marketStation")
-public class FundAnalyseController extends BaseController {
+public class FundAnalyseController {
 	private static Logger logger = LoggerFactory.getLogger(FundAnalyseController.class);
-
-	@Autowired
-	private INetWorthHistoryService netWorthHistoryService;
-
-	@Autowired
-	private IFundSummaryService fundSummaryService;
 
 	@Autowired
 	private IIndexMarketSituationService indexMarketSituationService;
@@ -53,9 +47,9 @@ public class FundAnalyseController extends BaseController {
 	@Autowired
 	private ILoggerService iloggerService;
 
-	/**
+	*//**
 	 * 函数功能：分析出有追随基金的指数且满足： 1.十天的平均PE < 10 2.由基金追踪的指数
-	 */
+	 *//*
 	@RequestMapping("/analyseBestIndex")
 	@ResponseBody
 	public ReturnValue analyseBestIndex(HttpServletRequest request) {
@@ -118,9 +112,9 @@ public class FundAnalyseController extends BaseController {
 		return rv;
 	}
 
-	/**
+	*//**
 	 * 函数功能：分析出有追随基金的指数且满足： 1.十天的平均PE < 10 2.由基金追踪的指数
-	 */
+	 *//*
 	@RequestMapping("/analyseUnderValueExceptFund")
 	@ResponseBody
 	public ReturnValue analyseUnderValueExceptFund(HttpServletRequest request) {
@@ -159,3 +153,4 @@ public class FundAnalyseController extends BaseController {
 	}
 	
 }
+*/

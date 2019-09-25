@@ -1,4 +1,4 @@
-package com.zsh.labouCapital.controller;
+/*package com.zsh.labouCapital.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,9 +31,9 @@ import com.zsh.labouCapital.service.INetWorthHistoryService;
 import com.zsh.labouCapital.util.email.EmailUtil;
 import com.zsh.labouCapital.util.fund.FundRealTimeUtil;
 
-/**
+*//**
  * 函数功能：marketStation挑选基金
- */
+ *//*
 @RestController
 @RequestMapping(value = "/holdPosition")
 public class HoldPositionController{
@@ -60,14 +60,14 @@ public class HoldPositionController{
 	private ILoggerService iloggerService;
 
 	
-	/**
+	*//**
      * @Title: analyBuyStrategy   
      * @Description: TODO   
      * @param: @param request
      * @param: @return      
      * @return: ReturnValue      
      * @throws
-     */
+     *//*
     @RequestMapping("/addHoldPositionInfo")
     @ResponseBody
     public ReturnValue addHoldPositionInfo(HttpServletRequest request,HoldPosition holdPosition) {
@@ -133,14 +133,14 @@ public class HoldPositionController{
 	
 	
 	
-	/**
+	*//**
 	 * @Title: analyBuyStrategy   
 	 * @Description: TODO   
 	 * @param: @param request
 	 * @param: @return      
 	 * @return: ReturnValue      
 	 * @throws
-	 */
+	 *//*
 	@RequestMapping("/analyBuyStrategy")
 	@ResponseBody
 	public ReturnValue analyBuyStrategy(HttpServletRequest request) {
@@ -232,3 +232,4 @@ public class HoldPositionController{
 		return rv;
 	}
 }
+*/

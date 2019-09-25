@@ -8,7 +8,7 @@ import com.zsh.labouCapital.entity.NetWorthHistory;
 import com.zsh.labouCapital.entity.TIndexFundTemp;
 
 
-public interface IIndexMarketSituationService extends BaseService<MarketSituation>{
+public interface IIndexMarketSituationService {
 	public List<MarketSituation> queryMarketSituationInfo(MarketSituation marketSituation);
 
 	public void updateMarketSituation(List<MarketSituation> updateList);

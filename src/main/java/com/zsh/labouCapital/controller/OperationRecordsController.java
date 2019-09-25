@@ -1,4 +1,4 @@
-package com.zsh.labouCapital.controller;
+/*package com.zsh.labouCapital.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,18 +28,18 @@ import com.zsh.labouCapital.util.ipaddress.RequestRealIp;
 import com.zsh.labouCapital.util.pagination.PageBean;
 import com.zsh.labouCapital.vo.excel.ExcelConfigVo;
 
-/**
+*//**
  * 操作日志统计
- */
+ *//*
 @RestController
 @RequestMapping(value = "/logger")
-public class OperationRecordsController extends BaseController {
+public class OperationRecordsController {
 	@Autowired
 	private ILoggerService iloggerService;
 
-	/**
+	*//**
 	 * 函数功能：分页查询操作日志信息；
-	 */
+	 *//*
 	@RequestMapping("/queryOperationRecordsInfoPage")
 	@ResponseBody
 	public ReturnValue queryOperationRecordsInfoPage(HttpServletRequest request, String attributesPath) {
@@ -83,9 +83,9 @@ public class OperationRecordsController extends BaseController {
 		return rv;
 	}
 
-	/**
+	*//**
 	 * 函数功能：导出操作日志信息excel；
-	 */
+	 *//*
 	@RequestMapping("/exportOperationRecordsInfo")
 	@ResponseBody
 	public void exportOperationRecordsInfo(HttpServletRequest request, HttpServletResponse response) {
@@ -122,3 +122,4 @@ public class OperationRecordsController extends BaseController {
 		}
 	}
 }
+*/

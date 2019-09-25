@@ -1,8 +1,6 @@
-package com.zsh.labouCapital.controller;
+/*package com.zsh.labouCapital.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -14,13 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.zsh.labouCapital.comm.SystemConst;
-import com.zsh.labouCapital.dao.IndexMarketSituationMapper;
-import com.zsh.labouCapital.entity.Company;
-import com.zsh.labouCapital.entity.IndexCount;
 import com.zsh.labouCapital.entity.ReturnValue;
 import com.zsh.labouCapital.service.IIndexMarketSituationService;
-import com.zsh.labouCapital.service.IndexCountService;
 
 @Controller
 @RequestMapping("/analyseModule")
@@ -29,12 +22,12 @@ public class AnalyseModuleController {
 	@Autowired
     private IIndexMarketSituationService indexMarketSituationService;
 
-	/**
+	*//**
 	 * 函数功能：分析有基金追随的指数信息;
 	 * 
 	 * @throws IOException
 	 * @throws ServletException
-	 */
+	 *//*
 	@RequestMapping("/ananlyIndexFund")
 	@ResponseBody
 	public ReturnValue ananlyIndexFund(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
@@ -56,3 +49,4 @@ public class AnalyseModuleController {
 		return rv;
 	}
 }
+*/
