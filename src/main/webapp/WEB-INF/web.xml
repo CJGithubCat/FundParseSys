@@ -70,18 +70,6 @@
     	<param-value>http://218.17.3.228:7788/</param-value>
   </context-param>-->
   
-  <!-- 服务器内网地址 -->
-	<context-param>
-		<param-name>urlServerLocal</param-name>
-    	<param-value>http://192.110.10.171:22803/</param-value>
-	</context-param>
-	
-	<!-- 服务器外网地址 -->
-	<context-param>  
-    	<param-name>urlServerOuter</param-name>
-    	<param-value>http://218.17.3.228:22803/</param-value>
-  	</context-param>
-    
 	<!-- log4j日志配置 -->
 	<context-param>
 		<param-name>log4jConfigLocation</param-name>

@@ -20,26 +20,20 @@
 	<div class="layui-inline">
 		<label class="layui-form-label">基金代码</label>
 		<div class="layui-input-block">
-		  <input type="text" name="title" required  lay-verify="required" placeholder="请输入基金代码" autocomplete="off" class="layui-input">
+		  <input type="text" id="txt_fundCode" name="title" placeholder="请输入基金代码" autocomplete="off" class="layui-input">
 		</div>
 	</div>
 	<div class="layui-inline">
-      <label class="layui-form-label">开始日期</label>
-      <div class="layui-input-block">
-        <input type="text" name="startDate" id="startDate" autocomplete="off" class="layui-input">
-      </div>
-    </div>
-	<div class="layui-inline">
-      <label class="layui-form-label">结束日期</label>
-      <div class="layui-input-block">
-        <input type="text" name="endDate" id="endDate" autocomplete="off" class="layui-input">
-      </div>
-    </div>
+		<label class="layui-form-label">基金名称</label>
+		<div class="layui-input-block">
+		  <input type="text" id="txt_fundName" name="title" placeholder="请输入基金名称" autocomplete="off" class="layui-input">
+		</div>
+	</div>
   </div>
   
-  <div class="layui-form-item">
+  <div class="layui-form-item" align="right">
     <div class="layui-input-block">
-      <button class="layui-btn" id="btn_search" lay-submit lay-filter="formDemo">立即提交</button>
+      <button class="layui-btn" id="btn_search" lay-submit lay-filter="formDemo">查询</button>
       <button type="reset" class="layui-btn layui-btn-primary">重置</button>
     </div>
   </div>
@@ -47,14 +41,16 @@
 </script>
 
 <!-- *********************列表主体***************************-->
-<table class="layui-hide" id="test"></table>
+<table class="layui-hide" lay-filter="test" id="test"></table>
 
 <!-- *********************按钮列***************************-->
 <script type="text/html" id="barDemo">
+  <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
   <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
   <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
- 
+
+<script src="../layui/dist/layui.js"></script>
 <script>
 var $ = layui.jquery;
 layui.use(['table','form','laydate'], function(){
@@ -62,33 +58,17 @@ layui.use(['table','form','laydate'], function(){
   var form = layui.form;
   var laydate = layui.laydate;
   $=layui.jquery;
-  
-  //日期
-  laydate.render({
-    elem: '#startDate'
-  });
-  laydate.render({
-    elem: '#endDate'
-  });
-  
-  var demoData =[{
-    "id": "561686"
-    ,"fundCode": "000008"
-	,"netWorth": "浙江杭州"
-    ,"dateInfo": "2013-03-22"
-    ,"weekInfo": "6"
-  }]
-  
+ 
   var tableIns = table.render({
 	id: 'tableReload'//重载数据表格
     ,elem: '#test'
 	,method: 'post'
 	,contentType: 'application/json'
     ,toolbar: '#toolbarDemo'
-    ,url:'../netWorth/queryNetWorthInfoList'
-    ,title: '用户数据表'
-    ,cols: D2V.JZTJGrid
-    ,data:demoData
+    ,url: '../fund/queryFundList'
+    ,title: '基金信息'
+    ,cols: D2V.JJXXGrid
+    ,data:''
 	,page: true
 	,limits: [1,10,20,50]
 	,layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
@@ -103,23 +83,21 @@ layui.use(['table','form','laydate'], function(){
 
   //监听提交按钮
   form.on('submit(formDemo)', function(data){
-    layer.msg(JSON.stringify(data.field));
-	
     table.reload('tableReload',{
     	page: {
             curr: 1 //重新从第 1 页开始
         }
         , where: {//这里传参  向后台
-            name: name,
-            url:url
+			'fundCode':$('#txt_fundCode').val(),
+            'fundName':$('#txt_fundName').val()
         }
-        , url: '../netWorth/queryNetWorthInfoList'
+        , url:D2V.JJXXURL.queryFundList
         , method: 'post'
     });
     return false;
   });
   
-  //头工具栏事件
+  /* //头工具栏事件
   table.on('toolbar(test)', function(obj){
     var checkStatus = table.checkStatus(obj.config.id);
     switch(obj.event){
@@ -135,12 +113,28 @@ layui.use(['table','form','laydate'], function(){
         layer.msg(checkStatus.isAll ? '全选': '未全选');
       break;
     };
+  }); */
+  
+	//监听工具条
+  table.on('tool(test)', function(obj){
+    var data = obj.data;
+    console.log(obj)
+    if(obj.event === 'detail'){
+      layer.msg('ID：'+ data.id + ' 的查看操作');
+    } else if(obj.event === 'del'){
+      layer.confirm('真的删除行么', function(index){
+        obj.del();
+        layer.close(index);
+      });
+    } else if(obj.event === 'edit'){
+      layer.alert('编辑行：<br>'+ JSON.stringify(data))
+    }
   });
   
   //监听行工具事件
   table.on('tool(test)', function(obj){
     var data = obj.data;
-    //console.log(obj)
+    console.log(obj)
     if(obj.event === 'del'){
       layer.confirm('真的删除行么', function(index){
         obj.del();
@@ -157,38 +151,6 @@ layui.use(['table','form','laydate'], function(){
         layer.close(index);
       });
     }
-  });
-});
-</script>
-
-<script>
-<!-- 提交表单的操作 -->
-layui.use(['form','laydate'], function(){
-  var form = layui.form
-  ,laydate = layui.laydate;
-  $=layui.jquery;
-  
-  //日期
-  laydate.render({
-    elem: '#startDate'
-  });
-  laydate.render({
-    elem: '#endDate'
-  });
-  
-  //监听提交
-  form.on('submit(formDemo)', function(data){
-    layer.msg(JSON.stringify(data.field));
-	
-	$.ajax({
-              url:'../netWorth/queryNetWorthInfoList',
-              type:'post',
-              data:{'aa':'AA'},              
-              success:function(data){
-                  console.info(data);
-              }              
-          });
-    return false;
   });
 });
 </script>

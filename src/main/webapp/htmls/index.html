@@ -4,8 +4,7 @@
         <meta charset="UTF-8">
         <title>时间是最好的朋友</title>
         <link rel="stylesheet" href="../layui/css/layui.css">
-       
-        
+		<script src="../js/g2/g2.min.js"></script>
 		<body class="layui-layout-body">
 <!-- ***********************头部区域******************************** -->
 			<div class="layui-layout layui-layout-admin">
@@ -44,26 +43,30 @@
 				      <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
 				      <ul class="layui-nav layui-nav-tree"  lay-filter="test">
 				      	<li class="layui-nav-item layui-nav-itemed">
-				          <a class="" href="www.baidu.com">首页</a>
+				          <a class="" href="#">首页</a>
+				        </li>				        
+				        <li class="layui-nav-item">
+				          <a href="javascript:;">数据管理</a>
+				          <dl class="layui-nav-child">
+				          	<dd><a href="javascript:;" class="layTabPlus" tab_url="jjxx.html">基金基本信息</a></dd>
+				          	<dd><a href="javascript:;" class="layTabPlus" tab_url="jjjz_history.html">历史净值管理</a></dd>
+				          	<dd><a href="javascript:;" class="layTabPlus" tab_url="jjjz_last.html">最新净值管理</a></dd>
+				            <dd><a href="javascript:;" class="layTabPlus" tab_url="jj_hold.html">持有基金管理</a></dd>
+				            <dd><a href="javascript:;">策略管理</a></dd>
+				            <dd><a href="javascript:;">指数管理(含估值)</a></dd>
+				          </dl>
 				        </li>
 				        <li class="layui-nav-item">
 				          <a href="javascript:;">数据统计</a>
 				          <dl class="layui-nav-child">
-				            <dd><a href="javascript:;" class="layTabPlus" tab_url="fund/jztj.html">净值统计1</a></dd>
-				          </dl>
-				        </li>
-				        <li class="layui-nav-item">
-				          <a href="javascript:;">数据管理</a>
-				          <dl class="layui-nav-child">
-				            <dd><a href="javascript:;">持有基金管理</a></dd>
-				            <dd><a href="javascript:;">策略管理</a></dd>
-				            <dd><a href="javascript:;">指数管理(含估值)</a></dd>
+				            <dd><a href="javascript:;" class="layTabPlus" tab_url="jztj.html">净值统计</a></dd>
 				          </dl>
 				        </li>
 				        <li class="layui-nav-item">
 				        	<a href="javascript:;">分析模型</a>
 				        	<dl class="layui-nav-child">
 				        		<dd><a href="javascript:;">均线模型管理</a></dd>
+				        		<dd><a href="javascript:;" class="layTabPlus" tab_url="job_manage.html">定时任务管理</a></dd>
 				        	</dl>				        	
 				        </li>
 				        <li class="layui-nav-item">
@@ -87,32 +90,15 @@
 					<div class="layui-tab-content" style="padding:0px;">
 						<div class="layui-tab-item layui-show">
 							<div class="sysNotice col">
-								<blockquote class="layui-elem-quote title">基本信息</blockquote>
+								<blockquote class="layui-elem-quote title">当前走势</blockquote>
 								<table class="layui-table">
 									<tbody>
 										<tr>
-											<td>当前版本</td>
-											<td class="version">V1.2</td>
-										</tr>
-										<tr>
-											<td>开发作者</td>
-											<td class="author">Leytton</td>
-										</tr>
-										<tr>
-											<td>项目首页</td>
-											<td class="homePage"><a href="https://gitee.com/Leytton/layTabPlus">https://gitee.com/Leytton/layTabPlus</a></td>
-										</tr>
-										<tr>
-											<td colspan="2">
-												<script src='https://gitee.com/Leytton/layTabPlus/widget_preview'></script>
-												<style>
-												.pro_name a{color: #4183c4;}
-												.osc_git_title{background-color: #fff;}
-												.osc_git_box{background-color: #fff;}
-												.osc_git_box{border-color: #E3E9ED;}
-												.osc_git_info{color: #666;}
-												.osc_git_main a{color: #9B9B9B;}
-												</style>
+											<td class="homePage">
+											<div id="c1"></div>
+											</td>
+											<td class="homePage">
+											<div id="c2"></div>
 											</td>
 										</tr>
 									</tbody>
@@ -143,6 +129,41 @@
 		layTabPlus.init({
 			lay_filter: 'demoTab'
 		});
+	</script>
+	
+	<script>
+		const data = [
+		  { genre: 'Sports', sold: 275 },
+		  { genre: 'Strategy', sold: 115 },
+		  { genre: 'Action', sold: 120 },
+		  { genre: 'Shooter', sold: 350 },
+		  { genre: 'Other', sold: 150 }
+		]; // G2 对数据源格式的要求，仅仅是 JSON 数组，数组的每个元素是一个标准 JSON 对象。
+		// Step 1: 创建 Chart 对象
+		const chart = new G2.Chart({
+		  container: 'c1', // 指定图表容器 ID
+		  width : 600, // 指定图表宽度
+		  height : 300 // 指定图表高度
+		});
+		// Step 2: 载入数据源
+		chart.source(data);
+		// Step 3：创建图形语法，绘制柱状图，由 genre 和 sold 两个属性决定图形位置，genre 映射至 x 轴，sold 映射至 y 轴
+		chart.interval().position('genre*sold').color('genre')
+		// Step 4: 渲染图表
+		chart.render();
+		
+		// Step 1: 创建 Chart 对象
+		const chart1 = new G2.Chart({
+		  container: 'c2', // 指定图表容器 ID
+		  width : 600, // 指定图表宽度
+		  height : 300 // 指定图表高度
+		});
+		// Step 2: 载入数据源
+		chart1.source(data);
+		// Step 3：创建图形语法，绘制柱状图，由 genre 和 sold 两个属性决定图形位置，genre 映射至 x 轴，sold 映射至 y 轴
+		chart1.interval().position('genre*sold').color('genre')
+		// Step 4: 渲染图表
+		chart1.render();
 	</script>
 </body>
 </html>
