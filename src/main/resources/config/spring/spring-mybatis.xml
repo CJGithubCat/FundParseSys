@@ -60,8 +60,13 @@
 		<property name="dataSource" ref="dataSource" />
 		<property name="configLocation" value="classpath:config/mybatis/mybatis-config.xml" />
 		<!-- 自动扫描entity目录, 省掉Configuration.xml里的手工配置 -->
-		<property name="typeAliasesPackage" value="com.zsh.labouCapital.pojo" />
-		<property name="mapperLocations" value="classpath:config/mybatis/sqlmapper/*Mapper.xml" />
+		<property name="typeAliasesPackage" value="com.zsh.labouCapital.dao.dto" />
+		<property name="mapperLocations">
+			<array>
+				<value>classpath:com/zsh/labouCapital/dao/sqlmap/*Mapper.xml</value>
+				<value>classpath:com/zsh/labouCapital/dao/sqlmap/custom/*Mapper.xml</value>
+			</array>
+		</property>
 		<!-- <property name="plugins" ref="paginationInterceptor" /> -->
 	</bean>
 
