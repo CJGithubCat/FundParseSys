@@ -1,16 +1,10 @@
 package com.zsh.labouCapital.util.fund;
 
+import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Connection;
-import java.sql.Statement;
 import java.text.SimpleDateFormat;
-import org.springframework.util.StringUtils;
-
-
-import net.sf.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -21,10 +15,14 @@ import javax.script.ScriptEngineManager;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.springframework.util.StringUtils;
 
 import com.mysql.jdbc.PreparedStatement;
 import com.zsh.labouCapital.entity.NetWorthHistory;
-import com.zsh.labouCapital.util.HttpUtil;
+import com.zsh.labouCapital.util.DateTimeUtil;
+import com.zsh.labouCapital.util.HttpclientUtil;
+
+import net.sf.json.JSONObject;
 
 public class GetFundDataUtil {
 
@@ -102,7 +100,7 @@ public class GetFundDataUtil {
 			for (int j = 0; j < netWorths.size(); j++) {
 				NetWorthHistory netWorthTemp = netWorths.get(j);
 				pstmt.setString(1, netWorthTemp.getFundCode());
-				pstmt.setString(2, netWorthTemp.getDateInfo());
+				pstmt.setString(2, DateTimeUtil.formatDate(netWorthTemp.getDateInfo(), DateTimeUtil.DEFAULT_DATE_TIME_PATTERN2));
 				pstmt.setDouble(3, netWorthTemp.getNetWorth());
 				pstmt.setDouble(4, netWorthTemp.getEquityReturn());
 				pstmt.setString(5, netWorthTemp.getUnitMoney());
@@ -140,7 +138,7 @@ public class GetFundDataUtil {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		try {
 			params.add(new BasicNameValuePair("v","20180907161408"));
-	        String reBody = HttpUtil.get(url, params);
+	        String reBody = HttpclientUtil.get(url, params);
 	        ScriptEngineManager manager = new ScriptEngineManager();
 	        ScriptEngine engine = manager.getEngineByName("javascript");
 	        engine.eval(reBody);
@@ -158,7 +156,7 @@ public class GetFundDataUtil {
 	        	
 	        	String dateInfo = sdf.format(new Date(milSecod));
 	        	temValue.setFundCode(fundCode);
-	        	temValue.setDateInfo(dateInfo);
+	        	//temValue.setDateInfo(dateInfo);
 	        	temValue.setNetWorth(value);
 	        	if(!StringUtils.isEmpty(equityReturn)){
 	        		temValue.setEquityReturn(Double.parseDouble(equityReturn));

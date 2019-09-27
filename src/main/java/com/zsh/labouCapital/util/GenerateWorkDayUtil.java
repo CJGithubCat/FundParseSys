@@ -76,7 +76,7 @@ public class GenerateWorkDayUtil {
         List<String> calenderList = new ArrayList<String>();
         for(int i=1;i <= maxDay; i++){
             calendar.set(Calendar.DAY_OF_MONTH, i);
-            String dayStr = DateUtil.format(calendar.getTime(), DateUtil.YMD);
+            String dayStr = DateTimeUtil.formatDate(calendar.getTime(), DateTimeUtil.DEFAULT_DATE_PATTERN2);
             calenderList.add(dayStr);
         }
         log.error("List:" + JSON.toJSONString(calenderList));

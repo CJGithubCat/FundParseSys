@@ -1,4 +1,4 @@
-package com.zsh.labouCapital.util.excel;
+/*package com.zsh.labouCapital.util.excel;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -23,16 +23,13 @@ import com.alibaba.druid.util.StringUtils;
 import com.zsh.labouCapital.entity.Company;
 import com.zsh.labouCapital.entity.ExamSummary;
 import com.zsh.labouCapital.entity.Salary;
-import com.zsh.labouCapital.service.ICompanyService;
-import com.zsh.labouCapital.service.IExamEummaryService;
-import com.zsh.labouCapital.service.ISalaryService;
 
-/**
+*//**
  * Copyright:   Copyright(C) 2018
  * author:      chenjie
  * todo:读取Excel文本内容
  * Createdate:  2018年7月17日下午4:49:18
- */
+ *//*
 public class ReadExcelUtil {
 	// 可以优化为从配置文件读取
 	public static String[] EXAM_SUMMARY_EXL_HEADE = new String[] { "序号", "日期", "分版块", "单位", "BW代码", "部门", "加油站",
@@ -58,12 +55,12 @@ public class ReadExcelUtil {
 			"公积金单位每月缴费", "养老单位每月缴费", "失业单位每月缴费", "工伤单位每月缴费", "医保单位每月缴费", "生育保险单位每月缴费", "大病保险单位每月缴费", "年金企业缴费每月划入个人账户金额",
 			"年金企业缴费", "管理费", "委托公司名称", "社保参保地" };
 
-	/**
+	*//**
 	 * @Title: checkXlsHeadInfo
 	 * @Description: 校验上传文件头信息 顺序和名字必须一致
 	 * @param @return
 	 *            参数 @return Map<String,Object> 返回类型 @throws
-	 */
+	 *//*
 	public static Map<String, Object> checkXlsHeadInfo(String[] headModule, Row headRow) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		if (headModule == null || headModule.length <= 0 || headRow == null || headModule.length <= 0) {
@@ -91,9 +88,9 @@ public class ReadExcelUtil {
 		return map;
 	}
 
-	/*
+	
 	 * 函数功能:读取考核明细
-	 */
+	 
 	public static Map<String, Object> readCheckExamSummaryExcel(String path, IExamEummaryService examEummaryService) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		if (StringUtils.isEmpty(path)) {
@@ -249,12 +246,12 @@ public class ReadExcelUtil {
 						examSummary.setBnName(getCellValue(bn_name));
 						// 加油站
 						Cell jyz_name = hssfRow.getCell(index);
-						/*
+						
 						 * if(StringUtils.isEmpty(jyz_name.getCellValue())
 						 * ){//分版块 map.put("success", false); map.put("reason",
 						 * "数据错误！第["+rowNum+"行,第"+index + "列]的[加油站名称]数据为空!");
 						 * return map; }
-						 */
+						 
 						index = index + 1;
 						examSummary.setJyzName(getCellValue(jyz_name));
 						// 加油站分类
@@ -1674,12 +1671,12 @@ public class ReadExcelUtil {
 		return map;
 	}
 
-	/**
+	*//**
 	 * @throws Exception
 	 * @Title: readCheckExamSummaryXls @Description: 读取工资明细表 @param @param
 	 *         path @param @param examEummaryService @param @return 参数 @return
 	 *         Map<String,Object> 返回类型 @throws
-	 */
+	 *//*
 	public static Map<String, Object> readCheckSalaryXls(String path, Integer companyId, Integer noticeId, Integer salaryType,
 			ICompanyService companyService, ISalaryService examEummaryService) throws Exception {
 		int startRow = 0;
@@ -1875,10 +1872,10 @@ public class ReadExcelUtil {
 		return map;
 	}
 	
-	/**
+	*//**
 	 * @Name: getCellValue @Description: 获取单元格值 @param @param
 	 * cell @param @return 参数 @return Object 返回类型 @throws
-	 */
+	 *//*
 	public static String getCellValue(Cell cell) {
 		String cellValue = null;
 		
@@ -1892,14 +1889,14 @@ public class ReadExcelUtil {
 			case Cell.CELL_TYPE_FORMULA: {
 				System.out.println("Index: " + cell.getColumnIndex());///////////////////////////
 				// 判断cell是否为日期格式
-				/*if (DateUtil.isCellDateFormatted(cell)) {
+				if (DateUtil.isCellDateFormatted(cell)) {
 					// 转换为日期格式YYYY-mm-dd
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 					cellValue = sdf.format(cell.getDateCellValue());
 				} else {
 					// 数字
 					cellValue = cell.getRichStringCellValue().getString();
-				}*/
+				}
 				cell.setCellType(HSSFCell.CELL_TYPE_STRING);
 				cellValue = cell.getRichStringCellValue().getString();
 				break;
@@ -1930,12 +1927,12 @@ public class ReadExcelUtil {
 		return cellValue;
 	}
 
-	/**
+	*//**
 	 * @Name: checkIsBlankRow 
 	 * @Description:校验是否是空行 
 	 * @param 参数 
 	 * @return boolean 返回类型 @throws
-	 */
+	 *//*
 	public static boolean checkIsBlankRow(Row hssfRow) {
 		boolean flag = true;// 是
 		if (hssfRow == null) {
@@ -1953,7 +1950,7 @@ public class ReadExcelUtil {
 		return flag;
 	}
 	
-	/**
+	*//**
 	* @Name: checkIsTotalRow  
 	* @Description:  检查是否是合计行
 	* @param @param hssfRow
@@ -1961,7 +1958,7 @@ public class ReadExcelUtil {
 	* @param @return    参数  
 	* @return boolean    返回类型  
 	* @throws
-	 */
+	 *//*
 	public boolean checkIsTotalRow(Row hssfRow, int index) {
 		boolean flag = false;
 		if (hssfRow.getLastCellNum() < index) {
@@ -1974,11 +1971,11 @@ public class ReadExcelUtil {
 		return flag;
 	}
 	
-	/**
+	*//**
 	 * @Title: checkBlankRow
 	 * @Description: TODO @param 参数 startIndex -- 开始列索引 endIndex -- 结束列索引
 	 * @return void 返回类型 @throws
-	 */
+	 *//*
 	public double getRangCellValue(Row hssfRow, int startIndex, int endIndex) {
 		double total = 0;
 		if (hssfRow == null || startIndex < 0 || endIndex < 0 || startIndex > endIndex) {
@@ -1998,12 +1995,12 @@ public class ReadExcelUtil {
 		return total;
 	}
 	
-	/**
+	*//**
 	 * @Name: sjbmExportSalaryXls 
 	 * @Description:市级部门导入工资mingxi 
 	 * @return Map<String,Object>
 	 * @throws
-	 */
+	 *//*
 	public static Map<String, Object> sjbmExportSalaryXls(String path, Integer companyId, Integer noticeId, Integer salaryType,
 			ICompanyService companyService, ISalaryService examEummaryService) throws Exception {
 		int startRow = 0;
@@ -2238,3 +2235,4 @@ public class ReadExcelUtil {
 		return map;
 	}
 }
+*/

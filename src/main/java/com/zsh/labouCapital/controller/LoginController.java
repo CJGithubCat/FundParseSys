@@ -31,51 +31,63 @@ public class LoginController {
     private IUserService userService;
 	
     /**
-    * 验证用户名，密码
-    * @param username
-    * @param password
-    * @return
-    * @throws Exception
-    */
+     * @Title: validatePwd   
+     * @Description: 登录验证   
+     * @param: @param request
+     * @param: @param jsonParam
+     * @param: @return
+     * @param: @throws Exception      
+     * @return: ReturnValue      
+     * @throws
+     */
 	@SuppressWarnings("unchecked")
 	@ResponseBody()
     @RequestMapping(value={"/validatepwd"},method={RequestMethod.POST})
-	public ReturnValue validatePwd(HttpServletRequest request,@RequestBody String jsonParam)throws Exception{
-		 HttpSession session;
-		 User user=new Gson().fromJson(jsonParam,User.class);
+	public ReturnValue validatePwd(HttpServletRequest request,@RequestBody String jsonParam){
+	    ReturnValue responseData=new ReturnValue();
+	    
+	    HttpSession session = request.getSession(false);
+		User user=new Gson().fromJson(jsonParam,User.class);
 		 //用户名，密码验证
-    	 int code=userService.validatePwd(user);
-    	 ReturnValue responseData=new ReturnValue();
-   	     if(code==3){//用户不存在
-   	    	responseData.setErrorCode(SysCodeEnum.RE_LOGIN_USER_NOFOUND.getCode());
-   		    responseData.setMessage(SysCodeEnum.RE_LOGIN_USER_NOFOUND.getDesc());
-   	     }else{
-   		     if(code==0){
-   		    	session=request.getSession(false);
-   		    	//获取用户信息
-   		    	TUser tuser = userService.getUserByLoginName(user.getLoginName());
-   		   	    session.setAttribute(SystemConst.ACCOUNT_ID, tuser.getUserId());
-   		   	    session.setAttribute(SystemConst.ACCOUNT_LOGINNAME, tuser.getLoginName());
-   		   	    session.setAttribute(SystemConst.ACCOUNT_USERNAME, tuser.getUserName());
-   		   	    
-   		   	    responseData.setErrorCode(SysCodeEnum.RE_LOGIN_SUCESS.getCode());
-			    responseData.setMessage(SysCodeEnum.RE_LOGIN_SUCESS.getDesc());
-   		   	    //写日志
-   		   	    //iloggerService.writeLog(user.getUserId(), DateUtil.formatNowTime(), SysOperateEnum.OP_LOG_IN.getModuleId(),ip, SysOperateEnum.OP_LOG_IN.getDesc());
-  		     }else if(code==1){
-  		    	responseData.setErrorCode(SysCodeEnum.RE_LOGIN_USER_PAUSE.getCode());
-  			    responseData.setMessage(SysCodeEnum.RE_LOGIN_USER_PAUSE.getDesc());
-  		     }else if(code==2){
-  		    	responseData.setErrorCode(SysCodeEnum.RE_LOGIN_USER_DELETED.getCode());
-   		        responseData.setMessage(SysCodeEnum.RE_LOGIN_USER_DELETED.getDesc());
-  		     }else if(code==6){
-  		    	responseData.setErrorCode(SysCodeEnum.RE_LOGIN_PASSWORD_OUTDATE.getCode());
-   		        responseData.setMessage(SysCodeEnum.RE_LOGIN_PASSWORD_OUTDATE.getDesc());
-  		     }else{
-  		    	responseData.setErrorCode(SysCodeEnum.RE_LOGIN_PWD_ERR.getCode());
-   		        responseData.setMessage(SysCodeEnum.RE_LOGIN_PWD_ERR.getDesc());
-  		    }
-   	    }
+    	int code;
+        try {
+            code = userService.validatePwd(user);
+            if(code==3){//用户不存在
+                responseData.setErrorCode(SysCodeEnum.RE_LOGIN_USER_NOFOUND.getCode());
+                responseData.setMessage(SysCodeEnum.RE_LOGIN_USER_NOFOUND.getDesc());
+             }else{
+                 if(code==0){
+                    //获取用户信息
+                    TUser tuser = userService.getUserByLoginName(user.getLoginName());
+                    session.setAttribute(SystemConst.ACCOUNT_ID, tuser.getUserId());
+                    session.setAttribute(SystemConst.ACCOUNT_LOGINNAME, tuser.getLoginName());
+                    session.setAttribute(SystemConst.ACCOUNT_USERNAME, tuser.getUserName());
+                    
+                    responseData.setErrorCode(SysCodeEnum.RE_LOGIN_SUCESS.getCode());
+                    responseData.setMessage(SysCodeEnum.RE_LOGIN_SUCESS.getDesc());
+                    //写日志
+                    //iloggerService.writeLog(user.getUserId(), DateUtil.formatNowTime(), SysOperateEnum.OP_LOG_IN.getModuleId(),ip, SysOperateEnum.OP_LOG_IN.getDesc());
+                 }else if(code==1){
+                    responseData.setErrorCode(SysCodeEnum.RE_LOGIN_USER_PAUSE.getCode());
+                    responseData.setMessage(SysCodeEnum.RE_LOGIN_USER_PAUSE.getDesc());
+                 }else if(code==2){
+                    responseData.setErrorCode(SysCodeEnum.RE_LOGIN_USER_DELETED.getCode());
+                    responseData.setMessage(SysCodeEnum.RE_LOGIN_USER_DELETED.getDesc());
+                 }else if(code==6){
+                    responseData.setErrorCode(SysCodeEnum.RE_LOGIN_PASSWORD_OUTDATE.getCode());
+                    responseData.setMessage(SysCodeEnum.RE_LOGIN_PASSWORD_OUTDATE.getDesc());
+                 }else{
+                    responseData.setErrorCode(SysCodeEnum.RE_LOGIN_PWD_ERR.getCode());
+                    responseData.setMessage(SysCodeEnum.RE_LOGIN_PWD_ERR.getDesc());
+                }
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            responseData.setErrorCode(SysCodeEnum.RE_SYS_ERROR.getCode());
+            responseData.setMessage(SysCodeEnum.RE_SYS_ERROR.getDesc());
+        }
+        
    	   return responseData;   	
     }
 

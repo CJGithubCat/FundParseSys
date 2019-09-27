@@ -17,7 +17,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
@@ -29,7 +28,7 @@ import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.hssf.util.Region;
 
 import com.zsh.labouCapital.entity.MarketSituation;
-import com.zsh.labouCapital.util.HttpUtil;
+import com.zsh.labouCapital.util.HttpclientUtil;
 
 import jxl.Sheet;
 import jxl.Workbook;
@@ -52,7 +51,7 @@ public class FundMarketSituationUtil {
      */
     public static String requestHtmlOrJsFile(String url,List<NameValuePair> params) {
         try {
-            String respBody = HttpUtil.get(url, params);
+            String respBody = HttpclientUtil.get(url, params);
             return respBody;
         }
         catch (Exception e) {

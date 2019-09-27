@@ -101,7 +101,7 @@ public class GetFundDataUtilTemp {
 			for (int j = 0; j < netWorths.size(); j++) {
 				NetWorthHistory netWorthTemp = netWorths.get(j);
 				pstmt.setString(1, netWorthTemp.getFundCode());
-				pstmt.setString(2, DateUtil.format(netWorthTemp.getDateInfo(), DateUtil.YMD_DASH));
+				pstmt.setString(2, DateTimeUtil.formatDate(netWorthTemp.getDateInfo(), DateTimeUtil.DEFAULT_DATE_TIME_PATTERN2));
 				pstmt.setDouble(3, netWorthTemp.getNetWorth());
 				pstmt.setDouble(4, netWorthTemp.getEquityReturn());
 				pstmt.setString(5, netWorthTemp.getUnitMoney());
@@ -146,7 +146,7 @@ public class GetFundDataUtilTemp {
                 NetWorthHistory netWorthTemp = netWorths.get(j);
                 pstmt.setDouble(1, netWorthTemp.getAddUpWorth());
                 pstmt.setString(2, netWorthTemp.getFundCode());
-                pstmt.setString(3, DateUtil.format(netWorthTemp.getDateInfo(), DateUtil.YMD_DASH));
+                pstmt.setString(3, DateTimeUtil.formatDate(netWorthTemp.getDateInfo(), DateTimeUtil.DEFAULT_DATE_TIME_PATTERN2));
                 
                 pstmt.addBatch();
             }
