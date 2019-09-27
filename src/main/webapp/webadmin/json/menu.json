@@ -2,105 +2,108 @@
 	"status": 0,
 	"msg": "ok",
 	"data": [{
-			"id": 1,
-			"name": "会员管理",
+			"id": 100,
+			"name": "资料管理",
 			"icon": "&#xe6b8;",
 			"url": "",
 			"children": [{
-				"id": 2,
-				"name": "会员列表",
+				"id": 101,
+				"name": "资源管理",
 				"icon": "",
-				"url": "./pages/member/list.html"
+				"url": "./pages/info/source/source_list.html"
 			}, {
-				"id": 3,
-				"name": "会员删除",
+				"id": 102,
+				"name": "指数管理",
 				"icon": "",
-				"url": "./pages/member/del.html"
+				"url": "./pages/info/index/index_list.html"
 			}, {
-				"id": 4,
-				"name": "会员管理",
-				"icon": "&#xe70b;",
-				"url": "",
-				"children": [{
-					"id": 5,
-					"name": "输入框操作",
-					"icon": "",
-					"url": "./pages/member/addInput.html"
-				}, {
-					"id": 6,
-					"name": "三级菜单演示",
-					"icon": "",
-					"url": "./pages/404.html"
-				}, {
-					"id": 7,
-					"name": "导航菜单演示",
-					"icon": "&#xe70b;",
-					"url": "./pages/404.html"
-				}]
+				"id": 103,
+				"name": "基金管理",
+				"icon": "",
+				"url": "./pages/info/fund/fund_list.html"
+			}, {
+				"id": 104,
+				"name": "跑批管理",
+				"icon": "",
+				"url": "./pages/info/job/job_list.html"
+			}, {
+				"id": 105,
+				"name": "选基管理",
+				"icon": "",
+				"url": "./pages/info/choose/choose_list.html"
+			}, {
+				"id": 106,
+				"name": "组合研究",
+				"icon": "",
+				"url": "./pages/info/group/group_list.html"
+			}, {
+				"id": 107,
+				"name": "模型管理",
+				"icon": "",
+				"url": "./pages/info/model/model_list.html"
 			}]
 		},
 		{
-			"id": 8,
-			"name": "文章管理",
+			"id": 200,
+			"name": "统计管理",
 			"icon": "&#xe705;",
 			"url": "",
 			"children": [{
-				"id": 9,
-				"name": "文章列表",
+				"id": 201,
+				"name": "历史数据",
 				"icon": "",
-				"url": "./pages/article/list.html"
+				"url": "./pages/count/list.html"
 			}, {
-				"id": 10,
-				"name": "分类管理",
+				"id": 202,
+				"name": "持有基金",
 				"icon": "",
-				"url": "./pages/article/category.html"
+				"url": "./pages/count/category.html"
 			}]
-		},
+		},		
 		{
-			"id": 11,
-			"name": "订单管理",
+			"id": 300,
+			"name": "系统管理",
+			"icon": "&#xe726;",
+			"url": "",
+			"children": [{
+				"id": 301,
+				"name": "用户管理",
+				"icon": "",
+				"url": "./pages/system/list.html"
+			},
+			{
+				"id": 302,
+				"name": "角色管理",
+				"icon": "",
+				"url": "./pages/system/role.html"
+			},
+			{
+				"id": 303,
+				"name": "权限分配",
+				"icon": "",
+				"url": "./pages/system/cate.html"
+			},
+			{
+				"id": 304,
+				"name": "权限管理",
+				"icon": "",
+				"url": "./pages/system/rule.html"
+			}]
+		},{
+			"id": 400,
+			"name": "知识管理",
 			"icon": "&#xe723;",
 			"url": "",
 			"children": [{
-				"id": 12,
-				"name": "订单列表",
+				"id": 401,
+				"name": "文章列表",
 				"icon": "",
 				"url": "./pages/order/list.html"
 			}]
 		},
 		{
-			"id": 13,
-			"name": "管理员权限",
-			"icon": "&#xe726;",
-			"url": "",
-			"children": [{
-				"id": 14,
-				"name": "管理员列表",
-				"icon": "",
-				"url": "./pages/admin/list.html"
-			},
-			{
-				"id": 15,
-				"name": "角色管理",
-				"icon": "",
-				"url": "./pages/admin/role.html"
-			},
-			{
-				"id": 16,
-				"name": "权限分类",
-				"icon": "",
-				"url": "./pages/admin/cate.html"
-			},
-			{
-				"id": 17,
-				"name": "权限管理",
-				"icon": "",
-				"url": "./pages/admin/rule.html"
-			}]
-		},
-		{
-			"id": 18,
-			"name": "系统统计",
+			"id": 500,
+			"name": "系统统计(临时)",
 			"icon": "&#xe6ce;",
 			"url": "",
 			"children": [{
@@ -156,6 +159,43 @@
 				"name": "地图DIY实例",
 				"icon": "",
 				"url": "./pages/echarts/echarts9.html"
+			}]
+		},{
+			"id": 1,
+			"name": "会员管理(临时)",
+			"icon": "&#xe6b8;",
+			"url": "",
+			"children": [{
+				"id": 2,
+				"name": "会员列表",
+				"icon": "",
+				"url": "./pages/member/list.html"
+			}, {
+				"id": 3,
+				"name": "会员删除",
+				"icon": "",
+				"url": "./pages/member/del.html"
+			}, {
+				"id": 4,
+				"name": "会员管理",
+				"icon": "&#xe70b;",
+				"url": "",
+				"children": [{
+					"id": 5,
+					"name": "输入框操作",
+					"icon": "",
+					"url": "./pages/member/addInput.html"
+				}, {
+					"id": 6,
+					"name": "三级菜单演示",
+					"icon": "",
+					"url": "./pages/404.html"
+				}, {
+					"id": 7,
+					"name": "导航菜单演示",
+					"icon": "&#xe70b;",
+					"url": "./pages/404.html"
+				}]
 			}]
 		}
 	]

@@ -15,7 +15,7 @@
 	
 	<context-param>
 		<param-name>webAppRootKey</param-name>
-		<param-value>labouCapital.root </param-value>
+		<param-value>fundparse.root </param-value>
 	</context-param>
 	
 	<context-param>

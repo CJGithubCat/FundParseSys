@@ -300,7 +300,8 @@
             			   }else{
             				   $.removeCookie('cookie_login_name',{ path: '/'});
             			   }
-            			   location.href= "htmls/index.html";
+            			   //location.href= "htmls/index.html";
+            			   location.href= "webadmin/index.html";
             		   }else if(responseData.errorCode==5){//用户没有权限
             			   alert('当前用户没有权限,请联系管理员!');
         				   location.href= "login.jsp";
