@@ -48,9 +48,42 @@
 	];
 	  
 /********************************************************* 数据管理 ***********************************/
+		/******************************* 资源基本信息 ***********************************/
+		DataToView.SRCURL={
+			queryFundList:'../fund/queryFundList' //查询部门考核通知单
+	    }
+	   
+		DataToView.SRCGrid = [[{type: 'checkbox', fixed: 'left'},
+			{title:'资源名称', field:'itemName', width:200,align:'center'},
+			{title:'指数链接', field:'itemUrl', width:600,align:'center'},
+			{title:'类型', field:'type', width:100,align:'center'}
+		]];
+		
+		/******************************* 指数基本信息 ***********************************/
+		DataToView.INDEXURL={
+			queryFundList:'../index/queryIndexList' //查询部门考核通知单
+	    }
+	   
+		DataToView.INDEXGrid = [[{type: 'checkbox', fixed: 'left'},
+			{title:'资源编号', field:'indexCode', width:100,align:'center'},
+			{title:'指数名称', field:'indexEname', width:100,align:'center'},
+			{title:'起始点数', field:'basePoint', width:100,align:'center'},
+			{title:'起始日期', field:'baseDate', width:120,align:'center'},
+			{title:'上线日期', field:'onlineDate', width:120,align:'center'},
+			{title:'类型', field:'indexCIntro', width:100,align:'center'},
+			{title:'行情走势URL', field:'hangqingzoushi', width:400,align:'center'},
+			{title:'编制方法URL', field:'makeMethod', width:400,align:'center'},
+			{title:'维护细则URL', field:'weihuxize', width:400,align:'center'},
+			{title:'成分股列表URL', field:'chengfenguliebiao', width:400,align:'center'},
+			{title:'机构类型', field:'agencyType', width:100,align:'center'},
+			{title:'创建日期', field:'dateCreate', width:100,align:'center'},
+			{title:'行情文件路径', field:'hangqingfilepath', width:360,align:'center'},
+			{title:'详情URL', field:'detailUrl', width:380,align:'center'}
+		]];
+	
 		/******************************* 基金基本信息 ***********************************/
 		DataToView.JJXXURL={
-			queryFundList:'../fund/queryFundList' //查询部门考核通知单
+			queryFundList:'../fund/queryFundList'
 	    }
 	   
 		DataToView.JJXXGrid = [[{type: 'checkbox', fixed: 'left'},
@@ -65,6 +98,23 @@
 			{title:'基金公司', field:'companyName',width:140,align:'center'},		
 			{title:'基金评级', field:'grade',width:100,align:'center'},
 			,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
+		]];
+		
+		/******************************* 跑批基本信息 ***********************************/
+		DataToView.JOBURL={
+				queryFundList:'../job/queryJobList' 
+		    }
+		   
+		DataToView.JOBGrid = [[{type: 'checkbox', fixed: 'left'},
+			{title:'任务名称', field:'jobName', width:200,align:'center'},
+			{title:'任务键值', field:'jobKey', width:100,align:'center'},
+			{title:'任务描述', field:'jobDesc', width:100,align:'center',render:function(rowdata,index,value){
+				console.info(rowdata,index,value);
+			}},
+			{title:'表达式', field:'cron', width:100,align:'center'},
+			{title:'是否可用', field:'enable',width:140,align:'center'},		
+			{title:'创建时间', field:'dateCreate',width:100,align:'center'},
+			{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
 		]];
 		
 		/******************************* 历史净值信息 ***********************************/

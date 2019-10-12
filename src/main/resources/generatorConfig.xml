@@ -57,6 +57,7 @@
 		<table schema="fund" tableName="t_hold_fund_copy"/>
 		<table schema="fund" tableName="t_hold_fund_summary"/>
 		<table schema="fund" tableName="t_index"/>
+		<table schema="fund" tableName="t_index_info"/>
 		<table schema="fund" tableName="t_job"/>
 		<table schema="fund" tableName="t_market_situation"/>
 		<table schema="fund" tableName="t_net_worth_history"/>
@@ -68,5 +69,6 @@
 		<table schema="fund" tableName="t_trade_summary"/>
 		<table schema="fund" tableName="t_user"/>
 		<table schema="fund" tableName="t_website_info"/>
+		
 	</context>
 </generatorConfiguration>

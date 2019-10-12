@@ -13,11 +13,13 @@
 	<context:property-placeholder location="classpath:jdbc.properties" file-encoding="UTF-8" order="1" ignore-unresolvable="true"/>
 	
 	<!-- 扫描除Controller以外的Bean（注解式事务重要配置） -->
-	<context:component-scan base-package="com.zsh.labouCapital">
+	<context:component-scan base-package="com.zsh.labouCapital.*">
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 		<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.RestController" />
 	</context:component-scan>
 	
 	<import resource="classpath:config/spring/spring-mybatis.xml" />
+	
+	<import resource="classpath:config/spring/job_config.xml" />
 
 </beans>

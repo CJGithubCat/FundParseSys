@@ -2,7 +2,7 @@ package com.zsh.labouCapital.controller.request;
 
 import java.util.Date;
 
-public class JobRequest  {
+public class JobRequest  extends BaseForm{
     
     private Integer id;
 

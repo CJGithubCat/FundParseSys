@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd">
+	
+	<!-- 指数估值job -->
+	<bean id="getIndexInfoJob" class="com.zsh.labouCapital.job.GetIndexInfoJob"></bean>
+	<!-- 基金最新估值job -->
+	<bean id="getNewestFundGuZhiJob" class="com.zsh.labouCapital.job.GetNewestFundGuZhiJob"></bean>
+	
+	<!-- 基金最新估值job -->
+	<bean id="getNetWorthHistoryJob" class="com.zsh.labouCapital.job.GetNetWorthHistoryJob"></bean>
+	
+	<bean id="getIndexInfoJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">  
+        <!-- 执行的类 -->  
+        <property name="targetObject">  
+            <ref bean="getIndexInfoJob" />  
+        </property>  
+        <!-- 类中的方法 -->  
+        <property name="targetMethod">  
+            <value>execute</value>  
+        </property>  
+    </bean>
+    
+    <bean id="getNewestFundGuZhiJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">  
+        <!-- 执行的类 -->  
+        <property name="targetObject">  
+            <ref bean="getNewestFundGuZhiJob" />  
+        </property>  
+        <!-- 类中的方法 -->  
+        <property name="targetMethod">  
+            <value>execute</value>  
+        </property>  
+    </bean>
+    
+    <bean id="getNetWorthHistoryJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">  
+        <!-- 执行的类 -->  
+        <property name="targetObject">  
+            <ref bean="getNetWorthHistoryJob" />  
+        </property>  
+        <!-- 类中的方法 -->  
+        <property name="targetMethod">  
+            <value>execute</value>  
+        </property>  
+    </bean>
+    
+    <bean id="getIndexInfoJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
+        <property name="jobDetail">
+            <ref bean="getIndexInfoJobDetail" />  
+        </property>  
+        <!-- 每一秒钟执行一次 -->  
+        <property name="cronExpression">  
+            <value>0 0 1 * * ?</value>  
+        </property>  
+    </bean>
+    
+    <bean id="getNewestFundGuZhiJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
+        <property name="jobDetail">
+            <ref bean="getNewestFundGuZhiJobDetail" />  
+        </property>  
+        <!-- 每一秒钟执行一次 -->  
+        <property name="cronExpression">  
+            <value>0/30 * * * * ?</value>  
+        </property>  
+    </bean>
+    
+    <bean id="getNetWorthHistoryJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
+        <property name="jobDetail">
+            <ref bean="getNetWorthHistoryJobDetail" />  
+        </property>  
+        <!-- 每一秒钟执行一次 -->  
+        <property name="cronExpression">  
+            <value>0/30 * * * * ?</value>  
+        </property>  
+    </bean>
+    
+    <!-- 总配置 -->  
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">  
+        <!-- 添加触发器 -->  
+        <property name="triggers">  
+            <list>  
+                <!-- <ref bean="getIndexInfoJobTrigger" />
+                <ref bean="getNewestFundGuZhiJobTrigger" /> -->
+                <ref bean="getNetWorthHistoryJobTrigger" />   
+            </list>  
+        </property>  
+    </bean>  
+</beans>

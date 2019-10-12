@@ -1,12 +1,14 @@
 package com.zsh.labouCapital.service.impl;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.http.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +22,18 @@ import com.alibaba.fastjson.JSONObject;
 import com.zsh.labouCapital.controller.request.FundHoldRequest;
 import com.zsh.labouCapital.dao.client.THoldFundMapper;
 import com.zsh.labouCapital.dao.client.THoldFundSummaryMapper;
+import com.zsh.labouCapital.dao.client.TWebsiteInfoMapper;
 import com.zsh.labouCapital.dao.dto.THoldFund;
 import com.zsh.labouCapital.dao.dto.THoldFundCriteria;
 import com.zsh.labouCapital.dao.dto.THoldFundSummary;
 import com.zsh.labouCapital.dao.dto.THoldFundSummaryCriteria;
+import com.zsh.labouCapital.dao.dto.TWebsiteInfo;
+import com.zsh.labouCapital.dao.dto.TWebsiteInfoCriteria;
+import com.zsh.labouCapital.dto.JobDto;
+import com.zsh.labouCapital.exception.GenericBizException;
 import com.zsh.labouCapital.service.IFundHoldService;
+import com.zsh.labouCapital.util.DateTimeUtil;
+import com.zsh.labouCapital.util.HttpclientUtil;
 import com.zsh.labouCapital.util.PojoConvertUtil;
 
 @Service
@@ -33,6 +42,9 @@ public class FundHoldServiceImpl implements IFundHoldService {
 
 	@Autowired
 	private THoldFundMapper fundHoldMapper;
+	
+	@Autowired
+    private TWebsiteInfoMapper webInfoMapper;
 
 	@Autowired
 	private THoldFundSummaryMapper fundHoldSummaryMapper;
@@ -160,4 +172,89 @@ public class FundHoldServiceImpl implements IFundHoldService {
 			}
 		}
 	}
+
+    @Override
+    public void parseNewestFundGuZhi(JobDto jobDto) throws Exception {
+        if(jobDto == null || StringUtils.isEmpty(jobDto.getJobKey())){
+            throw new GenericBizException("参数为空.");
+        }
+        
+        //1.读取对应的url;
+        String jobKey = jobDto.getJobKey();
+        TWebsiteInfoCriteria cr = new TWebsiteInfoCriteria();
+        TWebsiteInfoCriteria.Criteria criteria = cr.createCriteria();
+        criteria.andJobKeyEqualTo(jobKey);
+        List<TWebsiteInfo> webSiteList = webInfoMapper.selectByExample(cr);
+        if(CollectionUtils.isEmpty(webSiteList)){
+            throw new GenericBizException("JOBKey没有对应的URL.");
+        }
+        String guzhiUrl = webSiteList.get(0).getItemUrl();
+        //2.分析所有持有的基金的估值信息，请求数据并解析;
+        THoldFundCriteria holdCr = new THoldFundCriteria();
+        THoldFundCriteria.Criteria criteria2 = holdCr.createCriteria();
+        criteria2.andTypeEqualTo("fund");
+        List<THoldFund> fundHoldList = fundHoldMapper.selectByExample(null);
+        
+        long nowStamp = DateTimeUtil.getMilliSecond(new Date());
+        if(CollectionUtils.isNotEmpty(fundHoldList)){
+            for (THoldFund tHoldFund : fundHoldList) {
+                if(tHoldFund != null){
+                    String tempUrl = guzhiUrl;
+                    tempUrl = tempUrl.concat(tHoldFund.getFundCode()).concat(".js?rt=").concat(nowStamp+"");
+                    THoldFund guzhiFund = parseNewestGuZhiInfo(tHoldFund.getId(),tempUrl);
+                    if(guzhiFund != null){
+                        //3.更新估值信息
+                        fundHoldMapper.updateByPrimaryKeySelective(guzhiFund);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * @throws URISyntaxException 
+     * @throws IOException 
+     * @throws ParseException    
+     * @Title: parseNewestGuZhiProcess   
+     * @Description: 解析最新的估值信息;   
+     * @param: @param reJson
+     * @param: @return      
+     * @return: List<THoldFund>      
+     * @throws   
+     */
+    private THoldFund parseNewestGuZhiInfo(long id,String guzhiUrl) throws ParseException, IOException, URISyntaxException {
+        logger.error("guzhiUrl:" + guzhiUrl);
+        String reJson = HttpclientUtil.get(guzhiUrl, null);
+        if(StringUtils.isEmpty(reJson)){
+            return null;
+        }
+        logger.error("reJson:" + reJson);
+        if(reJson.contains("doctype") || reJson.contains("html")){
+            return null;
+        }
+        
+        if(reJson.startsWith("jsonpgz(") && reJson.endsWith(");")){
+            reJson = reJson.replace("jsonpgz(", "");
+            reJson = reJson.replace(");", "");
+        }
+        
+        JSONObject allDataJson = (JSONObject) JSONObject.parse(reJson);
+        if(allDataJson == null){
+            return null;
+        }
+        //
+        String fundCode = allDataJson.getString("fundcode");
+        double gsz = allDataJson.getDoubleValue("gsz");
+        
+        THoldFund reHoldFund = null;
+        if(!StringUtils.isEmpty(fundCode)){
+            reHoldFund = new THoldFund();
+            reHoldFund.setId(id);
+            reHoldFund.setFundCode(fundCode);
+            reHoldFund.setNavGuzhi(gsz);
+        }
+        logger.error("reHoldFund:" + JSONObject.toJSONString(reHoldFund));
+        
+        return reHoldFund;
+    }
 }

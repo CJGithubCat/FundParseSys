@@ -24,6 +24,30 @@ public class DateTimeUtil {
     public static final String DEFAULT_DATE_TIME_PATTERN5 = "yyyy-MM-dd HH:mm";
     public static final String DEFAULT_DATE_TIME_PATTERN6 = "yyyyMMddHHmmss";
 
+    /**
+     * @Title: getMilliSecond   
+     * @Description: 日期转化为毫秒;   
+     * @param: @param date
+     * @param: @return      
+     * @return: long      
+     * @throws
+     */
+    public static long getMilliSecond(Date date){
+        return date.getTime();
+    }
+    
+    /**
+     * @Title: getSecond   
+     * @Description: 日期转化为秒;   
+     * @param: @param date
+     * @param: @return      
+     * @return: long      
+     * @throws
+     */
+    public static long getSecond(Date date){
+        return date.getTime()/1000;
+    }
+    
     public static String formatDate(Date date, String pattern) {
         return (new DateTime(date)).toString(pattern);
     }

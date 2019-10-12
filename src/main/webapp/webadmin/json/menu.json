@@ -10,37 +10,37 @@
 				"id": 101,
 				"name": "资源管理",
 				"icon": "",
-				"url": "./pages/info/source/source_list.html"
+				"url": "./pages/info/source_list.html"
 			}, {
 				"id": 102,
 				"name": "指数管理",
 				"icon": "",
-				"url": "./pages/info/index/index_list.html"
+				"url": "./pages/info/index_list.html"
 			}, {
 				"id": 103,
 				"name": "基金管理",
 				"icon": "",
-				"url": "./pages/info/fund/fund_list.html"
+				"url": "./pages/info/fund_list.html"
 			}, {
 				"id": 104,
 				"name": "跑批管理",
 				"icon": "",
-				"url": "./pages/info/job/job_list.html"
+				"url": "./pages/info/job_list.html"
 			}, {
 				"id": 105,
 				"name": "选基管理",
 				"icon": "",
-				"url": "./pages/info/choose/choose_list.html"
+				"url": "./pages/info/choose_list.html"
 			}, {
 				"id": 106,
 				"name": "组合研究",
 				"icon": "",
-				"url": "./pages/info/group/group_list.html"
+				"url": "./pages/info/group_list.html"
 			}, {
 				"id": 107,
 				"name": "模型管理",
 				"icon": "",
-				"url": "./pages/info/model/model_list.html"
+				"url": "./pages/info/model_list.html"
 			}]
 		},
 		{
