@@ -37,6 +37,18 @@ public class DateTimeUtil {
     }
     
     /**
+     * @MethodName: generateTimeStamp
+     * @Description: 获取当前的时间戳;
+     * @author cj
+     * @param dateTime
+     * @return
+     * @date 2020-05-29 11:26:25
+     */
+    public String generateTimeStamp(Date dateTime) {
+        return DateTimeUtil.formatDate(dateTime, DateTimeUtil.DEFAULT_DATE_TIME_PATTERN6);
+    }
+    
+    /**
      * @Title: getSecond   
      * @Description: 日期转化为秒;   
      * @param: @param date
